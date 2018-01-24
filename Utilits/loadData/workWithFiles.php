@@ -6,7 +6,7 @@
  * Time: 16:19
  */
 
-namespace AnalizPdvBundle\Utilits\loadData;
+namespace App\Utilits\loadData;
 use Doctrine\ORM\EntityManager;
 
 

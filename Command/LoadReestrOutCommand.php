@@ -1,13 +1,13 @@
 <?php
 
-namespace AnalizPdvBundle\Command;
+namespace App\Command;
 
-use LoadFileBundle\Utilits\ValidEntity\validBranch;
+use App\Utilits\ValidEntity\validBranch;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
-use LoadFileBundle\Entity\SprBranch;
+use App\Entity\SprBranch;
 
 /**
  * Класс проводит загрузку файла с данными о филиалах

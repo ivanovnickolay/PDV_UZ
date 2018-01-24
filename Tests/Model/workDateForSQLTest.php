@@ -6,8 +6,8 @@
  * Time: 11:01
  */
 
-namespace AnalizPdvBundle\Model;
-use AnalizPdvBundle\Model\Exception\noCorrectDataException;
+namespace App\Model;
+use App\Model\Exception\noCorrectDataException;
 
 
 /**
@@ -31,12 +31,11 @@ class workDateForSQLTest extends \PHPUnit_Framework_TestCase
 	}
 
 
-	/**
-	 * @param m $
-	 * @param y $
-	 * @dataProvider data_costr
-	 *
-	 */
+    /**
+     * @param $m
+     * @param $y
+     * @dataProvider data_costr
+     */
 	public function test_construct($m,$y)
 	{
 		try {
@@ -60,12 +59,15 @@ class workDateForSQLTest extends \PHPUnit_Framework_TestCase
 
 		);
 	}
-	/**
-	 * @param m $
-	 * @param y $
-	 * @dataProvider data_getMonthMinisOne
-	 *
-	 */
+
+    /**
+     * @param $m
+     * @param $y
+     * @param $Mminus
+     * @param $Yminus
+     * @throws noCorrectDataException
+     * @dataProvider data_getMonthMinisOne
+     */
 	public function test_getMonthMinisOne($m,$y,$Mminus,$Yminus)
 	{
 
@@ -90,12 +92,15 @@ class workDateForSQLTest extends \PHPUnit_Framework_TestCase
 
 		);
 	}
-	/**
-	 * @param m $
-	 * @param y $
-	 * @dataProvider data_getMonthMinisTwo
-	 *
-	 */
+
+    /**
+     * @param $m
+     * @param $y
+     * @param $Mminus
+     * @param $Yminus
+     * @throws noCorrectDataException
+     * @dataProvider data_getMonthMinisTwo
+     */
 	public function test_getMonthMinisTwo($m,$y,$Mminus,$Yminus)
 	{
 
@@ -118,12 +123,15 @@ class workDateForSQLTest extends \PHPUnit_Framework_TestCase
 			[1,2017,2,2017],
 		);
 	}
-	/**
-	 * @param m $
-	 * @param y $
-	 * @dataProvider data_getMonthPlusOne
-	 *
-	 */
+
+    /**
+     * @param $m
+     * @param $y
+     * @param $Mminus
+     * @param $Yminus
+     * @throws noCorrectDataException
+     * @dataProvider data_getMonthPlusOne
+     */
 	public function test_getMonthPlusOne($m,$y,$Mminus,$Yminus)
 	{
 
@@ -147,9 +155,14 @@ class workDateForSQLTest extends \PHPUnit_Framework_TestCase
 	}
 
 
-	/**
-	 * @dataProvider data_getPeriodAnalizRke
-	 */
+    /**
+     * @dataProvider data_getPeriodAnalizRke
+     * @param $m
+     * @param $y
+     * @param $start
+     * @param $end
+     * @throws noCorrectDataException
+     */
 	public function test_getPeriodAnalizRke($m,$y,$start,$end)
 	{
 		$odj = new workDateForSQL($m, $y);
@@ -173,9 +186,14 @@ class workDateForSQLTest extends \PHPUnit_Framework_TestCase
 	}
 
 
-	/**
-	 * @dataProvider data_getPeriodAnalizRkeMinusOne
-	 */
+    /**
+     * @dataProvider data_getPeriodAnalizRkeMinusOne
+     * @param $m
+     * @param $y
+     * @param $start
+     * @param $end
+     * @throws noCorrectDataException
+     */
 	public function test_getPeriodAnalizRkeMinusOne($m,$y,$start,$end)
 	{
 		$odj = new workDateForSQL($m, $y);
@@ -201,9 +219,14 @@ class workDateForSQLTest extends \PHPUnit_Framework_TestCase
 	}
 
 
-	/**
-	 * @dataProvider data_getPeriodAnalizRkeMinusTwo
-	 */
+    /**
+     * @dataProvider data_getPeriodAnalizRkeMinusTwo
+     * @param $m
+     * @param $y
+     * @param $start
+     * @param $end
+     * @throws noCorrectDataException
+     */
 	public function test_getPeriodAnalizRkeMinusTwo($m,$y,$start,$end)
 	{
 		$odj = new workDateForSQL($m, $y);
@@ -214,4 +237,5 @@ class workDateForSQLTest extends \PHPUnit_Framework_TestCase
 			$this->assertEquals($end, $E);
 		}
 	}
-}
+
+    }

@@ -6,10 +6,10 @@
  * Time: 22:53
  */
 
-namespace AnalizPdvBundle\Tests\Entity\forForm;
+namespace App\Tests\Entity\forForm;
 
 
-use AnalizPdvBundle\Entity\forForm\search\docFromParam;
+use App\Entity\forForm\search\docFromParam;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bundle\SecurityBundle\Tests\Functional\WebTestCase;
 use Symfony\Component\Validator\Tests\Constraints\AbstractConstraintValidatorTest;

@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class analizInnOut
- * @package AnalizPdvBundle\Entity\forForm\analiz
+ * @package App\Entity\forForm\analiz
  */
 class analizInnOut
 {
@@ -223,7 +223,7 @@ class analizInnOut
 	public function validate(ExecutionContextInterface $context, $payload)
 	{
 		// Если заполнено поле  dateCreateDoc
-		$repos=$this->entiryManager->getRepository('AnalizPdvBundle:ReestrbranchOut');
+		$repos=$this->entiryManager->getRepository('App:ReestrbranchOut');
 
 		if (!$repos->is_NumMainBranchToPeriod($this->getMonthCreate(), $this->getYearCreate(), $this->getNumMainBranch())) {
 				$context->buildViolation("В указанном периоде НЕТ данных указанного филиала !")

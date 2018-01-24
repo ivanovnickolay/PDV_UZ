@@ -6,10 +6,10 @@
  * Time: 18:58
  */
 
-namespace AnalizPdvBundle\Utilits\ValidForm\parserUnit;
+namespace App\Utilits\ValidForm\parserUnit;
 
 
-use AnalizPdvBundle\Utilits\ValidForm\validUnit\validNumDoc;
+use App\Utilits\ValidForm\validUnit\validNumDoc;
 
 /**
  * парсинг ИНН клиента в ЕРПН

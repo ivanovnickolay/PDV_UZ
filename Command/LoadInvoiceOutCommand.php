@@ -1,9 +1,9 @@
 <?php
 
-namespace AnalizPdvBundle\Command;
+namespace App\Command;
 
-use LoadFileBundle\Utilits\LoadInvoice\LoadInvoiceOut\LoadInvoiceOut2;
-use LoadFileBundle\Utilits\LoadInvoice\LoadInvoiceOut\LoadInvoiceOut_CSV;
+use App\Utilits\LoadInvoice\LoadInvoiceOut\LoadInvoiceOut2;
+use App\Utilits\LoadInvoice\LoadInvoiceOut\LoadInvoiceOut_CSV;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

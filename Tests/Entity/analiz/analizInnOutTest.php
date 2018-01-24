@@ -6,10 +6,10 @@
  * Time: 10:49
  */
 
-namespace AnalizPdvBundle\Tests\Entity\analiz;
+namespace App\Tests\Entity\analiz;
 
 
-use AnalizPdvBundle\Entity\forForm\analiz\analizInnOut;
+use App\Entity\forForm\analiz\analizInnOut;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**

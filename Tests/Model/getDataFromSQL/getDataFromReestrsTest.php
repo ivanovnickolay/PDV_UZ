@@ -6,10 +6,10 @@
  * Time: 17:57
  */
 
-namespace AnalizPdvBundle\Tests\Model\getDataFromSQL\getDataFtomSQL;
+namespace App\Tests\Model\getDataFromSQL\getDataFtomSQL;
 
 
-use AnalizPdvBundle\Model\getDataFromSQL\getDataFromReestrsAll;
+use App\Model\getDataFromSQL\getDataFromReestrsAll;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class getDataFromReestrsTest extends KernelTestCase

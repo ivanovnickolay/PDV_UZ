@@ -6,7 +6,7 @@
  * Time: 18:25
  */
 
-namespace AnalizPdvBundle\Utilits\LoadInvoice\createEntity;
+namespace App\Utilits\LoadInvoice\createEntity;
 
 
 /**

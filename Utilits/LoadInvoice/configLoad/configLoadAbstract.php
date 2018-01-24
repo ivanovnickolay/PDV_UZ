@@ -6,12 +6,12 @@
  * Time: 20:01
  */
 
-namespace AnalizPdvBundle\Utilits\LoadInvoice\configLoad;
+namespace App\Utilits\LoadInvoice\configLoad;
 
 
-use AnalizPdvBundle\Utilits\LoadInvoice\createEntity\createEntity;
-use AnalizPdvBundle\Utilits\LoadInvoice\createEntity\createEntityInterface;
-use AnalizPdvBundle\Utilits\LoadInvoice\loadLinesData\loadLinesDataInterface;
+use App\Utilits\LoadInvoice\createEntity\createEntity;
+use App\Utilits\LoadInvoice\createEntity\createEntityInterface;
+use App\Utilits\LoadInvoice\loadLinesData\loadLinesDataInterface;
 
 /**
  * Абстрактный класс реализует методы которые хранят параметры

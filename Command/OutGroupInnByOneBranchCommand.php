@@ -1,9 +1,9 @@
 <?php
 
-namespace AnalizPdvBundle\Command;
+namespace App\Command;
 
-use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizOutByInn;
-use AnalizPdvBundle\Model\writeAnalizPDVToFile\writeAnalizPDVToFile;
+use App\Model\writeAnalizPDVToFile\writeAnalizOutByInn;
+use App\Model\writeAnalizPDVToFile\writeAnalizPDVToFile;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

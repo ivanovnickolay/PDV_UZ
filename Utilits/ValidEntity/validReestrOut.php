@@ -6,10 +6,10 @@
  * Time: 18:16
  */
 
-namespace AnalizPdvBundle\Utilits\ValidEntity;
+namespace App\Utilits\ValidEntity;
 
-use AnalizPdvBundle\Entity\ReestrbranchIn;
-use AnalizPdvBundle\Utilits\ValidEntity\interfaceValidEntity;
+use App\Entity\ReestrbranchIn;
+use App\Utilits\ValidEntity\interfaceValidEntity;
 
 class validReestrOut extends interfaceValidEntity
 {

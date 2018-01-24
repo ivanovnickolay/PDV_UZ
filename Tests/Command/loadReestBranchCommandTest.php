@@ -6,10 +6,10 @@
  * Time: 23:44
  */
 
-namespace AnalizPdvBundle\Tests\Command;
+namespace App\Tests\Command;
 
 
-use AnalizPdvBundle\Command\loadReestBranchCommand;
+use App\Command\loadReestBranchCommand;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;

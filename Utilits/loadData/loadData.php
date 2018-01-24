@@ -6,12 +6,12 @@
  * Time: 18:40
  */
 
-namespace AnalizPdvBundle\Utilits\loadData;
+namespace App\Utilits\loadData;
 
 
-use AnalizPdvBundle\Utilits\createEntitys;
-use AnalizPdvBundle\Utilits\createReaderFile\getReaderExcel;
-use AnalizPdvBundle\Utilits\ValidEntity\interfaceValidEntity;
+use App\Utilits\createEntitys;
+use App\Utilits\createReaderFile\getReaderExcel;
+use App\Utilits\ValidEntity\interfaceValidEntity;
 use Doctrine\ORM\EntityManager;
 
 /**

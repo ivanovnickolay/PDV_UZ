@@ -9,7 +9,7 @@
 namespace App\Model\getDataFromSQL\prepareSQL;
 
 
-use AnalizPdvBundle\Model\workDateForSQL;
+use App\Model\workDateForSQL;
 
 
 /**

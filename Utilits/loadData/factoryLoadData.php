@@ -6,12 +6,12 @@
  * Time: 21:06
  */
 
-namespace AnalizPdvBundle\Utilits\loadData;
+namespace App\Utilits\loadData;
 
 
-use AnalizPdvBundle\Utilits\createEntitys\reestrIn\createReestrIn;
-use AnalizPdvBundle\Utilits\createEntitys\reestrOut\createReestrOut;
-use AnalizPdvBundle\Utilits\ValidEntity\validReestrIn;
+use App\Utilits\createEntitys\reestrIn\createReestrIn;
+use App\Utilits\createEntitys\reestrOut\createReestrOut;
+use App\Utilits\ValidEntity\validReestrIn;
 use Doctrine\ORM\EntityManager;
 
 class factoryLoadData
@@ -30,7 +30,7 @@ class factoryLoadData
  }
 	public function __destruct ()
 	{
-		unset($this->loaderClass);
+		///unset($this->loaderClass);
 	}
 
 	public function loadDataFromFile($file,$type)
@@ -42,11 +42,11 @@ class factoryLoadData
 		//unset($this->loaderClass);
 	}
 
-	/**
-	 * на основании значение $type формируем данные для загрузчина файлов loadData
-	 * и возвращаем класс loadData готовый для загрузки файла
-	 * @return loadData
-	 */
+    /**
+     * на основании значение $type формируем данные для загрузчина файлов loadData
+     * и возвращаем класс loadData готовый для загрузки файла
+     * @return void
+     */
 	private function getLoaderClass()
 	{
 		switch ($this->type)

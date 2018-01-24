@@ -1,10 +1,10 @@
 <?php
 
-namespace AnalizPdvBundle\Command;
+namespace App\Command;
 
-use AnalizPdvBundle\Utilits\loadData\factoryLoadData;
-use AnalizPdvBundle\Utilits\loadData\workWithFiles;
-use AnalizPdvBundle\Utilits\loadReestrBranch\loadReestrBranch;
+use App\Utilits\loadData\factoryLoadData;
+use App\Utilits\loadData\workWithFiles;
+use App\Utilits\loadReestrBranch\loadReestrBranch;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

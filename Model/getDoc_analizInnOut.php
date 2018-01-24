@@ -130,7 +130,7 @@ class getDoc_analizInnOut implements ContainerAwareInterface
 		// если массив значений пустой то
 		// формируем запрос и отдаем результат
 		if (empty($this->docByERPN)){
-			$this->docByERPN=$this->container->get('doctrine')->getRepository('AnalizPdvBundle:ErpnOut')->getDocFromERPN($this->month, $this->year,$this->numBranch, $this->INN);
+			$this->docByERPN=$this->container->get('doctrine')->getRepository('App:ErpnOut')->getDocFromERPN($this->month, $this->year,$this->numBranch, $this->INN);
 		}
 		// если массив не пустой - отдаем результат
 		return $this->docByERPN;
@@ -220,7 +220,7 @@ class getDoc_analizInnOut implements ContainerAwareInterface
 		// если массив значений пустой то
 		// формируем запрос и отдаем результат
 		if (empty($this->docByReestr)){
-			$this->docByReestr=$this->container->get('doctrine')->getRepository('AnalizPdvBundle:ReestrbranchOut')->getDocFromReestr($this->month, $this->year,$this->numBranch, $this->INN);
+			$this->docByReestr=$this->container->get('doctrine')->getRepository('App:ReestrbranchOut')->getDocFromReestr($this->month, $this->year,$this->numBranch, $this->INN);
 		}
 			// если массив не пустой - отдаем результат
 			return $this->docByReestr;
@@ -365,11 +365,12 @@ class getDoc_analizInnOut implements ContainerAwareInterface
 
 	}
 
-	/**
-	 *  Получаем результирующий массив расходжений между ЕРПН и РПН
-	 *  с описанием ошибок
-	 *  формат массива [keyField]=>[errorDescription]
-	 */
+    /**
+     *  Получаем результирующий массив расходжений между ЕРПН и РПН
+     *  с описанием ошибок
+     *  формат массива [keyField]=>[errorDescription]
+     * @return array
+     */
 	private function getResultArrayDiffErpnToReestr_old()
 	{
 		// формируем значние массивов отклонений
@@ -434,7 +435,7 @@ class getDoc_analizInnOut implements ContainerAwareInterface
 	 * @param array $arrayValue массив отклонений по значению (суме ПДВ), например $this->diffErpnToReestrByValue
 	 * @param string $errKey ошибка при отклонению по ключу "Документ есть в ЕРПН, но не включен в РПН" или "Документ есть в РПН, но зарегистрирован в ЕРПН"
 	 * @param string $errValue ошибка отклонения по значению "По документу в ЕРПН и РПН включены разные суммы ПДВ"
-	 * @return mixed
+	 * @return array
 	 */
 	private function getResultArrayDiff(array $arrayKey, array $arrayValue, string $errKey,$errValue)
 	{

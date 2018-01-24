@@ -6,7 +6,7 @@
  * Time: 16:56
  */
 
-namespace AnalizPdvBundle\Utilits;
+namespace App\Utilits;
 
 
 /**

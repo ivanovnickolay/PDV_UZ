@@ -6,7 +6,7 @@
  * Time: 21:54
  */
 
-namespace AnalizPdvBundle\Utilits\LoadInvoice\loadLinesData;
+namespace App\Utilits\LoadInvoice\loadLinesData;
 
 
 /**

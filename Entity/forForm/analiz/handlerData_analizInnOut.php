@@ -9,9 +9,9 @@
 namespace App\Entity\forForm\analiz;
 
 
-use AnalizPdvBundle\Model\getDataFromSQL\getDataOutINNByOne;
+use App\Model\getDataFromSQL\getDataOutINNByOne;
 use Doctrine\ORM\EntityManager;
-use AnalizPdvBundle\Entity\forForm\analiz\analizInnOut;
+use App\Entity\forForm\analiz\analizInnOut;
 
 /**
  * Класс - связующее звено между
@@ -42,10 +42,11 @@ class handlerData_analizInnOut
 
 	}
 
-	/**
-	 * Получения метода выбора данных на основнании данных типа анализа
-	 * @param string $type
-	 */
+    /**
+     * Получения метода выбора данных на основнании данных типа анализа
+     * @param string $type
+     * @return mixed
+     */
 	private function getNameMethodAnaliz()
 	{
 		$methodAnaliz =array(

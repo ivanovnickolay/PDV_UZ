@@ -6,11 +6,11 @@
  * Time: 23:59
  */
 
-namespace LoadFileBundle\Utilits\ValidEntity;
+namespace App\Utilits\ValidEntity;
 
 
 use Doctrine\ORM\EntityManager;
-use LoadFileBundle\Entity\SprBranch;
+use App\Entity\SprBranch;
 
 /**
  * Class validBranch
@@ -46,7 +46,7 @@ public function __construct(EntityManager $em)
     /**
      * Проверка уникальности номера фидиала в базе
      * @param $NumBranch  номер филиала
-     * @return array|\LoadFileBundle\Entity\SprBranch[] -  количество записей с указаным номером филиала
+     * @return array|\App\Entity\SprBranch[] -  количество записей с указаным номером филиала
      */
     public function validUniqBranch($NumBranch)
     {

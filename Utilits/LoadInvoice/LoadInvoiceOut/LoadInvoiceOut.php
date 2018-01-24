@@ -6,15 +6,15 @@
  * Time: 23:14
  */
 
-namespace LoadFileBundle\Utilits\LoadInvoice\LoadInvoiceOut;
+namespace App\Utilits\LoadInvoice\LoadInvoiceOut;
 
 
 use Doctrine\ORM\EntityManager;
-use LoadFileBundle\Entity\Erpn_out;
+use App\Entity\Erpn_out;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Container;
-use LoadFileBundle\Utilits\LoadInvoice\LoadInvoiceOut\validInvoiceOut;
+use App\Utilits\LoadInvoice\LoadInvoiceOut\validInvoiceOut;
 class LoadInvoiceOut
 {
     private $entityManager;

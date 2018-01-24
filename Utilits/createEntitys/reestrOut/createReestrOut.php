@@ -10,9 +10,9 @@ namespace App\Utilits\createEntitys\reestrOut;
 //namespace AnalizPdvBundle\Entity;
 
 
-use AnalizPdvBundle\Entity\ReestrbranchIn;
-use AnalizPdvBundle\Entity\ReestrbranchOut;
-use AnalizPdvBundle\Utilits\createEntitys;
+use App\Entity\ReestrbranchIn;
+use App\Entity\ReestrbranchOut;
+use App\Utilits\createEntitys;
 
 /**
  * Класс предназначенный для создания сущности ReestrbranchOut() на основании данных полученных

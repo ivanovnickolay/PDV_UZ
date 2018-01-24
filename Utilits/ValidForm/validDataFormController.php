@@ -145,7 +145,7 @@ class validDataFormController implements ContainerAwareInterface
 		$result=$validator->validate($numBranch,[$validNotNull, $validNBType, $validNBLenght]);
 		// Если ошибок предварительной валидации нет то проверим наличие номера филиала в базе
 		if (count($result)==0) {
-			$isExistBranch=$this->container->get('doctrine')->getManager()->getRepository('AnalizPdvBundle:SprBranch')->findCountNumBranch($this->numBranch);
+			$isExistBranch=$this->container->get('doctrine')->getManager()->getRepository('App:SprBranch')->findCountNumBranch($this->numBranch);
 				//если номер филиала существуент
 				if($isExistBranch){
 					// возвращаем пустой массив

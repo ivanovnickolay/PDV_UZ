@@ -26,7 +26,7 @@ class createReestrInTest extends \PHPUnit_Framework_TestCase
 			$entity=$en->createReestr($arr);
 			// http://stackoverflow.com/questions/10420925/phpunit-forces-me-to-require-classes-before-asserting
 			//-instance-of
-			$this->assertInstanceOf("AnalizPdvBundle\Entity\ReestrbranchIn",$entity);
+			$this->assertInstanceOf("App\Entity\ReestrbranchIn",$entity);
 			$this->assertEquals('7',$entity->getMonth());
 			$this->assertEquals('2016',$entity->getYear());
 			$this->assertEquals('578',$entity->getNumBranch());

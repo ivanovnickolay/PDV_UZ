@@ -6,7 +6,7 @@
  * Time: 0:23
  */
 
-namespace AnalizPdvBundle\Utilits\LoadInvoice\Exception;
+namespace App\Utilits\LoadInvoice\Exception;
 
 
 /**

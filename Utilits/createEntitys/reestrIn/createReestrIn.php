@@ -10,8 +10,8 @@ namespace App\Utilits\createEntitys\reestrIn;
 //namespace AnalizPdvBundle\Entity;
 
 
-use AnalizPdvBundle\Entity\ReestrbranchIn;
-use AnalizPdvBundle\Utilits\createEntitys;
+use App\Entity\ReestrbranchIn;
+use App\Utilits\createEntitys;
 use App\Utilits\createEntitys\interfaceReestr\createReestr;
 
 /**

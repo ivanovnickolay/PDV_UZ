@@ -6,7 +6,7 @@
  * Time: 22:32
  */
 
-namespace AnalizPdvBundle\Controller;
+namespace App\Controller;
 
 
 /**

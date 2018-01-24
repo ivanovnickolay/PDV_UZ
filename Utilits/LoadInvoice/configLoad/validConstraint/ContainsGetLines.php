@@ -6,7 +6,7 @@
  * Time: 23:41
  */
 
-namespace AnalizPdvBundle\Utilits\LoadInvoice\configLoad\validConstraint;
+namespace App\Utilits\LoadInvoice\configLoad\validConstraint;
 
 
 use Symfony\Component\Validator\Constraint;

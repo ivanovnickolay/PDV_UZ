@@ -6,11 +6,11 @@
  * Time: 23:54
  */
 
-namespace AnalizPdvBundle\Utilits\ValidForm;
+namespace App\Utilits\ValidForm;
 
 
-use AnalizPdvBundle\Utilits\ValidForm\parseUnit\parserUnitAbstract;
-use AnalizPdvBundle\Utilits\ValidForm\validUnit\validUnitAbsract;
+use App\Utilits\ValidForm\parserUnit\parserUnitAbstract;
+use App\Utilits\ValidForm\validUnit\validUnitAbsract;
 
 /**
  * Класс хранит обработчики валидации
@@ -21,10 +21,10 @@ class parserUnitRepository
 {
 	private  $repository;
 
-	/**
-	 * @param $field
-	 * @param validUnitAbsract $validUnit
-	 */
+    /**
+     * @param $field
+     * @param parserUnitAbstract $parserUnit
+     */
 	public function addParserUnit($field, parserUnitAbstract $parserUnit)
 	{
 		$this->repository[$field]=$parserUnit;

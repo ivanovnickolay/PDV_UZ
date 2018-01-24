@@ -1,8 +1,8 @@
 <?php
 
-namespace AnalizPdvBundle\Command;
+namespace App\Command;
 
-use LoadFileBundle\Entity\Erpn_out;
+use App\Entity\Erpn_out;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

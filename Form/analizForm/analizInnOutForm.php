@@ -36,7 +36,7 @@ class analizInnOutForm extends AbstractType
 							    'те которые есть только в Реестре  ' => 'R<>E',),
 						    'label'=>'Тип анализа документов'))
 				    ->add("numMainBranch",EntityType::class,array(
-				        'class'=>'AnalizPdvBundle\Entity\SprBranch',
+				        'class'=>'App\Entity\SprBranch',
 					    'label'=>'Филиал для анализа',
 					    'choice_label'=>'nameMainBranch',
 					    'choice_value'=>'numMainBranch',

@@ -6,8 +6,8 @@
  * Time: 11:47
  */
 
-namespace AnalizPdvBundle\Tests\Entity\forForm;
-use AnalizPdvBundle\Entity\forForm\search\searchAbstract;
+namespace App\Tests\Entity\forForm;
+use App\Entity\forForm\search\searchAbstract;
 
 
 /**

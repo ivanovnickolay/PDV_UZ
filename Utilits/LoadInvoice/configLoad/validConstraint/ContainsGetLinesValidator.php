@@ -6,11 +6,11 @@
  * Time: 23:41
  */
 
-namespace AnalizPdvBundle\Utilits\LoadInvoice\configLoad\validConstraint;
+namespace App\Utilits\LoadInvoice\configLoad\validConstraint;
 
 
-use AnalizPdvBundle\Utilits\LoadInvoice\createEntity\createEntityInterface;
-use AnalizPdvBundle\Utilits\LoadInvoice\loadLinesData\loadLinesDataInterface;
+use App\Utilits\LoadInvoice\createEntity\createEntityInterface;
+use App\Utilits\LoadInvoice\loadLinesData\loadLinesDataInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

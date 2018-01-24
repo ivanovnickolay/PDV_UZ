@@ -91,11 +91,11 @@ class handlerFormSearchErpn
 	{
 		if($d["typeRoute"]="Выданные")
 		{
-			return	$this->Doctrine->getRepository("AnalizPdvBundle:ErpnOut");
+			return	$this->Doctrine->getRepository("App:ErpnOut");
 		}
 		if($d["typeRoute"]="Полученные")
 		{
-			return	$this->Doctrine->getRepository("AnalizPdvBundle:ErpnIn");
+			return	$this->Doctrine->getRepository("App:ErpnIn");
 		}
 
 	}

@@ -6,12 +6,12 @@
  * Time: 18:33
  */
 
-namespace AnalizPdvBundle\Utilits\LoadInvoice\createEntity;
+namespace App\Utilits\LoadInvoice\createEntity;
 
 
-use AnalizPdvBundle\Entity\ErpnIn;
-use AnalizPdvBundle\Entity\ErpnOut;
-use AnalizPdvBundle\Utilits\LoadInvoice\LoadInvoiceOut\createEntity\createEntity;
+use App\Entity\ErpnIn;
+use App\Entity\ErpnOut;
+use App\Utilits\LoadInvoice\LoadInvoiceOut;
 
 /**
  * Создание сущности ErpnIn на основании полученного массива значений

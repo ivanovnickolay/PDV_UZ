@@ -6,12 +6,12 @@
  * Time: 23:45
  */
 
-namespace AnalizPdvBundle\Utilits\LoadInvoice\LoadInvoiceOut;
+namespace App\Utilits\LoadInvoice\LoadInvoiceOut;
 
 
-use AnalizPdvBundle\Entity\ErpnOut;
+use App\Entity\ErpnOut;
 use Doctrine\ORM\EntityManager;
-use LoadFileBundle\Entity\Erpn_out;
+use App\Entity\Erpn_out;
 
 class validInvoiceOut
 {
@@ -69,7 +69,7 @@ class validInvoiceOut
         //if ((!in_array($data->getKeyField(),$this->Keys))) {
             //todo написать запрос на получение количества сущностей по условию
             // проверим есть ли походжие в безе данных
-            if (($this->entityManager->getRepository("AnalizPdvBundle:ErpnOut")->ValidInvoice($data)))
+            if (($this->entityManager->getRepository("App:ErpnOut")->ValidInvoice($data)))
             {
                     return true;
             } else

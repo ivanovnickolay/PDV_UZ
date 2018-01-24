@@ -6,10 +6,10 @@
  * Time: 14:33
  */
 
-namespace AnalizPdvBundle\Utilits\ValidEntity;
+namespace App\Utilits\ValidEntity;
 
 
-use AnalizPdvBundle\Entity\Errorloadreestr;
+use App\Entity\Errorloadreestr;
 
 abstract class interfaceValidEntity
 {

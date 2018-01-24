@@ -6,11 +6,11 @@
  * Time: 0:14
  */
 
-namespace AnalizPdvBundle\Utilits\LoadInvoice;
-use AnalizPdvBundle\Utilits\LoadInvoice\configLoad\configLoadAbstract;
-use AnalizPdvBundle\Utilits\LoadInvoice\createEntity\createEntityInterface;
-use AnalizPdvBundle\Utilits\LoadInvoice\Exception\noValidConfigLoadException;
-use AnalizPdvBundle\Utilits\LoadInvoice\loadLinesData\loadLinesDataInterface;
+namespace App\Utilits\LoadInvoice;
+use App\Utilits\LoadInvoice\configLoad\configLoadAbstract;
+use App\Utilits\LoadInvoice\createEntity\createEntityInterface;
+use App\Utilits\LoadInvoice\Exception\noValidConfigLoadException;
+use App\Utilits\LoadInvoice\loadLinesData\loadLinesDataInterface;
 
 
 /**

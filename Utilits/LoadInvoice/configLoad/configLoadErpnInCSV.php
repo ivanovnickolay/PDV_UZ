@@ -6,14 +6,14 @@
  * Time: 23:20
  */
 
-namespace AnalizPdvBundle\Utilits\LoadInvoice\configLoad;
+namespace App\Utilits\LoadInvoice\configLoad;
 
 
-use AnalizPdvBundle\Utilits\LoadInvoice\configLoad\validConstraint\ContainsEntity;
-use AnalizPdvBundle\Utilits\LoadInvoice\configLoad\validConstraint\ContainsEntityValidator;
-use AnalizPdvBundle\Utilits\LoadInvoice\configLoad\validConstraint\ContainsGetLines;
-use AnalizPdvBundle\Utilits\LoadInvoice\createEntity\createErpnIn;
-use AnalizPdvBundle\Utilits\LoadInvoice\loadLinesData\loadLinesDataCSV;
+use App\Utilits\LoadInvoice\configLoad\validConstraint\ContainsEntity;
+use App\Utilits\LoadInvoice\configLoad\validConstraint\ContainsEntityValidator;
+use App\Utilits\LoadInvoice\configLoad\validConstraint\ContainsGetLines;
+use App\Utilits\LoadInvoice\createEntity\createErpnIn;
+use App\Utilits\LoadInvoice\loadLinesData\loadLinesDataCSV;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Range;

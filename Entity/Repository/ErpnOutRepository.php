@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity\Repository;
-use App\AnalizPdvBundle;
+
 
 /**
  * ErpnOut
@@ -14,10 +14,10 @@ class ErpnOutRepository extends \Doctrine\ORM\EntityRepository
 	/**
 	 * Проверка уникальности налоговой накладной в базе
 	 * если проверка пройдена успешно возвращает true
-	 * @param \AnalizPdvBundle\Entity\ErpnOut|\LoadFileBundle\Entity\Erpn_out $Invoice
+	 * @param \App\Entity\ErpnOut|\App\Entity\Erpn_out $Invoice
 	 * @return bool
 	 */
-	public function ValidInvoice(\AnalizPdvBundle\Entity\ErpnOut $Invoice )
+	public function ValidInvoice(\App\Entity\ErpnOut $Invoice )
 	{
 		$num=$Invoice->getNumInvoice();
 		$date=$Invoice->getDateCreateInvoice()->format('Y-m-d');
@@ -47,7 +47,7 @@ class ErpnOutRepository extends \Doctrine\ORM\EntityRepository
 	{
 		$qb = $this->createQueryBuilder("erpnOut");
 		$qb->select($qb->expr()->count('erpn.id'));
-		$qb->from('LoadFileBundle:Erpn_out','erpn');
+		$qb->from('App:Erpn_out','erpn');
 		$qb->where("erpn.NumInvoice=:num");
 		$qb->andWhere("erpn.DateCreateInvoice=:d");
 		$qb->andWhere("erpn.InnClient=:inn");
