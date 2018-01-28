@@ -11,7 +11,7 @@
 
  */
 
-namespace App\Utilits\loadDataExcel\chunkReadFilter;
+namespace App\Utilits\loadDataExcel\createReaderFile;
 
 use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 
@@ -23,7 +23,7 @@ use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
  * Class chunkReadFilter
  * @package LoadDataExcelBundle\Util\chunkReadFilter
  */
-//class chunkReadFilter implements \PHPExcel_Reader_IReadFilter
+
 class chunkReadFilter implements IReadFilter
 {
 	/**

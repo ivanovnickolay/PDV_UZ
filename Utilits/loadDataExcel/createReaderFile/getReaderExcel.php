@@ -8,7 +8,7 @@ namespace App\Utilits\loadDataExcel\createReaderFile;
   */
 
 use App\Utilits\loadDataExcel\Exception\errorLoadDataException;
-use App\Utilits\loadDataExcel\chunkReadFilter\chunkReadFilter;
+use App\Utilits\loadDataExcel\createReaderFile;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
@@ -49,7 +49,7 @@ class getReaderExcel
 	private $fileName;
 	/**
 	 * фильтр для чтения информации из файла
-	 * @var \App\Utilits\loadDataExcel\chunkReadFilter\chunkReadFilter
+	 * @var \App\Utilits\loadDataExcel\createReaderFile
 	 */
 	private $ChunkFilter;
 
@@ -62,21 +62,29 @@ class getReaderExcel
 	 * @var int количестов строк которые читаются за раз
 	 */
 	private $maxReadRows;
+    private $columnFirst;
 
-	/**
+    /**
 	 * Настройка Ридера для получения данных
 	 * @param string $fileName Имя файла должно содержать полный путь к нему !!!
 	 * @param int $maxReadRows количестов строк которые читаются за раз
+     * @throws errorLoadDataException
 	 */
 	public function __construct(string $fileName, int $maxReadRows=0)
 	{
 		// Заполняем первоначальными значениями
 		$this->fileName=$fileName;
-		try {
+		$this->columnFirst="A";
+
+		/*try {
 			$this->validFileName();
 		} catch (errorLoadDataException $e){
 				echo $e->getMessage();
-		}
+		}*/
+		// если ошибка проверки файла - бросаем исключение
+		if (!$this->isValidFileName()){
+            throw new errorLoadDataException("Файл для чтения данных не найден !");
+        }
 		// Если не указано сколько строк читать за раз устанавливаем константу
 		if (0==$maxReadRows){
 			$this->maxReadRows=self::filterChunkSize;
@@ -94,14 +102,20 @@ class getReaderExcel
 
     /**
      * Проверяем наименование файла
-     * @throws errorLoadDataException
+     *  - оно не должно быть пустым
+     *    или
+     *  - оно должно реально существовать
+     *
+     * @return bool
      */
-	public function validFileName()
+	public function isValidFileName():bool
 	{
-		if(empty($this->fileName) or (!file_exists($this->fileName)))
+		if(!empty($this->fileName) or (file_exists($this->fileName)))
 		{
-			throw new errorLoadDataException("Файл для чтения данных не найден !");
-		}
+            return true;
+		}else{
+		    return false;
+        }
 	}
 	/**
 	 * в версии PhpSpreadsheet достаточно просто передать расширение файла что-бы получить правильный Ридер
@@ -132,7 +146,7 @@ class getReaderExcel
 					break;
 			}
 		}*/
-		$extensionType = $pathinfo['extension'];
+		$extensionType = ucfirst($pathinfo['extension']);
 		return $extensionType;
 	}
 
