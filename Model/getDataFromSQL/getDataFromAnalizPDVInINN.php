@@ -16,7 +16,7 @@ use Doctrine\ORM\EntityManager;
  * Class getDataFromAnalizPDVOutINN
  * @package AnalizPdvBundle\Model\getDataFromSQL
  */
-class getDataFromAnalizPDVOutINN
+class getDataFromAnalizPDVInINN
 {
 	private $em;
 

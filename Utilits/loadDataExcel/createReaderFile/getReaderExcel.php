@@ -9,6 +9,11 @@ namespace App\Utilits\loadDataExcel\createReaderFile;
 
 use App\Utilits\loadDataExcel\Exception\errorLoadDataException;
 use App\Utilits\loadDataExcel\chunkReadFilter\chunkReadFilter;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
+use PhpOffice\PhpSpreadsheet\Reader\IReader;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 /**
  * Класс возвращает Reader настроенный для чтения данных
@@ -28,13 +33,13 @@ class getReaderExcel
 	 */
 	private const filterStartRow=2;
 	/**
-	 * класс вида class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPExcel_Reader_IReader
-	 * @var \PHPExcel_Reader_Abstract
+	 * класс вида class Xlsx extends BaseReader
+	 * @var BaseReader
 	 */
 	private $Reader;
 
 	/**
-	 * @var \PHPExcel
+	 * @var Spreadsheet
 	 * загруженный файл Excel с параметрами указанными $ChunkFilter
 	 */
 	private $Excel;
@@ -99,13 +104,17 @@ class getReaderExcel
 		}
 	}
 	/**
-	 * Определение типа файла исходя из названия (расширения) файла
-	 * @return null|string
+	 * в версии PhpSpreadsheet достаточно просто передать расширение файла что-бы получить правильный Ридер
+     *  по этому "вытягиваем" из файла его расширение и передаем его
+     * @link https://phpspreadsheet.readthedocs.io/en/develop/topics/migration-from-PHPExcel/#manual-changes
+     * Определение типа файла исходя из названия (расширения) файла
+	 * @return string расширение файла
 	 */
-	public function getFileType()
+	public function getFileType():string
 	{
 		$pathinfo = pathinfo($this->fileName);
 		$extensionType = NULL;
+		/*
 		if (isset($pathinfo['extension'])) {
 			switch (strtolower($pathinfo['extension'])) {
 				case 'xlsx':            //	Excel (OfficeOpenXML) Spreadsheet
@@ -122,7 +131,8 @@ class getReaderExcel
 					$extensionType = null;
 					break;
 			}
-		}
+		}*/
+		$extensionType = $pathinfo['extension'];
 		return $extensionType;
 	}
 
@@ -141,19 +151,19 @@ class getReaderExcel
 	/**
 	 * Создание экземпляра класса Ридера файла и настроек чтения
 	 * включая фильтр
-	 * @throws \PHPExcel_Reader_Exception
+	 * @throws
 	 */
 	private function createReader ()
 	{
 		// если файл существует и класс фильтра подключен
 		try {
 					// получаем класс вида class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPExcel_Reader_IReader
-					$this->Reader = \PHPExcel_IOFactory::createReader ($this->getFileType ());
+					$this->Reader = IOFactory::createReader ($this->getFileType());
 						/* Подключаем фильтр **/
 						$this->Reader->setReadFilter ($this->ChunkFilter);
 							// Указываем что нам нужны только данные из файла - без форматирования
 							$this->Reader->setReadDataOnly (true);
-		} catch (\PHPExcel_Reader_Exception $e) {
+		} catch (Exception $e) {
 					echo "Ошибка при создании Ридера ". $e->getMessage();
 				}
 	}
@@ -172,23 +182,25 @@ class getReaderExcel
 	 * и получение прочитанных строк с данным начиная с $startRow и общим
 	 * количеством установленным в $maxReadRows
 	 * @param $startRow int первая строка для чтения данных
-	 * @return \PHPExcel
+	 * @return Spreadsheet
 	 */
 	public function loadDataFromFileWithFilter(int $startRow)
 	{
 		$this->ChunkFilter->setRows($startRow,$this->maxReadRows);
 		try{
 			$this->Excel=$this->Reader->load($this->fileName);
-		} catch (\PHPExcel_Reader_Exception $e){
+		} catch (Exception $e){
 			echo 'Ошибка чтения данных из файла' . $this->fileName . ': ' , $e->getMessage () , "\n";
 		}
 		return $this->Excel;
 	}
-	/**
-	 * чтение массива ячеек из указанной строки
-	 * @param $numRow int номер строки
-	 * @return mixed
-	 */
+
+    /**
+     * чтение массива ячеек из указанной строки
+     * @param $numRow int номер строки
+     * @return mixed
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
 	public function getRowDataArray(int $numRow):array
 	{
 		// вычисляем текущий диапазон ячеек с учетом номера строки $numRow
@@ -196,8 +208,13 @@ class getReaderExcel
 		// если не указано название листа
 		if(empty($this->filterWorksheetName)){
 			// читаем даные из текущего
-			$d=$this->Excel->getActiveSheet () ->rangeToArray($range,null,true,true,false);
-			return $d;
+            try {
+                $d = $this->Excel->getActiveSheet()->rangeToArray($range, null, true, true, false);
+                return $d;
+            } catch (Exception $exception){
+
+            }
+
 		} else{
 			// иначе ищем указаный лист в книге и читаем даные из него
 			$f=$this->Excel->getSheetByName($this->filterWorksheetName)->rangeToArray($range,null,true,true,false);

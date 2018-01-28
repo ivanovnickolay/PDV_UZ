@@ -29,6 +29,7 @@ class createReestrOut extends createEntityForLoad_Abstract
 
 	/**
 	 * создание сущности ReestrbranchOut() на основании данных полученных из входящего массива
+     * массив - это одна строка прочитанная из файла РПН экспортированного с Медка
 	 * @param array $arr
 	 * @return ReestrbranchOut
 	 */

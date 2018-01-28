@@ -15,6 +15,7 @@ use App\Utilits\loadDataExcel\createEntityForLoad\interfaceEntityForLoad\createE
 
 /**
  * Реализация конфигурации для загрузки реестров полученных НН из файла
+ * экспортированного из Медка РПН
  * Class configLoadReestrIn
  * @package AnalizPdvBundle\Utilits\loadDataFromExcel
  */

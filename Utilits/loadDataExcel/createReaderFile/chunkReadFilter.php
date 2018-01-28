@@ -13,6 +13,8 @@
 
 namespace App\Utilits\loadDataExcel\chunkReadFilter;
 
+use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
+
 
 /**
  * Реализация фильтра для чтения информации из файла.
@@ -21,7 +23,8 @@ namespace App\Utilits\loadDataExcel\chunkReadFilter;
  * Class chunkReadFilter
  * @package LoadDataExcelBundle\Util\chunkReadFilter
  */
-class chunkReadFilter implements \PHPExcel_Reader_IReadFilter
+//class chunkReadFilter implements \PHPExcel_Reader_IReadFilter
+class chunkReadFilter implements IReadFilter
 {
 	/**
 	 * @var int
