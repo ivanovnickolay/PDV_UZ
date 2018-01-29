@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * ReestrbranchIn
@@ -764,12 +765,18 @@ class ReestrbranchIn
 
     /**
      * Get rkeDateCreateInvoice
-     *
-     * @return \DateTime
+     * если было передано нулевое значение то вернуть надо нулевую дату
+     * иначе надо вернуть полученное значение
+     * @return \DateTime|null
      */
     public function getRkeDateCreateInvoice()
     {
-        return $this->rkeDateCreateInvoice;
+        //return $this->rkeDateCreateInvoice;
+        if(null == $this->rkeDateCreateInvoice){
+            return new \DateTime("0000-00-00");
+        }else{
+            return $this->rkeDateCreateInvoice;
+        }
     }
 
     /**

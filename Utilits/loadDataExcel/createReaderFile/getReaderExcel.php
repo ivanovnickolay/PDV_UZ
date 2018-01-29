@@ -8,11 +8,11 @@ namespace App\Utilits\loadDataExcel\createReaderFile;
   */
 
 use App\Utilits\loadDataExcel\Exception\errorLoadDataException;
-use App\Utilits\loadDataExcel\createReaderFile;
+
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
-use PhpOffice\PhpSpreadsheet\Reader\IReader;
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 /**
@@ -49,7 +49,7 @@ class getReaderExcel
 	private $fileName;
 	/**
 	 * фильтр для чтения информации из файла
-	 * @var \App\Utilits\loadDataExcel\createReaderFile
+	 * @var \App\Utilits\loadDataExcel\createReaderFile\chunkReadFilter
 	 */
 	private $ChunkFilter;
 
@@ -158,7 +158,8 @@ class getReaderExcel
 	public function createFilter(string $columnLast="Z",string $worksheetName='')
 	{
 			$this->filterWorksheetName=$worksheetName;
-				$this->ChunkFilter=new chunkReadFilter($columnLast);
+        /** @var chunkReadFilter $columnLast */
+        $this->ChunkFilter=new chunkReadFilter($columnLast);
 					$this->columnLast=$columnLast;
 	}
 

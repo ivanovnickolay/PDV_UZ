@@ -44,7 +44,7 @@ abstract class createEntityForLoad_Abstract implements createEntityForLoad_inter
 		// иногда в реестре выданных НН вместо даты стоит "ноль" и вместо null
 		// присваивается дата "2000-01-01" что етс ошибка
 		if (is_numeric($n) and $n!=0) {
-			return \PHPExcel_Shared_Date::ExcelToPHPObject ($n);
+			return \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($n, 'Europe/Kiev');
 		} else
 		{
 			return new \DateTime('0000-00-00');

@@ -50,7 +50,8 @@ class loadData
      * loadData constructor.
      * @param EntityManager $em
      * @param string $fileName
-     * @param configLoader_interface $configLoad класс который содердит конфигурацию для загрузки
+     * @param configLoader_interface $configLoad класс который содержит конфигурацию для загрузки
+     * @throws errorLoadDataException вызывается при ошибках в данных конфигурации
      */
 	public function __construct (EntityManager $em,string $fileName, configLoader_interface $configLoad)
 	{
