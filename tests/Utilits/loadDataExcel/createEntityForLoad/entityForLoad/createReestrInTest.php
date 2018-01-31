@@ -24,22 +24,34 @@ class createReestrInTest extends TestCase
 {
 
     /**
+     * @var BaseReader
+     */
+    private $reader;
+
+    /**
+     * перед каждым вызовом теста создаем ридер
+     * @throws \App\Utilits\loadDataExcel\Exception\errorLoadDataException
+     */
+    public function setUp(){
+        $this->reader= new getReaderExcel('C:\OSPanel\domains\PDV_UZ\tests\Utilits\loadDataExcel\createEntityForLoad\entityForLoad\testDataReestrIn_TAB1.xls');
+        $this->reader->createFilter('EE');
+        $this->reader->getReader();
+    }
+
+
+    /**
      * Тестируем правильность формирования объекта с данными. Для этого:
      *  - читаем тестовый файл с данными
      *  - создаем объект нужного типа
      *  - сверяем полученные данные объекта с эталоном
      * @throws \App\Utilits\loadDataExcel\Exception\errorLoadDataException
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function testCreateReestr()
     {
-        $reader= new getReaderExcel('C:\OSPanel\domains\PDV_UZ\tests\Utilits\loadDataExcel\createEntityForLoad\entityForLoad\testDataReestrIn_TAB1.xls');
-        $reader->createFilter('EE');
-        $reader->getReader();
-        $this->assertInstanceOf(BaseReader::class,$reader->getReader());
+        $this->assertInstanceOf(BaseReader::class,$this->reader->getReader());
         $en=new createReestrIn();
-        $reader->loadDataFromFileWithFilter(2);
-        $arr=$reader->getRowDataArray(2);
+        $this->reader->loadDataFromFileWithFilter(2);
+        $arr=$this->reader->getRowDataArray(2);
         //var_dump($arr);
         $entity=$en->createReestr($arr);
         // http://stackoverflow.com/questions/10420925/phpunit-forces-me-to-require-classes-before-asserting
