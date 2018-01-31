@@ -5,6 +5,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * ReestrbranchIn
+ * @todo описать правила валидации объекта
  */
 class ReestrbranchIn
 {

@@ -49,6 +49,18 @@ abstract class createEntityForLoad_Abstract implements createEntityForLoad_inter
 		{
 			return new \DateTime('0000-00-00');
 		}
-
 	}
+
+    /**
+     * Проверяет явялется ли введенное число целым числом
+     * @param $value
+     * @return bool
+     */
+    public function isInteger($value):bool {
+	    if (is_int($value)){
+	        return true;
+        } else{
+	        return false;
+        }
+    }
 }
