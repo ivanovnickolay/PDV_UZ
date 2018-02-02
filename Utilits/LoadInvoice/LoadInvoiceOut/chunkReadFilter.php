@@ -14,7 +14,9 @@
 namespace App\Utilits\LoadInvoice\LoadInvoiceOut;
 
 
-class chunkReadFilter implements \PHPExcel_Reader_IReadFilter
+use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
+
+class chunkReadFilter implements IReadFilter
 {
     private $_startRow = 0;
     private $_endRow = 0;

@@ -20,7 +20,7 @@ use App\Utilits\createEntitys;
  * Class createReestrOut
  * @package AnalizPdvBundle\Utilits\createEntitys\reestrOut
  */
-class createReestrOut extends createReestr
+class createReestrOut_ extends createEntitys\interfaceReestr\createReestr
 {
 	private $reestrOut;
 

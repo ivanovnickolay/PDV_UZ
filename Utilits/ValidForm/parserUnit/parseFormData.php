@@ -6,7 +6,7 @@
  * Time: 22:01
  */
 
-namespace App\Utilits\ValidForm;
+namespace App\Utilits\ValidForm\parserUnit;
 
 
 /**

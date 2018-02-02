@@ -6,7 +6,7 @@
  * Time: 23:54
  */
 
-namespace App\Utilits\ValidForm;
+namespace  App\Utilits\ValidForm\parserUnit;
 
 
 use App\Utilits\ValidForm\parserUnit\parserUnitAbstract;

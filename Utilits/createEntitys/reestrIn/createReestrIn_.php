@@ -20,7 +20,7 @@ use App\Utilits\createEntitys\interfaceReestr\createReestr;
  * Class createReestrIn
  * @package AnalizPdvBundle\Utilits\createEntitys\reestrIn
  */
-class createReestrIn extends createReestr
+class createReestrIn_ extends createReestr
 {
 	private $reestrIn;
 

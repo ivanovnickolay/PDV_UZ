@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Entity;
-use Symfony\Component\Validator\Constraints\DateTime;
+use App\Entity\forForm\validationConstraint\ContainsNumDoc;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ReestrbranchIn
- * @todo описать правила валидации объекта
  */
 class ReestrbranchIn
 {
@@ -831,7 +832,7 @@ class ReestrbranchIn
     /**
      * Set keyField
      *
-     * @param string $keyField
+
      *
      * @return ReestrbranchIn
      */
@@ -854,6 +855,210 @@ class ReestrbranchIn
     public function getKeyField()
     {
         return $this->keyField;
+    }
+
+    /**
+     * Проверка полноты заполнения реквизитов для документа типа РКЕ
+     *  -   не пустой номер РКЕ
+     *  -   не пустая дата создания РКЕ
+     *  -   не пустая причина создания РКЕ
+     *
+     * если все заполнено то возвращаем истино
+     *
+     * если чтото упущенно - ложь
+     */
+    public function isValidRKE():bool {
+        if('РКЕ'==$this->getTypeInvoiceFull()){
+            if(empty($this->getRkeNumInvoice())){
+                return false;
+            }
+            if(empty($this->getRkePidstava())){
+                return false;
+            }
+            if (new \DateTime("0000-00-00")==$this->getRkeDateCreateInvoice()){
+                return false;
+            }
+            return true;
+        } else{
+            return true;
+        }
+
+    }
+
+    /**
+     * Валидация сущности
+     *
+     * регулярное выражение для проверки денежного вида "/^-?[0-9]+(?:\.[0-9]{1,2})?$/" взято по ссылкам
+     * @link https://stackoverflow.com/questions/4982291/how-to-check-if-an-entered-value-is-currency
+     * @link https://regex101.com/r/GTlf5O/1
+     * @param ClassMetadata $metadata
+     */
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        //Валидация поля month
+            $metadata->addPropertyConstraint('month', new Assert\NotBlank(array(
+                'message'=>'Месяц подачи {{ value }} документа не может быть пустым '
+            )));
+                $metadata->addPropertyConstraint('month', new Assert\Range(array(
+                        'min'        => 1,
+                        'max'        => 12,
+                        'minMessage' => 'Значение месяца {{ value }} меньше 1',
+                        'maxMessage'=> 'Значение месяца {{ value }} больше 12',
+                        'invalidMessage'=> 'Значение месяца не число',
+                    )
+                ));
+
+        //Валидация поля year
+            $metadata->addPropertyConstraint('year', new Assert\NotBlank(array(
+                'message'=>'Год подачи документа не может быть пустым '
+            )));
+                $metadata->addPropertyConstraint('year', new Assert\Range(array(
+                        'min'        => 2015,
+                        'max'        => 2020,
+                        'minMessage' => 'Значение года меньше 2015',
+                        'maxMessage'=> 'Значение года больше 2020',
+                        'invalidMessage'=> 'Значение месяца не число',
+                    )
+                ));
+        //Валидация поля numBranch
+            $metadata->addPropertyConstraint('numBranch', new Assert\NotBlank(array(
+                'message'=>'Номер филиала {{ value }} не может быть пустым '
+            )));
+            $metadata->addPropertyConstraint('numBranch', new Assert\Type(array(
+                'type'    => 'digit',
+                'message' => 'Номер структурного подразделения {{ value }} должен содержать только цифры .',
+            )));
+            $metadata->addPropertyConstraint('numBranch', new Assert\Length(array(
+                'min'        => 3,
+                'max'        => 3,
+                'minMessage' => 'Номер структурного подразделения {{ value }} не должен быть меньше {{ limit }} символов',
+                'maxMessage' => 'Номер структурного подразделения {{ value }} не должен быть больше {{ limit }} символов',
+            )));
+
+        //Валидация поля dateGetInvoice
+            $metadata->addPropertyConstraint('dateGetInvoice',new Assert\NotNull(array(
+                'message'=>'Дата создания документа {{ value }} не может быть пустым '
+            )));
+            $metadata->addPropertyConstraint('dateGetInvoice',new Assert\Date(array(
+                'message'=>'Дата создания документа {{ value }} не верная'
+            )));
+
+        //Валидация поля dateCreateInvoice
+            $metadata->addPropertyConstraint('dateCreateInvoice',new Assert\NotNull(array(
+                'message'=>'Дата создания документа {{ value }} не может быть пустым '
+            )));
+            $metadata->addPropertyConstraint('dateCreateInvoice',new Assert\Date(array(
+                'message'=>'Дата создания документа {{ value }} не верная'
+            )));
+
+        //Валидация поля numInvoice
+            $metadata->addPropertyConstraint('numInvoice',new Assert\NotBlank(array(
+                'message'=>'Номер документа {{ value }} не может быть пустым '
+            )));
+            $metadata->addPropertyConstraint('numInvoice', new ContainsNumDoc());
+        //$metadata->addPropertyConstraint('numInvoice', new Assert\Type(array(
+        //    'type'=>'alpha',
+        //    'message'=>'Тип документа не может содержать ни каких символов кроме буквенных'
+        //)));
+
+        //Валидация поля typeInvoiceFull
+            $metadata->addPropertyConstraint('typeInvoiceFull',new Assert\NotBlank(array(
+                'message'=>'Тип документа {{ value }} не может быть пустым '
+            )));
+            $metadata->addPropertyConstraint('typeInvoiceFull', new Assert\Choice(array(
+                'choices' => array(
+                    'ПНЕ',
+                    'РКЕ',
+                    'МДЕ',
+                    'ЧК',
+                    'ТК',
+                    'ГР',
+                    'ПО',
+                    'ПЗ',
+                    'НП',
+                    'БО'
+                ),
+                'message' => 'Указан {{ value }} не верный тип документа',
+            )));
+
+        //Валидация поля innClient
+                $metadata->addPropertyConstraint('innClient', new Assert\Length(array(
+                    'min'        => 0,
+                    'max'        => 12,
+                    'maxMessage' => 'Длина ИНН не может быть более {{ limit }} цифр',
+                )));
+                $metadata->addPropertyConstraint('innClient', new Assert\Type(array(
+                    'type'    => 'digit',
+                    'message' => 'ИНН {{ value }} должен содержать только цифры .',
+                )));
+
+            $metadata->addPropertyConstraint('zagSumm', new Assert\Regex(array(
+                'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
+                'message' => 'Поле zagSumm {{ value }} содержит данные не того типа.',
+            )));
+                $metadata->addPropertyConstraint('baza20',new Assert\Regex(array(
+                    'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
+                    'message' => 'Поле baza20 {{ value }} содержит данные не того типа.',
+                )));
+                $metadata->addPropertyConstraint('pdv20', new Assert\Regex(array(
+                    'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
+                    'message' => 'Поле pdv20 {{ value }} содержит данные не того типа.',
+                )));
+                    $metadata->addPropertyConstraint('baza7', new Assert\Regex(array(
+                        'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
+                        'message' => 'Поле baza7 {{ value }} содержит данные не того типа.',
+                    )));
+                    $metadata->addPropertyConstraint('pdv7',new Assert\Regex(array(
+                        'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
+                        'message' => 'Поле pdv7 {{ value }} содержит данные не того типа.',
+                    )));
+                        $metadata->addPropertyConstraint('baza0', new Assert\Regex(array(
+                            'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
+                            'message' => 'Поле baza0 {{ value }} содержит данные не того типа.',
+                        )));
+                        $metadata->addPropertyConstraint('pdv0', new Assert\Regex(array(
+                            'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
+                            'message' => 'Поле pdv0 {{ value }} содержит данные не того типа.',
+                        )));
+                    $metadata->addPropertyConstraint('bazaZvil', new Assert\Regex(array(
+                        'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
+                        'message' => 'Поле bazaZvil {{ value }} содержит данные не того типа.',
+                    )));
+                    $metadata->addPropertyConstraint('pdvZvil', new Assert\Regex(array(
+                        'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
+                        'message' => 'Поле pdvZvil {{ value }} содержит данные не того типа.',
+                    )));
+                $metadata->addPropertyConstraint('bazaNeGos', new Assert\Regex(array(
+                    'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
+                    'message' => 'Поле bazaNeGos {{ value }} содержит данные не того типа.',
+                )));
+                $metadata->addPropertyConstraint('pdvNeGos', new Assert\Regex(array(
+                    'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
+                    'message' => 'Поле pdvNeGos {{ value }} содержит данные не того типа.',
+                )));
+            $metadata->addPropertyConstraint('bazaZaMezhi',new Assert\Regex(array(
+                'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
+                'message' => 'Поле bazaZaMezhi {{ value }} содержит данные не того типа.',
+            )));
+            $metadata->addPropertyConstraint('pdvZaMezhi',new Assert\Regex(array(
+                'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
+                'message' => 'Поле pdvZaMezhi {{ value }} содержит данные не того типа.',
+            )));
+        // Проверка показателей РКЕ
+        $metadata->addGetterConstraint('ValidRKE', new Assert\IsTrue(array(
+            'message' => 'Указан не верные реквизиты документа который корректировал РКЕ',
+        )));
+
+        //Валидация поля numInvoice
+        $metadata->addPropertyConstraint('rkeNumInvoice',new Assert\NotBlank(array(
+            'message'=>'Номер документа,который корректировал РКЕ, не может быть пустым '
+        )));
+        $metadata->addPropertyConstraint('rkeNumInvoice', new ContainsNumDoc());
+
+        $metadata->addPropertyConstraint('rkeDateCreateInvoice',new Assert\Date(array(
+            'message'=>'Дата создания РКЕ не верная'
+        )));
+
     }
 }
 
