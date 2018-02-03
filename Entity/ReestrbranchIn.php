@@ -860,6 +860,7 @@ class ReestrbranchIn
     /**
      * Проверка полноты заполнения реквизитов для документа типа РКЕ
      *  -   не пустой номер РКЕ
+     *          - если он содержит информацию, то в нем не должно быть букв (регулярка)
      *  -   не пустая дата создания РКЕ
      *  -   не пустая причина создания РКЕ
      *
@@ -871,6 +872,13 @@ class ReestrbranchIn
         if('РКЕ'==$this->getTypeInvoiceFull()){
             if(empty($this->getRkeNumInvoice())){
                 return false;
+            }else {
+                // регулярное выражение выдает истинно если в номере есть буквы
+                // а если в номере есть буква - занчит номер не верен
+                if (preg_match("/[^0-9\/]/", $this->getRkeNumInvoice(), $matches))
+                {
+                    return false;
+                }
             }
             if(empty($this->getRkePidstava())){
                 return false;
@@ -982,8 +990,11 @@ class ReestrbranchIn
             )));
 
         //Валидация поля innClient
+                $metadata->addPropertyConstraint('innClient',new Assert\NotBlank(array(
+                    'message'=>'ИНН документа не может быть пустым '
+                )));
                 $metadata->addPropertyConstraint('innClient', new Assert\Length(array(
-                    'min'        => 0,
+                    'min'        => 9,
                     'max'        => 12,
                     'maxMessage' => 'Длина ИНН не может быть более {{ limit }} цифр',
                 )));
@@ -1050,9 +1061,9 @@ class ReestrbranchIn
         )));
 
         //Валидация поля numInvoice
-        $metadata->addPropertyConstraint('rkeNumInvoice',new Assert\NotBlank(array(
-            'message'=>'Номер документа,который корректировал РКЕ, не может быть пустым '
-        )));
+        //$metadata->addPropertyConstraint('rkeNumInvoice',new Assert\NotBlank(array(
+        //    'message'=>'Номер документа,который корректировал РКЕ, не может быть пустым '
+       // )));
         $metadata->addPropertyConstraint('rkeNumInvoice', new ContainsNumDoc());
 
         $metadata->addPropertyConstraint('rkeDateCreateInvoice',new Assert\Date(array(
