@@ -12,6 +12,7 @@ use App\Entity\ReestrbranchIn;
 use App\Utilits\loadDataExcel\createReaderFile\getReaderExcel;
 use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\Validation;
 
 /**
  * Тестирование на формирования объекта Реестра полученных НН. (Кредит)
@@ -23,9 +24,7 @@ use PHPUnit\Framework\TestCase;
 class createReestrInTest extends TestCase
 {
 
-    /**
-     * @var BaseReader
-     */
+
     private $reader;
 
     /**
@@ -92,5 +91,79 @@ class createReestrInTest extends TestCase
         $this->assertEquals('',$entity->getRkeNumInvoice());
         $this->assertEquals('',$entity->getRkePidstava());
         $this->assertEquals('1/ПНЕ/01-07-2016/248989002286',$entity->getKeyField());
+    }
+
+    /**
+     * Тестирование Валидатора
+     *  -   считать строку с файла
+     *  -   создать объект на основании данных файла
+     *  -   провести валидацию объекта
+     *  -   сравнить количество ошибок выданных валидатором с ожидаемым
+     * @link https://symfony.com/doc/current/components/validator/resources.html - метод вызова валидатора
+     * @throws \App\Utilits\loadDataExcel\Exception\errorLoadDataException
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    public function testValidatorReestr(){
+        $en=new createReestrIn();
+        $validator = Validation::createValidatorBuilder()
+            ->addMethodMapping('loadValidatorMetadata')
+            ->getValidator();
+        $this->reader->loadDataFromFileWithFilter(2);
+        // Тестовая строка без ошибок
+        $arr=$this->reader->getRowDataArray(2);
+        $entity=$en->createReestr($arr);
+        $error = $validator->validate($entity);
+        //var_dump($error);
+        $this->assertEquals(0,count($error),'Error row 2');
+        unset($error);
+                /* строка содержит следующие ошибки
+                    -   дата получения докумета - текст
+                    -   дата создания документа - пусто
+                */
+                $arr=$this->reader->getRowDataArray(3);
+                $entity=$en->createReestr($arr);
+                $error = $validator->validate($entity);
+                //var_dump($error);
+                $this->assertEquals(2,count($error),'Error row 3');
+                unset($error);
+                    /* строка содержит следующие ошибки
+                    -   номер документа  - текст
+                    -   ИПН - текст "апвпв" меньше 9 символов
+                     */
+                    $arr=$this->reader->getRowDataArray(4);
+                    $entity=$en->createReestr($arr);
+                    $error = $validator->validate($entity);
+                    //var_dump($error);
+                    $this->assertEquals(3,count($error),'Error row 4');
+                    unset($error);
+                    /* строка содержит следующие ошибки
+                       -   номер документа  - пусто
+                       -   ИПН - пусто
+                    */
+                    $arr=$this->reader->getRowDataArray(5);
+                    $entity=$en->createReestr($arr);
+                    $error = $validator->validate($entity);
+                    //var_dump($error);
+                    $this->assertEquals(2,count($error),'Error row 5');
+                    unset($error);
+                /* строка содержит следующие ошибки
+                       -   суммы содержат текстовые значения
+                */
+                $arr=$this->reader->getRowDataArray(6);
+                $entity=$en->createReestr($arr);
+                $error = $validator->validate($entity);
+               // var_dump($error);
+                $this->assertEquals(3,count($error),'Error row 6');
+
+                    /* строка содержит следующие ошибки
+                           -   тип документа РКЕ (Указан не верные реквизиты документа который корректировал РКЕ)
+                    */
+                    $arr=$this->reader->getRowDataArray(7);
+                    $entity=$en->createReestr($arr);
+                    $error = $validator->validate($entity);
+                    var_dump($error);
+                    $this->assertEquals(1,count($error),'Error row 7');
+
+
     }
 }
