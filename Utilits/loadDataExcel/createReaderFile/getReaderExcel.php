@@ -1,6 +1,33 @@
 <?php
 namespace App\Utilits\loadDataExcel\createReaderFile;
 /**
+ * Класс предназначен для организации по строчного чтения информации из файлов Эксель
+ *  При создания класса ему передается:
+ *      -   название файла для чтения информации. В @see getReaderExcel::isValidFileName() название файла проверяется на не пустое значение и на реальное существование
+ *      -   максимальное значение строк которое читается за раз из файла. Используется в @see getReaderExcel::loadDataFromFileWithFilter()
+ *        - используется для установки в фильтре на чтенеи данных
+ *  Создание класса для чтения данных происходит в  @see getReaderExcel::createReader ()
+ *      -   передача фабрике по созданию класса расширения файла определемого в  @see getReaderExcel::getFileType()
+ *      -   установки фильтра на чтение данных, который настраивается в @see getReaderExcel::createFilter()
+ *      -   установки отметки на чтение только данных - без форматирования.
+ *  Чтение информации начинается вызовом @see getReaderExcel::loadDataFromFileWithFilter() с передачей ей начального номера строки,
+ * данные с которой надо прочитать.
+ *      - устанавливаются настройки фильтра для чтения с переданной в функцию строки и по максимальное количество строк
+ *      - вызывается метод load ($fileName) @see BaseReader::load() который возвращает объект @see \PhpOffice\PhpSpreadsheet\Spreadsheet
+ *        с прочитанным данными
+ *      - из функции @see getReaderExcel::loadDataFromFileWithFilter() возвращается объект @see \PhpOffice\PhpSpreadsheet\Spreadsheet:
+ *  Построчное чтение происходит при помощи @see getReaderExcel::getRowDataArray() в которую передается номер строки для чтения,
+ * а возвращается двух мерный массив с данными - [0].[номер_столбца_с_данными]. Первое измерение всегда равно нулю -
+ * это первая (нулевая) прочитанная строка с данными
+ * --------------------------------------
+ * эталонная реализация
+ *
+ * $obj = new getReaderExcel(fileName);
+ * $obj->createFilter("DD");
+ * $obj->createReader ();
+ * $sheetReader = $obj->loadDataFromFileWithFilter(50);
+ * %$arrayData =$obj->getRowDataArray(2);
+ *
  * Created by PhpStorm.
  * User: Admin
  * Date: 30.08.2016
@@ -18,7 +45,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 /**
  * Класс возвращает Reader настроенный для чтения данных
  * Class getReaderExcel
- * @package LoadDataExcelBundle\Util\createReaderFile
  */
 class getReaderExcel
 {
@@ -31,7 +57,7 @@ class getReaderExcel
 	 * номер строки с которой надо начинать считывать файл
 	 * @var int
 	 */
-	private const filterStartRow=2;
+	//private const filterStartRow=2;
 	/**
 	 * класс вида class Xlsx extends BaseReader
 	 * @var BaseReader
@@ -63,6 +89,7 @@ class getReaderExcel
 	 */
 	private $maxReadRows;
     private $columnFirst;
+    private $columnLast;
 
     /**
 	 * Настройка Ридера для получения данных
@@ -75,12 +102,6 @@ class getReaderExcel
 		// Заполняем первоначальными значениями
 		$this->fileName=$fileName;
 		$this->columnFirst="A";
-
-		/*try {
-			$this->validFileName();
-		} catch (errorLoadDataException $e){
-				echo $e->getMessage();
-		}*/
 		// если ошибка проверки файла - бросаем исключение
 		if (!$this->isValidFileName()){
             throw new errorLoadDataException("Файл для чтения данных не найден !");
@@ -103,12 +124,11 @@ class getReaderExcel
     /**
      * Проверяем наименование файла
      *  - оно не должно быть пустым
-     *    или
      *  - оно должно реально существовать
      *
      * @return bool
      */
-	public function isValidFileName():bool
+	protected function isValidFileName():bool
 	{
 		if(!empty($this->fileName) or (file_exists($this->fileName)))
 		{
@@ -124,28 +144,10 @@ class getReaderExcel
      * Определение типа файла исходя из названия (расширения) файла
 	 * @return string расширение файла
 	 */
-	public function getFileType():string
+	protected function getFileType():string
 	{
 		$pathinfo = pathinfo($this->fileName);
 		$extensionType = NULL;
-		/*
-		if (isset($pathinfo['extension'])) {
-			switch (strtolower($pathinfo['extension'])) {
-				case 'xlsx':            //	Excel (OfficeOpenXML) Spreadsheet
-				case 'xlsm':            //	Excel (OfficeOpenXML) Macro Spreadsheet (macros will be discarded)
-				case 'xltx':            //	Excel (OfficeOpenXML) Template
-				case 'xltm':            //	Excel (OfficeOpenXML) Macro Template (macros will be discarded)
-					$extensionType = 'Excel2007';
-					break;
-				case 'xls':                //	Excel (BIFF) Spreadsheet
-				case 'xlt':                //	Excel (BIFF) Template
-					$extensionType = 'Excel5';
-					break;
-				default:
-					$extensionType = null;
-					break;
-			}
-		}*/
 		$extensionType = ucfirst($pathinfo['extension']);
 		return $extensionType;
 	}
@@ -166,6 +168,7 @@ class getReaderExcel
 	/**
 	 * Создание экземпляра класса Ридера файла и настроек чтения
 	 * включая фильтр
+     * @deprecated
 	 * @throws
 	 */
 	private function createReader ()
@@ -184,13 +187,26 @@ class getReaderExcel
 	}
 
 	/**
-	 * получить класс ридера
-	 * @return mixed
+	 * получить класс ридера с настройками фильтрации данніх на чтение
+     * с опцией получение данных из файла - без форматирования
+	 * @return BaseReader
 	 */
 	public function getReader()
 	{
-		$this->createReader();
-		return $this->Reader;
+		//$this->createReader();
+        // если файл существует и класс фильтра подключен
+        try {
+            // получаем класс вида class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPExcel_Reader_IReader
+            $this->Reader = IOFactory::createReader ($this->getFileType());
+            /* Подключаем фильтр **/
+            $this->Reader->setReadFilter ($this->ChunkFilter);
+            // Указываем что нам нужны только данные из файла - без форматирования
+            $this->Reader->setReadDataOnly (true);
+
+        } catch (Exception $e) {
+            echo "Ошибка при создании Ридера ". $e->getMessage();
+        }
+        return $this->Reader;
 	}
 	/**
 	 * получение объекта Excel с установленным значениями фильтров
@@ -229,13 +245,12 @@ class getReaderExcel
             } catch (Exception $exception){
 
             }
-
 		} else{
 			// иначе ищем указаный лист в книге и читаем даные из него
 			$f=$this->Excel->getSheetByName($this->filterWorksheetName)->rangeToArray($range,null,true,true,false);
 			return $f;
 		}
-
+        return null;
 	}
 
 	/**

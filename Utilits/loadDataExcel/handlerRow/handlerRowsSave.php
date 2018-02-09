@@ -57,7 +57,7 @@ class handlerRowsSave extends handlerRowAbstract
      *
      * @throws \Doctrine\Common\Persistence\Mapping\MappingException
      */
-    public function saveProcessedRows()
+    public function saveHandlingRows()
     {
         try {
             $this->entityManager->flush();

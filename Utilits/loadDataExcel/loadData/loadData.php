@@ -10,7 +10,6 @@ namespace App\Utilits\loadDataExcel\loadData;
 
 
 use App\Utilits\loadDataExcel\createEntityForLoad;
-use App\Utilits\loadDataExcel\configLoader;
 use App\Utilits\loadDataExcel\createEntityForLoad\interfaceEntityForLoad\createEntityForLoad_interface;
 use App\Utilits\loadDataExcel\createReaderFile\getReaderExcel;
 use App\Utilits\loadDataExcel\configLoader\configLoader_interface;
@@ -112,46 +111,46 @@ class loadData
 	public function loadData()
 	{
 		$maxRowToFile = $this->readerFile->getMaxRow ();
-			for ($startRow = 2; $startRow <= $maxRowToFile; $startRow += $this->readerFile->getFilterChunkSize())
-			{
-				$this->readerFile->loadDataFromFileWithFilter ($startRow);
-				$maxRowReader = $this->readerFile->getFilterChunkSize () + $startRow;
-					if ($maxRowReader > $maxRowToFile) {
-						// специально что бы была прочитана последняя строка с данными
-						$maxRowReader = $maxRowToFile + 1;
-					}
-						for ($d = $startRow; $d < $maxRowReader; $d ++) {
-							// решенние проблемы PDO::beginTransaction(): MySQL server has gone away
-							$this->reconnect();
-							// Читаем строку из файла и возвращаем данные как массив
-							$arr = $this->readerFile->getRowDataArray ($d);
-							// создаем сущность с данными на основании полученного из файла массива
-							$e = $this->entity->createReestr ($arr);
-							// передаем сущность для сохрания в кеше
-							$this->em->persist ($e);
-							$this->entity->unsetReestr ();
-						}
-						// после окончания цикла чтения
-							// сохраняем данные в базу
-							$this->em->flush ();
-							// очищаем кешш
-							$this->em->clear ();
-							// очищаем загрузчик данных
-							$this->readerFile->unset_loadFileWithFilter ();
-				//http://ru.php.net/manual/ru/features.gc.collecting-cycles.php
-				gc_enable();
-				gc_collect_cycles();
-		}
+        for ($startRow = 2; $startRow <= $maxRowToFile; $startRow += $this->readerFile->getFilterChunkSize())
+        {
+            $this->readerFile->loadDataFromFileWithFilter ($startRow);
+            $maxRowReader = $this->readerFile->getFilterChunkSize () + $startRow;
+            if ($maxRowReader > $maxRowToFile) {
+                // специально что бы была прочитана последняя строка с данными
+                $maxRowReader = $maxRowToFile + 1;
+            }
+            for ($d = $startRow; $d < $maxRowReader; $d ++) {
+                // решенние проблемы PDO::beginTransaction(): MySQL server has gone away
+                $this->reconnect();
+                // Читаем строку из файла и возвращаем данные как массив
+                $arr = $this->readerFile->getRowDataArray ($d);
+                // создаем сущность с данными на основании полученного из файла массива
+                $e = $this->entity->createReestr ($arr);
+                // передаем сущность для сохрания в кеше
+                $this->em->persist ($e);
+                $this->entity->unsetReestr ();
+            }
+            // после окончания цикла чтения
+            // сохраняем данные в базу
+            $this->em->flush ();
+            // очищаем кешш
+            $this->em->clear ();
+            // очищаем загрузчик данных
+            $this->readerFile->unset_loadFileWithFilter ();
+            //http://ru.php.net/manual/ru/features.gc.collecting-cycles.php
+            gc_enable();
+            gc_collect_cycles();
+        }
 	}
 
 		// http://seyferseed.ru/ru/php/reshenie-problemy-doctrine-2-i-mysql-server-has-gone-away.html#sthash.vh49fkii.dpbs
 
-		public function disconnect()
+    private function disconnect()
 	{
 		$this->em->getConnection()->close();
 	}
 
-		public function connect()
+    private function connect()
 	{
 		$this->em->getConnection()->connect();
 	}
@@ -159,7 +158,7 @@ class loadData
 		/**
 		 * MySQL Server has gone away
 		 */
-		public function reconnect()
+		private function reconnect()
 	{
 		$connection = $this->em->getConnection();
 		if (!$connection->ping()) {

@@ -11,6 +11,11 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use App\Utilits\createReaderFile\chunkReadFilter;
 
+/**
+ * @deprecated
+ * Class getReaderExcel
+ * @package App\Utilits\createReaderFile
+ */
 class getReaderExcel
 {
 	/**

@@ -8,6 +8,7 @@
 
 namespace App\Utilits\loadDataExcel\handlerRow;
 use App\Utilits\loadDataExcel\configLoader\configLoader_interface;
+use App\Utilits\loadDataExcel\loadData\loadRows;
 use App\Utilits\LoadInvoice\createEntity\createEntityInterface;
 use Doctrine\ORM\EntityManager;
 
@@ -17,12 +18,16 @@ use Doctrine\ORM\EntityManager;
  * с данными которая выгружается из файла.
  *
  * Основные задачи которые решает обработчик
- * - разделение ответственности за обработку данных, а именно один класс реализует чтение данных
- * а второй построчную обработку полученных данных
+ * - разделение ответственности за обработку данных, а именно:
+ *      -   класс @see loadRows реализует чтение данных функцией  @see loadRows::readRows()
+ *      -   этот клас -  построчную обработку полученных данных
  * - расширение функционала программы при помощи разных обработчиков:
  *      -   проверки данных
  *      -   сохранение данных
- *
+ * Абстрактные функции должны реализовать
+ * @see handlerRowAbstract::handlerRow() вызывается для оброботки каждой строки с данными
+ * @see handlerRowAbstract::saveHandlingRows() вызывается после обработки порции строк сданными
+ * @see handlerRowAbstract::getResultHandlingAllRows() вызывается после окончания обработки всех строк с данными
  * Interface handlerRowInterface
  * @package App\Utilits\loadDataExcel\handlerRow
  */
@@ -66,9 +71,17 @@ abstract class handlerRowAbstract
      * -    то в saveProcessedRows
      *     -    $this->entityManager->flush ();
      *     -    $this->entityManager->clear ();
+     *
+     * выполняется после окончания обработки порции прочитанных строк
      * @return mixed
      */
-    public abstract function saveProcessedRows();
+    public abstract function saveHandlingRows();
+
+    /**
+     * Практическая реализация возврата результата обработки всех строк файла
+     * @return mixed
+     */
+    public abstract function getResultHandlingAllRows();
 
 
 
