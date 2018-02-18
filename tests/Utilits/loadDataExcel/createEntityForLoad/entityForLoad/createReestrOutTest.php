@@ -70,7 +70,7 @@ class createReestrOutTest extends TestCase
             $entity->getRkeDateCreateInvoice()
         );
         $this->assertEquals(0,$entity->getRkeNumInvoice());
-        $this->assertEquals('Зайво виписана',$entity->getRkePidstava());
+        $this->assertEquals(null,$entity->getRkePidstava());
         $this->assertEquals('122//275/ПНЕ/30-06-2016/400000000000',$entity->getKeyField());
     }
 
@@ -101,8 +101,8 @@ class createReestrOutTest extends TestCase
             new \DateTime('30.06.2016',new \DateTimeZone('Europe/Kiev')),
             $entity->getDateCreateInvoice()
         );
-        $this->assertEquals('122//275',$entity->getNumInvoice());
-        $this->assertEquals('ПНЕ',$entity->getTypeInvoiceFull());
+        $this->assertEquals('опо//275',$entity->getNumInvoice());
+        $this->assertEquals('ПНП',$entity->getTypeInvoiceFull());
         $this->assertEquals('ПАТ \'\'УКРАЄНСЬКА ЗАЛIЗНИЦЯ\'\', Регiональна фiлiя \'\'ПРИДНIПРОВСЬКА ЗАЛIЗНИЦЯ\'\'  СП \'\'ДНIПРОПЕТРОВСЬКЕ МОТОРВАГОННЕ ДЕПО\'\'',$entity->getNameClient());
         $this->assertEquals('400000000000',$entity->getInnClient());
         $this->assertEquals('3544.98',$entity->getZagSumm());
@@ -120,8 +120,8 @@ class createReestrOutTest extends TestCase
             $entity->getRkeDateCreateInvoice()
         );
         $this->assertEquals(0,$entity->getRkeNumInvoice());
-        $this->assertEquals('Зайво виписана',$entity->getRkePidstava());
-        $this->assertEquals('122//275/ПНЕ/30-06-2016/400000000000',$entity->getKeyField());
+        $this->assertEquals(null,$entity->getRkePidstava());
+        $this->assertEquals('опо//275/ПНП/30-06-2016/400000000000',$entity->getKeyField());
     }
 
     /**

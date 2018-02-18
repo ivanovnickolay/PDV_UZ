@@ -42,16 +42,6 @@ namespace App\Utilits\loadDataExcel\createReaderFile {
             // setup and cache the virtual file system
             $this->file_system = vfsStream::setup('root', 444, $directory);
         }
-        /**
-         * Проверка названия файла на правильность расширения
-         * @throws \App\Utilits\loadDataExcel\Exception\errorLoadDataException
-         */
-        public function testValidFileName()
-        {
-            $reader=new getReaderExcel($this->file_system->url().'test.xls');
-            $this->assertEquals('Xls',$reader->getFileType());
-
-        }
 
         /**
          * Проверка создания Ридера нужного типа по расширению xls

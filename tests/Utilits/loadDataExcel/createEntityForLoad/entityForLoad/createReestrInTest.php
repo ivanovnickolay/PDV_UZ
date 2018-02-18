@@ -133,8 +133,8 @@ class createReestrInTest extends TestCase
                     $arr=$this->reader->getRowDataArray(4);
                     $entity=$en->createReestr($arr);
                     $error = $validator->validate($entity);
-                    //var_dump($error);
-                    $this->assertEquals(3,count($error),'Error row 4');
+                    var_dump($error);
+                    $this->assertEquals(2,count($error),'Error row 4');
                     unset($error);
                     /* строка содержит следующие ошибки
                        -   номер документа  - пусто

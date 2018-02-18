@@ -196,12 +196,13 @@ class handlerRowsValidDataFromFileTest_ReestrIn extends KernelTestCase
         );
         $this->assertEquals(
             1,
-            substr_count($arrayError[2],"Длина ИНН не может быть меньше 9 цифр ")
+            substr_count($arrayError[2],"ИНН документа не может быть пустым ")
         );
+        /*
         $this->assertEquals(
             1,
             substr_count($arrayError[2],"должен содержать только цифры")
-        );
+        );*/
 
         //
     }
