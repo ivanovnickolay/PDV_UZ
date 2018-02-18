@@ -175,7 +175,7 @@ class ReestrbranchIn
      *
      * @return integer
      */
-    public function getMonth()
+    public function getMonth():int
     {
         return $this->month;
     }
@@ -199,7 +199,7 @@ class ReestrbranchIn
      *
      * @return integer
      */
-    public function getYear()
+    public function getYear():int
     {
         return $this->year;
     }
@@ -945,10 +945,10 @@ class ReestrbranchIn
 
         //Валидация поля dateGetInvoice
             $metadata->addPropertyConstraint('dateGetInvoice',new Assert\NotNull(array(
-                'message'=>'Дата создания документа {{ value }} не может быть пустым '
+                'message'=>'Дата получения документа {{ value }} не может быть пустым '
             )));
             $metadata->addPropertyConstraint('dateGetInvoice',new Assert\Date(array(
-                'message'=>'Дата создания документа {{ value }} не верная'
+                'message'=>'Дата получения документа {{ value }} не верная'
             )));
 
         //Валидация поля dateCreateInvoice
@@ -996,6 +996,7 @@ class ReestrbranchIn
                 $metadata->addPropertyConstraint('innClient', new Assert\Length(array(
                     'min'        => 9,
                     'max'        => 12,
+                    'minMessage' => 'Длина ИНН не может быть меньше {{ limit }} цифр',
                     'maxMessage' => 'Длина ИНН не может быть более {{ limit }} цифр',
                 )));
                 $metadata->addPropertyConstraint('innClient', new Assert\Type(array(

@@ -54,13 +54,14 @@ class loadRows
      */
 	public function __construct (string $fileName, configLoader_interface $configLoad)
 	{
-		// проверим есть ли в конфигурации значение последнего столбца с данными
+        $this->maxReadRow=$configLoad->getMaxReadRow();
+	    // проверим есть ли в конфигурации значение последнего столбца с данными
 		if (!empty($configLoad->getLastColumn())){
 			$this->getReaderFile($fileName, $configLoad->getLastColumn());
 		} else{
 			throw new errorLoadDataException('Не указан последний столбец для чтения данных из файла');
 		}
-		$this->maxReadRow=$configLoad->getMaxReadRow();
+
 
 	}
 

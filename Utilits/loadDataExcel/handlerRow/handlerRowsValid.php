@@ -11,6 +11,7 @@ use App\Entity\ReestrbranchIn;
 use App\Entity\ReestrbranchOut;
 use App\Entity\SprBranch;
 use App\Utilits\loadDataExcel\configLoader\configLoader_interface;
+use App\Utilits\loadDataExcel\configLoader\configLoadReestrOut;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
@@ -128,17 +129,22 @@ class handlerRowsValid extends handlerRowAbstract
          * ConstraintViolationList object. This gives us a nice string
          * for debugging.
          */
-        $errorsString = (string) $error;
-        // проверим есть ли у же в массиве запись с ошибками по этой строке
-        if (key_exists($this->countRows,$this->allErrorsValidation)){
-            // если есть - дописываем в конец строки значений
-            $this->allErrorsValidation[$this->countRows].=$errorsString;
-        }else{
-            // если нет то создаем новую запись
-            $this->allErrorsValidation[$this->countRows]=$errorsString;
+        $errorsString="";
+        if(!empty($error)){
+            $countElementsError=count($error);
+            for ($i=0;$i<=$countElementsError-1;$i++){
+                $errorsString = $errorsString.(string) $error->get($i)->getMessage()." | ";
+            }
+
+            // проверим есть ли у же в массиве запись с ошибками по этой строке
+            if (key_exists($this->countRows,$this->allErrorsValidation)){
+                // если есть - дописываем в конец строки значений
+                $this->allErrorsValidation[$this->countRows].=$errorsString. " | ";
+            }else{
+                // если нет то создаем новую запись
+                $this->allErrorsValidation[$this->countRows]=$errorsString. " | ";
+            }
         }
-
-
     }
 
     /**
@@ -162,25 +168,25 @@ class handlerRowsValid extends handlerRowAbstract
             if (($obj instanceof ReestrbranchIn)
                or($obj instanceof ReestrbranchOut)) {
                    // проверим имеет ли право филиал подавать этот документ
-                   if (!$this->validNumBranch($obj)){
+                   if (!$this->isValidNumBranch($obj)){
                        // если не иммет права подавать
                        if (key_exists($this->countRows,$this->allErrorsValidation)){
                            // если есть - дописываем в конец строки значений
-                           $this->allErrorsValidation[$this->countRows].="Филиал не имеет право подавать РПН на уровень ЦФ ";
+                           $this->allErrorsValidation[$this->countRows].="Филиал не имеет право подавать РПН на уровень ЦФ | ";
                        }else{
                            // если нет то создаем новую запись
-                           $this->allErrorsValidation[$this->countRows]="Филиал не имеет право подавать РПН на уровень ЦФ ";
+                           $this->allErrorsValidation[$this->countRows]="Филиал не имеет право подавать РПН на уровень ЦФ | ";
                        }
                    }
                    // нет ли в базе данных по этому РПН, кторые загружены ранее
-                   if (!$this->validReestr($obj)){
+                   if (!$this->isValidReestr($obj)){
                        // если таки подавал ранее
                        if (key_exists($this->countRows,$this->allErrorsValidation)){
                            // если есть - дописываем в конец строки значений
-                           $this->allErrorsValidation[$this->countRows].="Филиал уже подавал РПН за этот период ранее ";
+                           $this->allErrorsValidation[$this->countRows].="Филиал уже подавал РПН за этот период ранее | ";
                        }else{
                            // если нет то создаем новую запись
-                           $this->allErrorsValidation[$this->countRows]="Филиал уже подавал РПН за этот период ранее ";
+                           $this->allErrorsValidation[$this->countRows]="Филиал уже подавал РПН за этот период ранее | ";
                        }
                    }
                    $this->monthReestr = $obj->getMonth();
@@ -196,23 +202,25 @@ class handlerRowsValid extends handlerRowAbstract
      *      - годе
      *      - номере филиала
      *
-     *  - если данные есть ложь - валидация не прошла
-     *  - если данных нет = возвращает истинно - валидация прошла
+     *  - если данных нет возвращает  ложь - валидация не прошла
+     *  - если данные есть  = возвращает истинно - валидация прошла
      * @param $obj ReestrbranchOut|ReestrbranchIn
      * @return boolean
      */
-    private function validReestr($obj):bool {
+    private function isValidReestr($obj):bool {
         $repository = $this->getRepositoryEntity($obj);
-        $resultQuery=$repository->findOneBy((array(
+        $resultQuery=$repository->findOneBy(array(
             "month"=>$obj->getMonth(),
             "year"=>$obj->getYear(),
             "numBranch"=>$obj->getNumBranch()
         )
-        ));
+        );
         //если вернулся пустой массив = данных нет
         if (empty($resultQuery)){
+            // филиал не подавал РПН ранее
             return true;
         } else {
+            // филиал подавал отчет ранее
             return false;
         }
     }
@@ -221,12 +229,11 @@ class handlerRowsValid extends handlerRowAbstract
      * запрос на проверку есть ли указанный в первой строке филиал, среди филиалов,
      * которому разрешена подача документов в главный офис
      *
-     *  - если данные есть ложь - валидация не прошла
-     *  - если данных нет = возвращает истинно - валидация прошла
+     * если данные есть -
      * @param $obj ReestrbranchOut|ReestrbranchIn
      * @return bool
      */
-    private function validNumBranch($obj):bool {
+    private function isValidNumBranch($obj):bool {
         $repository = $this->entityManager->getRepository(SprBranch::class);
         $reportQuery=$repository->findOneBy(
             array(
@@ -235,9 +242,11 @@ class handlerRowsValid extends handlerRowAbstract
         );
         //если вернулся пустой массив = данных нет
         if (empty($reportQuery)){
-            return true;
-        } else {
+            //валидация не прошла
             return false;
+        } else {
+            //валидация прошла
+            return true;
         }
     }
 

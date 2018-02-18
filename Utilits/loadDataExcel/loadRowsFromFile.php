@@ -17,6 +17,7 @@ namespace App\Utilits\loadDataExcel;
  */
 
 use App\Utilits\loadDataExcel\configLoader\configLoader_interface;
+use App\Utilits\loadDataExcel\configLoader\configLoaderFactory;
 use App\Utilits\loadDataExcel\handlerRow\handlerRowAbstract;
 use App\Utilits\loadDataExcel\loadData\loadRows;
 use App\Utilits\loadDataExcel\Exception\errorLoadDataException;
@@ -80,6 +81,8 @@ class loadRowsFromFile
 
 	/**
 	 * Загрузка конфигурации для Ридера
+     *
+     * @deprecated
 	 * @throws errorLoadDataException если не найдена конфигурация загрузчика даных
 	 */
 	private function getConfigLoad(){
@@ -94,7 +97,10 @@ class loadRowsFromFile
 			//unset($obj);
 	}
 
-	public function setHandlerRows(handlerRowAbstract $handlerRow){
+    /**
+     * @param handlerRowAbstract $handlerRow
+     */
+    public function setHandlerRows(handlerRowAbstract $handlerRow){
 	    $this->handlerRows = $handlerRow;
     }
 
@@ -111,11 +117,13 @@ class loadRowsFromFile
      *      - класса загрузчика
      *  - запуск сборщика мусора
      * @throws errorLoadDataException  Ошибка при поиске конфигурации для загрузки. Не известный файл
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
 	public function loadDataFromFile(){
 		try{
 		// получаем конфигурацию по типу файла
-			$this->getConfigLoad();
+			//$this->getConfigLoad();
+            $this->configLoad = configLoaderFactory::getConfigLoad($this->fileName);
 		} catch (errorLoadDataException $e){
 			throw new errorLoadDataException("Ошибка при поиске конфигурации для загрузки данных. Не могу загрузить обработчик для файла : ");
 		}

@@ -695,12 +695,18 @@ class ReestrbranchOut
 
     /**
      * Get rkeDateCreateInvoice
-     *
-     * @return \DateTime
+     * если было передано нулевое значение то вернуть надо нулевую дату
+     * иначе надо вернуть полученное значение
+     * @return \DateTime|null
      */
     public function getRkeDateCreateInvoice()
     {
-        return $this->rkeDateCreateInvoice;
+        //return $this->rkeDateCreateInvoice;
+        if(null == $this->rkeDateCreateInvoice){
+            return new \DateTime("0000-00-00");
+        }else{
+            return $this->rkeDateCreateInvoice;
+        }
     }
 
     /**
@@ -829,13 +835,20 @@ class ReestrbranchOut
         if('РКЕ'==$this->getTypeInvoiceFull()){
             if(empty($this->getRkeNumInvoice())){
                 return false;
-            }
-                if(empty($this->getRkePidstava())){
-                return false;
-                }
-                if (new \DateTime("0000-00-00")==$this->getRkeDateCreateInvoice()){
+            }else {
+                // регулярное выражение выдает истинно если в номере есть буквы
+                // а если в номере есть буква - занчит номер не верен
+                if (preg_match("/[^0-9\/]/", $this->getRkeNumInvoice(), $matches))
+                {
                     return false;
                 }
+            }
+            if(empty($this->getRkePidstava())){
+                return false;
+            }
+            if (new \DateTime("0000-00-00")==$this->getRkeDateCreateInvoice()){
+                return false;
+            }
             return true;
         } else{
             return true;
@@ -927,9 +940,13 @@ class ReestrbranchOut
                     'message' => 'Указан  не верный тип причины не выдачи документа покупателю',
                 )));
         //Валидация поля innClient
+                $metadata->addPropertyConstraint('innClient',new Assert\NotBlank(array(
+                    'message'=>'ИНН документа не может быть пустым '
+                )));
                 $metadata->addPropertyConstraint('innClient', new Assert\Length(array(
-                    'min'        => 0,
+                    'min'        => 9,
                     'max'        => 12,
+                    'minMessage' => 'Длина ИНН не может быть меньше {{ limit }} цифр',
                     'maxMessage' => 'Длина ИНН не может быть более {{ limit }} цифр',
                 )));
                 $metadata->addPropertyConstraint('innClient', new Assert\Type(array(
@@ -981,11 +998,7 @@ class ReestrbranchOut
                 $metadata->addGetterConstraint('ValidRKE', new Assert\IsTrue(array(
                     'message' => 'Указан не верные реквизиты документа который корректировал РКЕ',
                 )));
-
-                    //Валидация поля numInvoice
-                    $metadata->addPropertyConstraint('rkeNumInvoice',new Assert\NotBlank(array(
-                        'message'=>'Номер документа,который корректировал РКЕ, не может быть пустым '
-                    )));
+                //Валидация поля numInvoice
                     $metadata->addPropertyConstraint('rkeNumInvoice', new ContainsNumDoc());
 
             $metadata->addPropertyConstraint('rkeDateCreateInvoice',new Assert\Date(array(
