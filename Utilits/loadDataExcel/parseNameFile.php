@@ -13,6 +13,7 @@ namespace App\Utilits\loadDataExcel;
  * фтализирует название файла и возвращает тип сущности которая будет загружаться
  * Class parseNameFile
  * @package AnalizPDVBundle\Utilits\loadDataFromExcel
+ * @deprecated configLoaderFactory::class реализовано в
  */
 class parseNameFile
 {

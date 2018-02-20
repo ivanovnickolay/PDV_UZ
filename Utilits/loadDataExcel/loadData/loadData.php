@@ -22,6 +22,7 @@ use App\Utilits\loadDataExcel\Exception\errorLoadDataException;
  * Класс служит для загрузки данных из файлов
  * Class loadData
  * @package AnalizPdvBundle\Utilits\loadData
+ * @deprecated заменено на loadRows::class
  */
 class loadData
 {

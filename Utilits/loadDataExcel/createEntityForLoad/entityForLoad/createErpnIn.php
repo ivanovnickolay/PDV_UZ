@@ -11,7 +11,7 @@ namespace App\Utilits\loadDataExcel\createEntityForLoad\entityForLoad;
 
 use App\Entity\ErpnIn;
 
-use App\Utilits\LoadInvoice\createEntity\createEntityInterface;
+use App\Utilits\loadDataExcel\createEntityForLoad\interfaceEntityForLoad\createEntityForLoad_Abstract;
 
 
 /**
@@ -20,28 +20,28 @@ use App\Utilits\LoadInvoice\createEntity\createEntityInterface;
  * Class createErpnOut
  * @package AnalizPdvBundle\Utilits\LoadInvoice\createEntity
  */
-class createErpnIn implements createEntityInterface
+class createErpnIn extends createEntityForLoad_Abstract
 {
 	private $E_In;
 
 	/**
-	 * Создание сущности ErpnIn на основании полученного массива значений
-	 * @param array $data
-	 * @return ErpnIn
-	 */
-	public function getEntity(array $data)
- {
-	 $this->E_In=new ErpnIn();
+     *  Создает сущносность из массива данных
+     * @param array $arr
+     * @return mixed
+     */
+    public function createReestr(array $arr)
+    {
+        $this->E_In=new ErpnIn();
 
 
-	 return $this->E_In;
- }
+        return $this->E_In;
+    }
 
-	/**
-	 *
-	 */
-	public function unsetEntity()
- {
-	 unset($this->E_In);
- }
+    /**
+     * Обнуляет сущность послее ее сохранения
+     */
+    public function unsetReestr()
+    {
+        unset($this->E_In);
+    }
 }

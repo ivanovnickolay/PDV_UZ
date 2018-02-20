@@ -13,6 +13,19 @@ namespace App\Utilits\loadDataExcel\loadData;
  *  -   класс обработчика строк с данными @see handlerRowAbstract
  *  -   путь и название к файлу, информацию с которого будем читать
  *  -   необходимую конфигурацию для настройки класса @see getReaderExcel
+ * Эталонное использование
+ *
+ * для проверки файла
+ *  $config = configLoaderFactory::getConfigLoad($fileName);
+ *  $handler = new handlerRowsValid($em, $config);
+ *  $load = new loadRows($fileName,$config);
+ *  $load->readRows($handler);
+ *  $arrayError = $handler->getResultHandlingAllRows();
+ *
+ * для чтения и сохранения информации
+ *  $config = configLoaderFactory::getConfigLoad($fileName);
+ *  $handler = new handlerRowsSave($em, $config);
+ *  $load = new loadRows($fileName,$config);
  *
  *
  */
@@ -96,7 +109,7 @@ class loadRows
      * Чтение данных из файла кусками по количеству записей указаных в maxReadRow
      *  после чтения maxReadRow происходит запись сущностей  в базу в  $handlerRow->saveHandlingRows();
      *  обнуление прочитанных данных
-     *  чтание новой порции данных
+     *  чтение новой порции данных
      * @param handlerRowAbstract $handler класс - обработчик прочитанных строк с данными
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */

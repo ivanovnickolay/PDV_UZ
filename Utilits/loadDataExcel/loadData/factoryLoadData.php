@@ -13,6 +13,7 @@ use App\Utilits\ValidEntity\validReestrIn;
 use Doctrine\ORM\EntityManager;
 
 /**
+ * @deprecated
  * Class factoryLoadData
  * @package LoadDataExcelBundle\Util\loadData
  */

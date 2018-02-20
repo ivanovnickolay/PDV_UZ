@@ -66,4 +66,13 @@ class handlerRowsSave extends handlerRowAbstract
         }
         $this->entityManager->clear();
     }
+
+    /**
+     * Практическая реализация возврата результата обработки всех строк файла
+     * @return mixed
+     */
+    public function getResultHandlingAllRows()
+    {
+      return null;
+    }
 }

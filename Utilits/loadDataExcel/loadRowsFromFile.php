@@ -14,6 +14,15 @@ namespace App\Utilits\loadDataExcel;
  *  -   получение обработчика строк setHandlerRows()
  *  -   правильную настройку объекта loadRows в loadRowsFromFile()
  *  -   загрузку строк  loadRows->readRows() с учетом обработчика handlerRows
+ *
+ * эталонное использование
+ * $config = configLoaderFactory::getConfigLoad($fileName);
+ * $load = new loadRowsFromFile($fileName);
+ *      $handler = new handlerRowsValid($em, $config);
+ *          $load->setHandlerRows($handler);
+ *      $load->loadDataFromFile();
+ * // если это обработка с целью проверки данных то
+ *          $handler->getResultHandlingAllRows();
  */
 
 use App\Utilits\loadDataExcel\configLoader\configLoader_interface;
@@ -26,8 +35,10 @@ use App\Utilits\loadDataExcel\Exception\errorLoadDataException;
 
 /**
  * Класс проводит загрузку строк из файла и передачу их обработчику
+ * для сохранения в базу
  * Class loadData
  * @package AnalizPdvBundle\Utilits\loadDataFromExcel
+ * // todo Test !!!
  */
 class loadRowsFromFile
 {
@@ -51,10 +62,11 @@ class loadRowsFromFile
     private $handlerRows;
 
     /**
-	 *  Подготовка данных для работы класса загрузки данных
-	 * loadData constructor.
-	 * @param string $fileName
-	 */
+     *  Подготовка данных для работы класса загрузки данных
+     * loadData constructor.
+     * @param string $fileName
+     * @throws errorLoadDataException
+     */
 	public function __construct(string $fileName)
 	{
 		//$this->em=$em;
@@ -62,7 +74,8 @@ class loadRowsFromFile
 		try {
 			$this->validFileName();
 		} catch (errorLoadDataException $e){
-			echo $e->getMessage()." Название файла: ". $this->fileName;
+			//echo $e->getMessage()." Название файла: ". $this->fileName;
+            throw new errorLoadDataException("Файл для чтения данных не найден !");
 		}
 
 	}
