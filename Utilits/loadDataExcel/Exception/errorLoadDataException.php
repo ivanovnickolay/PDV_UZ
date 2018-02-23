@@ -11,9 +11,9 @@ namespace App\Utilits\loadDataExcel\Exception;
 
 /**
  * Класс исключений при загрузке данных из файла
+ * 1111
  *
  * Class errorLoadDataException
- * @package LoadDataExcelBundle\Util\Exception
  */
 class errorLoadDataException extends \Exception
 {

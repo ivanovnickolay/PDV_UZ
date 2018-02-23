@@ -8,6 +8,7 @@
 
 namespace App\Utilits\loadDataExcel\configLoader;
 use App\Utilits\loadDataExcel;
+use App\Utilits\loadDataExcel\Exception\errorLoadDataException;
 
 
 /**
@@ -26,11 +27,11 @@ class configLoaderFactory
      * test to loadRowsTest::class
      * @param $fileName
      * @return configLoader_interface
-     * @throws loadDataExcel\Exception\errorLoadDataException
+     * @throws errorLoadDataException
      * @see  loadDataExcel\loadData\loadRowsTest
      */
     public static function getConfigLoad($fileName){
-        //$templateNameConfigLoadClass = "configLoad";
+
         $regConfigLoader = array(
             "RestrIn"=>configLoadReestrIn::class,
             "RestrOut"=>configLoadReestrOut::class
@@ -45,25 +46,50 @@ class configLoaderFactory
                     if (class_exists($className)){
                         return new $className();
                     }else{
-                        throw new loadDataExcel\Exception\errorLoadDataException("Не найден файл конфигурации для чтения информации из файла !");
+                        throw new errorLoadDataException("Ошибка создания объекта конфигурации для чтения информации из файла !");
                     }
 
                 }
 
-            } else{
-                    throw new loadDataExcel\Exception\errorLoadDataException();
-            }
+            }                    throw new errorLoadDataException("Для файла ".$fileName." не существует конфигурации для чтения информации из файла !");
+
     }
 
+    /**
+     * Функция парсиь название файла и возвращает тип информации
+     * которая в нем хранится. Информация используется для создания объекта
+     * конфигуратора загрузки данных
+     *
+     * Парсер считывает последние 4 символа из названия файла и сравнивает полученное
+     * значение с шаблоном из массива $regParseName при совпадении возвращает значение типа информации
+     * если совпадений не найдено - возвращает пустую строку.
+     *
+     * @param string $fileName
+     * @return string
+     */
     private static function parseName(string $fileName):string {
+        $regParseName = array(
+            "TAB1"=>"RestrIn",
+            "TAB2"=>"RestrOut",
+        );
+
         $pathinfo = pathinfo($fileName);
-        $baseNameFile=$pathinfo['filename'];
+            $baseNameFile=$pathinfo['filename'];
+                $lenght = strlen($baseNameFile);
+                    $key = substr(
+                        $baseNameFile,
+                        $lenght-4);
+            if (key_exists($key,$regParseName)){
+                return $regParseName[$key];
+            }
+        /**
         if ( 1 == substr_count($baseNameFile,'TAB1')){
             return "RestrIn";
         }
         if ( 1 == substr_count($baseNameFile,'TAB2')){
             return "RestrOut";
         }
+         **/
         return "";
 
     }
