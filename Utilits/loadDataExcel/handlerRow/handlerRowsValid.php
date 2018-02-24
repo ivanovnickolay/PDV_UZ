@@ -291,7 +291,7 @@ class handlerRowsValid extends handlerRowAbstract
             if ($this->monthReestr != $obj->getMonth()) {
                 $err .= "Месяц реестра не соответствует месяцу указанному в первой строке файла! ";
             }
-                if ($this->yearReestr = $obj->getYear()) {
+                if ($this->yearReestr != $obj->getYear()) {
                     $err .= "Год реестра не соответствует году указанному в первой строке файла! ";
                 }
                     if ($this->numBranchReestr != $obj->getNumBranch()) {
