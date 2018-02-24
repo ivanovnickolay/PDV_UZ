@@ -26,7 +26,7 @@ use PHPUnit\Framework\TestCase;
         *  - configLoadReestrIn
         *
  */
-// todo покрыть тестами полнотью все поля сущности !!1
+// todo покрыть тестами полнотью все поля сущности !!
 class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
 {
     /**
@@ -393,6 +393,116 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
         $this->assertEquals(
             1,
             substr_count($arrayError[2], $result)
+        );
+    }
+
+    /**
+     * Тестирование неизменности месяца, года и номера филила
+     */
+    public function test_verifyStabilityIndicators_validMonth()
+    {
+        $arr1 = $this->getArrayData();
+        $arr2 = $this->getArrayData();
+        $arr2[0][79]=9;
+        $this->handlerRow->handlerRow($arr1);
+        $this->handlerRow->handlerRow($arr2);
+        $arrayError = $this->handlerRow->getResultHandlingAllRows();
+        //var_dump($arrayError);
+        $this->assertNotEmpty($arrayError);
+        $this->assertEquals(
+            1,
+            substr_count($arrayError[3], "Месяц реестра не соответствует месяцу указанному в первой строке файла!")
+        );
+
+    }
+
+    /**
+     * Тестирование неизменности месяца, года и номера филила
+     */
+    public function test_verifyStabilityIndicators_validBranch()
+    {
+        $arr1 = $this->getArrayData();
+        $arr2 = $this->getArrayData();
+        $arr2[0][66]="700";
+        $this->handlerRow->handlerRow($arr1);
+        $this->handlerRow->handlerRow($arr2);
+        $arrayError = $this->handlerRow->getResultHandlingAllRows();
+        //var_dump($arrayError);
+        $this->assertNotEmpty($arrayError);
+        $this->assertEquals(
+            1,
+            substr_count($arrayError[3], "Номер филиала реестра не соответствует номеру указанному в первой строке файла!")
+        );
+
+    }
+    /**
+     * Тестирование неизменности месяца, года и номера филила
+     */
+    public function test_verifyStabilityIndicators_validYear()
+    {
+        $arr1 = $this->getArrayData();
+        $arr2 = $this->getArrayData();
+        $arr2[0][87]=2017;
+        $this->handlerRow->handlerRow($arr1);
+        $this->handlerRow->handlerRow($arr2);
+        $arrayError = $this->handlerRow->getResultHandlingAllRows();
+       // var_dump($arrayError);
+        $this->assertNotEmpty($arrayError);
+        $this->assertEquals(
+            1,
+            substr_count($arrayError[3], "Год реестра не соответствует году указанному в первой строке файла!")
+        );
+    }
+
+    /**
+     * Тестирование неизменности месяца, года и номера филила
+     */
+    public function test_verifyStabilityIndicators_validMonthYear()
+    {
+        $arr1 = $this->getArrayData();
+        $arr2 = $this->getArrayData();
+        $arr2[0][79]=9;
+        $arr2[0][87]=2017;
+        $this->handlerRow->handlerRow($arr1);
+        $this->handlerRow->handlerRow($arr2);
+        $arrayError = $this->handlerRow->getResultHandlingAllRows();
+        //var_dump($arrayError);
+        $this->assertNotEmpty($arrayError);
+        $this->assertEquals(
+            1,
+            substr_count($arrayError[3], "Месяц реестра не соответствует месяцу указанному в первой строке файла!")
+        );
+        $this->assertEquals(
+            1,
+            substr_count($arrayError[3], "Год реестра не соответствует году указанному в первой строке файла!")
+        );
+    }
+    /**
+     * Тестирование неизменности месяца, года и номера филила
+     */
+    public function test_verifyStabilityIndicators_validMonthYearBranch()
+    {
+        $arr1 = $this->getArrayData();
+        $arr2 = $this->getArrayData();
+        $arr2[0][79]=9;
+        $arr2[0][87]=2017;
+        $arr2[0][66]="700";
+        $this->handlerRow->handlerRow($arr1);
+        $this->handlerRow->handlerRow($arr2);
+        $arrayError = $this->handlerRow->getResultHandlingAllRows();
+        //var_dump($arrayError);
+        $this->assertNotEmpty($arrayError);
+        $this->assertEquals(
+            1,
+            substr_count($arrayError[3], "Месяц реестра не соответствует месяцу указанному в первой строке файла!")
+        );
+        $this->assertEquals(
+            1,
+            substr_count($arrayError[3], "Год реестра не соответствует году указанному в первой строке файла!")
+        );
+        $this->assertEquals(
+            1,
+            substr_count($arrayError[3], "Номер филиала реестра не соответствует номеру указанному в первой строке файла!")
         );
     }
 }
