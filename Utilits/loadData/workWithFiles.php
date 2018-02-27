@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManager;
  * Назначение класса - работа с файловой системой
  * Class LoadDataFromDir
  * @package AnalizPdvBundle\Utilits\loadData
+ * @deprecated
  */
 class workWithFiles
 {

@@ -48,15 +48,13 @@ class configLoaderFactory
                     }else{
                         throw new errorLoadDataException("Ошибка создания объекта конфигурации для чтения информации из файла !");
                     }
-
                 }
-
-            }                    throw new errorLoadDataException("Для файла ".$fileName." не существует конфигурации для чтения информации из файла !");
-
+            }
+            throw new errorLoadDataException("Для файла ".$fileName." не существует конфигурации для чтения информации из файла !");
     }
 
     /**
-     * Функция парсиь название файла и возвращает тип информации
+     * Функция парсит название файла и возвращает тип информации
      * которая в нем хранится. Информация используется для создания объекта
      * конфигуратора загрузки данных
      *
@@ -67,7 +65,7 @@ class configLoaderFactory
      * @param string $fileName
      * @return string
      */
-    private static function parseName(string $fileName):string {
+    public static function parseName(string $fileName):string {
         $regParseName = array(
             "TAB1"=>"RestrIn",
             "TAB2"=>"RestrOut",
