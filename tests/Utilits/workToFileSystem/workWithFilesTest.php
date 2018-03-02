@@ -101,7 +101,6 @@ class workWithFilesTest extends TestCase
      * тестирование создания файла с именем в каталоге
      */
     public function test_createFileErrorValidation_SaveFile_isFileExists(){
-        //todo write test
         $arrayError = [
           "1"=>"First error"
         ];
