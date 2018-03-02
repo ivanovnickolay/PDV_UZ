@@ -29,7 +29,7 @@ class workWithFilesTest extends TestCase
     {
         $this->file_system = vfsStream::setup('root');
         $testFile = vfsStream::newDirectory('testFile')->at($this->file_system);
-    // Create Files
+        // Create Files
         vfsStream::newFile('19082016095050_40075815_J1201508_TAB1.xls')->at($testFile);
         vfsStream::newFile('19082016095050_40075815_J1201508_TAB1.xlsz')->at($testFile);
         vfsStream::newFile('19082016100630_40075815_J1201508_TAB1.xlsx')->at($testFile);
@@ -83,5 +83,66 @@ class workWithFilesTest extends TestCase
         $this->assertFileExists('vfs://root/testFileMove\test.doc');
     }
 
+    /*
+     * Тестирование метода createFileErrorValidation на выбрасывание исключения
+     * при не нахождении каталога для сохранения файла
+     */
+    public function test_createFileErrorValidation_Error(){
+        $this->expectException(\Exception::class);
+            $this->expectExceptionMessage("Директория для сохранения файла не найдена");
+                try {
+                    workWithFiles::createFileErrorValidation($this->file_system->url().'/gg',"465465",array());
+                }catch (\Exception $e){
+
+                }
+    }
+
+    /**
+     * тестирование создания файла с именем в каталоге
+     */
+    public function test_createFileErrorValidation_SaveFile_isFileExists(){
+        //todo write test
+        $arrayError = [
+          "1"=>"First error"
+        ];
+            $fileName = "19082016095050_40075815_J1201508_TAB1";
+                vfsStream::newDirectory('dirError')->at($this->file_system);
+                    $dirFromError =vfsStream::url('root/dirError');
+                    try {
+                        workWithFiles::createFileErrorValidation($dirFromError, $fileName, $arrayError);
+                    }catch (\Exception $e){
+
+                    }
+                $this->assertFileExists($dirFromError."/".$fileName."log");
+    }
+
+    /**
+     * тестирование содержимого созданного файла
+     */
+    public function test_createFileErrorValidation_SaveFile_EqualsContentFile(){
+        //todo write test
+        $arrayError = [
+            "1"=>"First error",
+            "2"=>"Two error",
+        ];
+           $fileName = "19082016095050_40075815_J1201508_TAB1";
+                vfsStream::newDirectory('dirError')->at($this->file_system);
+                    $dirFromError =vfsStream::url('root/dirError');
+                        try {
+                            workWithFiles::createFileErrorValidation($dirFromError, $fileName, $arrayError);
+                        }catch (\Exception $e){
+
+                        }
+                    $testStr="";
+                // алгоритм формирования строк для проверки идентичный алгоритму в тестируемом методе
+                foreach ($arrayError as $key=>$value){
+                    $testStr = $testStr. "Строка № $key содержит ошибки =>> $value\n";
+                }
+           $content = file_get_contents($dirFromError."/".$fileName."log");
+        $this->assertEquals($testStr,$content);
+        //echo $testStr;
+        //echo $content;
+
+    }
 
 }
