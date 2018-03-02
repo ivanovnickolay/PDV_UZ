@@ -70,7 +70,7 @@ class workWithFiles
 
 
     /**
-	 * переносит файл между диекториями
+	 * переносит файл между директориями
 	 * @param $fromFile string откуда скопировать файл с указанием пути к истокнику вплоть до файла
 	 * @param $toFile string директория куда копировать файл
 	 */
@@ -87,4 +87,26 @@ class workWithFiles
 				unlink($fromFile);
 		}
 	}
+
+    /**
+     * Создает файл с описанием ошибок
+     *
+     * @param string $dirSaveFile директория для сохранения файла
+     * @param string $nameFile название файла с ошибками. Рекомендуется
+     * использовать название проверяемого файла без расщирения
+     * @param array $arrayError массив данных, которые генерирует handlerRowsValid::getResultHandlingAllRows
+     * @throws \Exception Директория для сохранения файла не найдена
+     */
+	public static function createFileErrorValidation(string $dirSaveFile,string $nameFile, array $arrayError){
+	    if(!is_dir($dirSaveFile) or(!is_writable($dirSaveFile))){
+	        throw new \Exception("Директория для сохранения файла не найдена");
+        }
+        $fileNameWithDir = $dirSaveFile."/".$nameFile.'log';
+	    foreach ($arrayError as $key=>$value){
+	        $stringForSave = "Строка № $key содержит ошибки =>> $value\n";
+            file_put_contents($fileNameWithDir,$stringForSave,FILE_APPEND);
+        }
+
+
+    }
 }
