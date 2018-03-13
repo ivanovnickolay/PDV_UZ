@@ -28,7 +28,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * Class handlerRowsValidTest
  * @package App\Utilits\loadDataExcel\handlerRow
  */
-class handlerRowsValidDataFromFileTest_ReestrIn extends KernelTestCase
+class handlerRowsValidTestDataFromFileTest_ReestrIn extends KernelTestCase
 {
     /**
      * @var getReaderExcel
