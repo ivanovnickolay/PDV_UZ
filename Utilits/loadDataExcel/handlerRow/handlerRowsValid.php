@@ -10,6 +10,8 @@ namespace App\Utilits\loadDataExcel\handlerRow;
 use App\Entity\ReestrbranchIn;
 use App\Entity\ReestrbranchOut;
 use App\Entity\SprBranch;
+use App\Tests\Utilits\handlerRow\handlerRowValidDataFromArrayTest_ReestrIn;
+use App\Tests\Utilits\handlerRow\handlerRowValidDataFromArrayTest_ReestrOut;
 use App\Utilits\loadDataExcel\configLoader\configLoader_interface;
 use App\Utilits\loadDataExcel\configLoader\configLoadReestrOut;
 use Doctrine\ORM\EntityManager;
@@ -21,7 +23,10 @@ use Symfony\Component\Validator\Validation;
  * Класс реализует функциональность проверки данных полученных в строке
  * Class handlerRowsValid
  * @package App\Utilits\loadDataExcel\handlerRow
- * @todo  покрыть тестами !!!
+ *
+ * @see handlerRowsValidDataFromFileTest_ReestrIn
+ * @see handlerRowValidDataFromArrayTest_ReestrIn
+ * @see handlerRowValidDataFromArrayTest_ReestrOut
  */
 class handlerRowsValid extends handlerRowAbstract
 {

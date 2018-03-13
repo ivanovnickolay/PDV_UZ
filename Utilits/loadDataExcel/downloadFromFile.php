@@ -12,6 +12,7 @@ namespace App\Utilits\loadDataExcel;
 use App\Utilits\loadDataExcel\configLoader\configLoader_interface;
 use App\Utilits\loadDataExcel\configLoader\configLoaderFactory;
 use App\Utilits\loadDataExcel\Exception\errorLoadDataException;
+use App\Utilits\loadDataExcel\handlerRow\handlerRowsSave;
 use App\Utilits\loadDataExcel\handlerRow\handlerRowsValid;
 use Doctrine\ORM\EntityManager;
 
@@ -69,6 +70,10 @@ class downloadFromFile
 
 
     /**
+     * Метод выполняет валидацию всех строк в файле.
+     * Если во время валидации найдены ошибки - они передаются из метода в виде массива
+     * если ошибок нет - передается пустой массив
+     *
      * Перед началом загрузки и обработки строк с данными необходимо проверить чтобы
      *  вызов метода был позже метода в котором устанавливается название файла и создаются необходимые объекты
      *
@@ -78,8 +83,6 @@ class downloadFromFile
      */
     public function downloadDataAndValid():array {
         $this->validParametrs();
-
-
         $handler = new handlerRowsValid(
             $this->entytiManager,
             $this->config
@@ -90,13 +93,15 @@ class downloadFromFile
     }
 
     /**
+     * Метод производит загрузку данных в базу данных.
+     * крайне желательно вызывать метод ПОСЛЕ метода downloadDataAndValid()
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws errorLoadDataException
      */
     public function downloadDataAndSave(){
     $this->validParametrs();
 
-        $handler = new handlerRowsValid(
+        $handler = new handlerRowsSave(
             $this->entytiManager,
             $this->config
         );
@@ -121,4 +126,12 @@ class downloadFromFile
         }
     }
 
+    /**
+     * Анулирует все используемые классом вспомагательные объекты для освобождения памяти
+     */
+    public function unSetAllObjects(){
+        unset($this->load);
+            unset($this->config);
+        unset($this->fileName);
+    }
 }
