@@ -40,6 +40,12 @@ class downloadFromFile
      */
     private $load;
 
+    /**
+     *
+     * Инициализация класса валидации и загрузки данных из файлов
+     *
+     * @param EntityManager $entityManager
+     */
     public function __construct(EntityManager $entityManager)
     {
         $this->entytiManager=$entityManager;
@@ -82,7 +88,11 @@ class downloadFromFile
      * @throws errorLoadDataException
      */
     public function downloadDataAndValid():array {
-        $this->validParametrs();
+       try {
+           $this->validParametrs();
+       }catch (errorLoadDataException $e){
+           throw new errorLoadDataException($e->getMessage());
+       }
         $handler = new handlerRowsValid(
             $this->entytiManager,
             $this->config
@@ -99,7 +109,11 @@ class downloadFromFile
      * @throws errorLoadDataException
      */
     public function downloadDataAndSave(){
-    $this->validParametrs();
+        try {
+            $this->validParametrs();
+        }catch (errorLoadDataException $e){
+            throw new errorLoadDataException($e->getMessage());
+        }
 
         $handler = new handlerRowsSave(
             $this->entytiManager,

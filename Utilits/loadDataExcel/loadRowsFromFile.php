@@ -62,7 +62,9 @@ class loadRowsFromFile
     private $handlerRows;
 
     /**
-     *  Подготовка данных для работы класса загрузки данных
+     * Подготовка данных для работы класса загрузки данных
+     * Класс проводит загрузку строк из файла и передачу их обработчику для сохранения в базу
+     *
      * loadData constructor.
      * @param string $fileName
      * @throws errorLoadDataException

@@ -14,8 +14,14 @@ use App\Utilits\loadDataExcel\Exception\errorLoadDataException;
 use App\Utilits\workToFileSystem\workWithFiles;
 use Doctrine\ORM\EntityManager;
 
-//todo тесты !!
+/**
+ * класс предназначен для организации загрузки информации из файлов Excel
+ *
+ * Class LoadReestrFromFile
+ * @package App\Services
 
+ *
+ */
 class LoadReestrFromFile
 {
     /**
@@ -38,6 +44,11 @@ class LoadReestrFromFile
      */
     private $dirForMoveFilesWithError;
 
+    /**
+     * LoadReestrFromFile constructor.- инициализирует все переменные и получает класс $entityManager
+     * @param EntityManager $entityManager
+     *
+     */
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -45,6 +56,7 @@ class LoadReestrFromFile
                 $this->dirForLoadFiles="";
                     $this->dirForMoveFilesWithError="";
     }
+
     /*
      * получение директории из которой загружаются файлы
      * @param string $dirForLoadFiles
@@ -111,18 +123,28 @@ class LoadReestrFromFile
         } catch (\Exception $exception) {
 
         }
+        // создаем класс для загрузки данных
         $downloadData = new downloadFromFile($this->entityManager);
         //режем список файлов на куски по 6 штук
         $arr_slice = array_slice($arrayFiles, 0, 6);
         foreach ($arr_slice as $fileName) {
             try {
+                //передаем название файлов в класс
                 $downloadData->setFileName($fileName);
+                    // проводим валидациию данных
                     $arrayErrorValidation = $downloadData->downloadDataAndValid();
+                    // проверяем массив с ошибками
                     if (!empty($arrayErrorValidation)) {
+                        // если массив не пустой
+                        // переносим файл с данными в директорию для ошибочных файлов
                         workWithFiles::moveFiles($fileName, $this->dirForMoveFilesWithError);
+                            //  формируем файл с ошибками валидации
                             workWithFiles::createFileErrorValidation($this->dirForMoveFilesWithError, $fileName, $arrayErrorValidation);
                     } else {
+                        // если массив пустой
+                        // загружаем данные в базу
                         $downloadData->downloadDataAndSave();
+                            // переносим файл в директорию для успешно загруженных файлов
                             workWithFiles::moveFiles($fileName, $this->dirForMoveFiles);
                     }
 
@@ -131,6 +153,7 @@ class LoadReestrFromFile
             } catch (\Exception $exception) {
 
             }
+            // очищаем все используеміе в классе объекты перед загрузкой нового файла
             $downloadData->unSetAllObjects();
             //http://ru.php.net/manual/ru/features.gc.collecting-cycles.php
             gc_collect_cycles();
