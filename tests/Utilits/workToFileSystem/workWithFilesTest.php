@@ -90,11 +90,9 @@ class workWithFilesTest extends TestCase
     public function test_createFileErrorValidation_Error(){
         $this->expectException(\Exception::class);
             $this->expectExceptionMessage("Директория для сохранения файла не найдена");
-                try {
-                    workWithFiles::createFileErrorValidation($this->file_system->url().'/gg',"465465",array());
-                }catch (\Exception $e){
 
-                }
+                    workWithFiles::createFileErrorValidation($this->file_system->url().'/gg',"465465",array());
+
     }
 
     /**

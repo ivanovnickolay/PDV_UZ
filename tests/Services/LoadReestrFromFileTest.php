@@ -13,12 +13,19 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 //todo написать тест на пробное чтение данных и контроль их после записи в базе
 
+/**
+ * Тестирование создания объекта класса и генерирование ошибок при не достатке данных
+ * Class LoadReestrFromFileControlCreateClassTest
+ * @package App\Services
+ *
+ */
 class LoadReestrFromFileTest extends KernelTestCase
 {
     /**
      * @var EntityManager
      */
     private $entityManager;
+
 
     public function setUp(){
 
@@ -56,5 +63,23 @@ class LoadReestrFromFileTest extends KernelTestCase
         $this->expectExceptionMessage('Пути к необходимым директориям не заданы');
         $obj = new LoadReestrFromFile($this->entityManager);
         $obj->execute();
+    }
+
+    public function test_createObject_WithDir(){
+        $kernel = self::bootKernel();
+        $obj = new LoadReestrFromFile($this->entityManager);
+
+        $obj->setDirForLoadFiles(
+            $kernel->getContainer()->getParameter('dirForLoadFiles')
+        );
+        $obj->setDirForMoveFiles(
+            $kernel->getContainer()->getParameter('dirForMoveFiles')
+        );
+        $obj->setDirForMoveFilesWithError(
+            $kernel->getContainer()->getParameter('dirForMoveFilesWithError')
+        );
+        $obj->execute();
+        $this->assertInstanceOf(LoadReestrFromFile::class,$obj);
+
     }
 }
