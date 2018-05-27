@@ -26,7 +26,7 @@ use PHPUnit\Framework\TestCase;
         *  - configLoadReestrIn
         *
  */
-// todo покрыть тестами полнотью все поля сущности !!
+
 class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
 {
     /**

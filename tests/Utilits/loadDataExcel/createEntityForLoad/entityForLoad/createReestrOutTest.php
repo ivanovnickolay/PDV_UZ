@@ -34,7 +34,9 @@ class createReestrOutTest extends TestCase
      */
     public function testCreateReestr()
     {
-        $reader= new getReaderExcel('C:\OSPanel\domains\PDV_UZ\tests\Utilits\loadDataExcel\createEntityForLoad\entityForLoad\testDataReestrOut_TAB2.xlsx');
+        $fileName= __DIR__.'\\testDataReestrOut_TAB2.xlsx';
+        //$reader= new getReaderExcel('C:\OSPanel\domains\PDV_UZ\tests\Utilits\loadDataExcel\createEntityForLoad\entityForLoad\testDataReestrOut_TAB2.xlsx');
+        $reader= new getReaderExcel($fileName);
         $reader->createFilter('DR');
         $reader->getReader();
         $this->assertInstanceOf(BaseReader::class,$reader->getReader());
@@ -84,7 +86,9 @@ class createReestrOutTest extends TestCase
      */
     public function testCreateReestr2()
     {
-        $reader= new getReaderExcel('C:\OSPanel\domains\PDV_UZ\tests\Utilits\loadDataExcel\createEntityForLoad\entityForLoad\testDataReestrOut_TAB2.xlsx');
+        $fileName= __DIR__.'\\testDataReestrOut_TAB2.xlsx';
+        //$reader= new getReaderExcel('C:\OSPanel\domains\PDV_UZ\tests\Utilits\loadDataExcel\createEntityForLoad\entityForLoad\testDataReestrOut_TAB2.xlsx');
+        $reader= new getReaderExcel($fileName);
         $reader->createFilter('DR');
         $reader->getReader();
         $this->assertInstanceOf(BaseReader::class,$reader->getReader());
@@ -135,7 +139,9 @@ class createReestrOutTest extends TestCase
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function testValidatorReestr(){
-        $reader= new getReaderExcel('C:\OSPanel\domains\PDV_UZ\tests\Utilits\loadDataExcel\createEntityForLoad\entityForLoad\testDataReestrOut_TAB2.xlsx');
+        $fileName= __DIR__.'\\testDataReestrOut_TAB2.xlsx';
+        //$reader= new getReaderExcel('C:\OSPanel\domains\PDV_UZ\tests\Utilits\loadDataExcel\createEntityForLoad\entityForLoad\testDataReestrOut_TAB2.xlsx');
+        $reader= new getReaderExcel($fileName);
         $reader->createFilter('DR');
         $reader->getReader();
         $this->assertInstanceOf(BaseReader::class,$reader->getReader());

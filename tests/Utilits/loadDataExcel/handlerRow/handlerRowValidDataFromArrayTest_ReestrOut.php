@@ -217,6 +217,8 @@ class handlerRowValidDataFromArrayTest_ReestrOut extends TestCase
 
     /**
      * @dataProvider dataFromValidDoc
+     * @param $testData
+     * @param $result
      */
     public function test_validNumDoc($testData, $result)
     {
@@ -233,6 +235,9 @@ class handlerRowValidDataFromArrayTest_ReestrOut extends TestCase
         );
     }
 
+    /**
+     * @return array
+     */
     public function dataFromValidTypeInvoiceFull()
     {
         return [
@@ -304,6 +309,8 @@ class handlerRowValidDataFromArrayTest_ReestrOut extends TestCase
 
     /**
      * @dataProvider dataFromValidINN
+     * @param $testData
+     * @param $result
      */
     public function test_validTypeINN($testData, $result)
     {

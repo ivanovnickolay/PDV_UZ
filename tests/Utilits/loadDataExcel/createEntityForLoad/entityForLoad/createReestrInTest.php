@@ -32,7 +32,8 @@ class createReestrInTest extends TestCase
      * @throws \App\Utilits\loadDataExcel\Exception\errorLoadDataException
      */
     public function setUp(){
-        $this->reader= new getReaderExcel('C:\OSPanel\domains\PDV_UZ\tests\Utilits\loadDataExcel\createEntityForLoad\entityForLoad\testDataReestrIn_TAB1.xls');
+        $fileName= __DIR__.'\\testDataReestrIn_TAB1.xls';
+        $this->reader= new getReaderExcel($fileName);
         $this->reader->createFilter('EE');
         $this->reader->getReader();
     }

@@ -117,7 +117,7 @@ class workWithFilesTest extends TestCase
      * тестирование содержимого созданного файла
      */
     public function test_createFileErrorValidation_SaveFile_EqualsContentFile(){
-        //todo write test
+
         $arrayError = [
             "1"=>"First error",
             "2"=>"Two error",
@@ -139,7 +139,35 @@ class workWithFilesTest extends TestCase
         $this->assertEquals($testStr,$content);
         //echo $testStr;
         //echo $content;
-
     }
 
+    public function datavalidFile()
+    {
+        return array(
+            ["19082016095050_40075815_J1201508_TAB1.xls",true],
+            ["19082016095050_40075815_J1201508_TAB1.xlsz",false],
+            ["19082016100630_40075815_J1201508_TAB1.xlsx",true],
+            ["19082016100630_40075815_J1201508_TAB1_.xlsx",false],
+            ["19082016100632_40075815_J1201508_TAB2.xlsx",true],
+            ["test.xlsx",false],
+            ["testtab1.xlsx",false],
+            ["testTAB1.xlsx",true]
+        );
+    }
+    /**
+     * тестирование на проверку верности файлов
+     * @link https://www.nathankowald.com/blog/2012/12/how-to-unit-test-private-methods-in-php/ как тестировать приватные методы
+     * @dataProvider datavalidFile
+     */
+    public function test_isValidFile($file,$res)
+    {
+        $l=new workWithFiles($file);
+        $mes="Equals file name " .$file." res ".$res;
+        $method = new \ReflectionMethod(workWithFiles::class, "isValidFile");
+        $method->setAccessible(true);
+        //$this->assertEquals($res, $l->isValidFile($file),$mes);
+        $this->assertEquals($res, $method->invoke(new workWithFiles($file),$file),$mes);
+        unset($l);
+
+    }
 }

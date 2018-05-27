@@ -93,7 +93,9 @@ namespace App\Utilits\loadDataExcel\createReaderFile {
          */
         public function test_getRowDataArray()
         {
-            $reader=new getReaderExcel("C:\\OSPanel\\domains\\PDV_UZ\\tests\\Utilits\\loadDataExcel\\createReaderFile\\test.xlsx");
+            $fileName= __DIR__.'\\test.xlsx';
+            $reader= new getReaderExcel($fileName);
+            //$reader=new getReaderExcel("C:\\OSPanel\\domains\\PDV_UZ\\tests\\Utilits\\loadDataExcel\\createReaderFile\\test.xlsx");
             $reader->createFilter('F');
                 // создаем класс Ридера PHPExcel_Reader_Excel2007
                 $reader->getReader();
@@ -121,7 +123,10 @@ namespace App\Utilits\loadDataExcel\createReaderFile {
          */
         public function test_getMaxRow()
         {
-            $reader=new getReaderExcel("C:\\OSPanel\\domains\\PDV_UZ\\tests\\Utilits\\loadDataExcel\\createReaderFile\\test.xlsx");
+
+            $fileName= __DIR__.'\\test.xlsx';
+            $reader= new getReaderExcel($fileName);
+            //$reader=new getReaderExcel("C:\\OSPanel\\domains\\PDV_UZ\\tests\\Utilits\\loadDataExcel\\createReaderFile\\test.xlsx");
             $reader->createFilter('F');
             $reader->getReader();
             $this->assertEquals(30,$reader->getMaxRow());

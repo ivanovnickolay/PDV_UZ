@@ -92,8 +92,10 @@ class handlerRowsValidTestDataFromFileTest_ReestrIn extends KernelTestCase
 
 
         $configLoader = new configLoadReestrIn();
-        $this->reader= new getReaderExcel('C:\OSPanel\domains\PDV_UZ\tests\Utilits\loadDataExcel\createEntityForLoad\entityForLoad\testDataReestrIn_TAB1.xls');
-        $this->reader->createFilter($configLoader->getLastColumn());
+        $fileName= __DIR__.'\\testDataReestrIn_TAB1.xls';
+        //$this->reader= new getReaderExcel('C:\OSPanel\domains\PDV_UZ\tests\Utilits\loadDataExcel\createEntityForLoad\entityForLoad\testDataReestrIn_TAB1.xls');
+            $this->reader= new getReaderExcel($fileName);
+            $this->reader->createFilter($configLoader->getLastColumn());
         $this->reader->getReader();
        // $this->entity = $configLoader->getEntityForLoad();
         $this->handlerRow = new handlerRowsValid($objectManager,$configLoader);
@@ -137,7 +139,7 @@ class handlerRowsValidTestDataFromFileTest_ReestrIn extends KernelTestCase
         $arr=$this->reader->getRowDataArray(3);
         $this->handlerRow->handlerRow($arr);
         $arrayError = $this->handlerRow->getResultHandlingAllRows();
-        var_dump($arrayError);
+        //var_dump($arrayError);
         $this->assertNotEmpty($arrayError);
         // ошибки быть не должно
         $this->assertEquals(
@@ -174,7 +176,7 @@ class handlerRowsValidTestDataFromFileTest_ReestrIn extends KernelTestCase
         $this->handlerRow->handlerRow($arr);
         $arrayError = $this->handlerRow->getResultHandlingAllRows();
         $this->assertNotEmpty($arrayError, 'Массив вернулся пустым ');
-        var_dump($arrayError);
+        //var_dump($arrayError);
         // ошибка должна быть
         $this->assertEquals(
             1,
@@ -212,7 +214,7 @@ class handlerRowsValidTestDataFromFileTest_ReestrIn extends KernelTestCase
         $this->handlerRow->handlerRow($arr);
         $arrayError = $this->handlerRow->getResultHandlingAllRows();
         $this->assertNotEmpty($arrayError, 'Массив вернулся пустым ');
-        var_dump($arrayError);
+        //var_dump($arrayError);
         // ошибка должна быть
         $this->assertEquals(
             1,
@@ -248,7 +250,7 @@ class handlerRowsValidTestDataFromFileTest_ReestrIn extends KernelTestCase
         $this->handlerRow->handlerRow($arr);
         $arrayError = $this->handlerRow->getResultHandlingAllRows();
         $this->assertNotEmpty($arrayError, 'Массив вернулся пустым ');
-        var_dump($arrayError);
+        //var_dump($arrayError);
         // ошибка должна быть
         $this->assertEquals(
             1,

@@ -147,7 +147,6 @@ class downloadFromFileTest extends TestCase
         $fileName = __DIR__."\\testDataReestrIn_TAB1.xls";
         $obj->setFileName($fileName);
             $arrayError = $obj->downloadDataAndValid();
-            //todo написать проверку данных массива с эталоном
             // по строчно проверяем ошибки
             $this->assertEquals(
                 1,
