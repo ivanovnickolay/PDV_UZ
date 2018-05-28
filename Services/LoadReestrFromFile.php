@@ -123,30 +123,25 @@ class LoadReestrFromFile
         } catch (\Exception $exception) {
 
         }
-        // создаем класс для загрузки данных
-        $downloadData = new downloadFromFile($this->entityManager);
+
         //режем список файлов на куски по 6 штук
         $arr_slice = array_slice($arrayFiles, 0, 6);
         foreach ($arr_slice as $fileName) {
             try {
+                // создаем класс для загрузки данных
+                $downloadData = new downloadFromFile($this->entityManager);
                 //передаем название файлов в класс
                 $downloadData->setFileName($fileName);
-                    // проводим валидациию данных
-                    $arrayErrorValidation = $downloadData->downloadDataAndValid();
-                    // проверяем массив с ошибками
-                    if (!empty($arrayErrorValidation)) {
-                        // если массив не пустой
-                        // переносим файл с данными в директорию для ошибочных файлов
-                        workWithFiles::moveFiles($fileName, $this->dirForMoveFilesWithError);
-                            //  формируем файл с ошибками валидации
-                            workWithFiles::createFileErrorValidation($this->dirForMoveFilesWithError, $fileName, $arrayErrorValidation);
-                    } else {
-                        // если массив пустой
+                if (!$this->validDataToFile($downloadData, $fileName)){
+                    continue;
+                };
+
+                // если массив пустой
                         // загружаем данные в базу
                         $downloadData->downloadDataAndSave();
                             // переносим файл в директорию для успешно загруженных файлов
                             workWithFiles::moveFiles($fileName, $this->dirForMoveFiles);
-                    }
+
 
             } catch (errorLoadDataException $exception) {
 
@@ -155,8 +150,33 @@ class LoadReestrFromFile
             }
             // очищаем все используеміе в классе объекты перед загрузкой нового файла
             $downloadData->unSetAllObjects();
+            unset($downloadData);
             //http://ru.php.net/manual/ru/features.gc.collecting-cycles.php
             gc_collect_cycles();
         }
+    }
+
+    /**
+     * @param $downloadData
+     * @param $fileName
+     * @return bool
+     *      - false - файл не прошел валидацию
+     *      - true - файл прошел валидацию
+     * @throws \Exception
+     */
+    private function validDataToFile($downloadData, $fileName): bool
+    {
+    // проводим валидациию данных
+        $arrayErrorValidation = $downloadData->downloadDataAndValid();
+        // проверяем массив с ошибками
+        if (!empty($arrayErrorValidation)) {
+            // если массив не пустой
+            // переносим файл с данными в директорию для ошибочных файлов
+            workWithFiles::moveFiles($fileName, $this->dirForMoveFilesWithError);
+            //  формируем файл с ошибками валидации
+            workWithFiles::createFileErrorValidation($this->dirForMoveFilesWithError, $fileName, $arrayErrorValidation);
+            return false;
+        }
+        return true;
     }
 }

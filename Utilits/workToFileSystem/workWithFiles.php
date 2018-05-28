@@ -101,7 +101,9 @@ class workWithFiles
 	    if(!is_dir($dirSaveFile) or(!is_writable($dirSaveFile))){
 	        throw new \Exception("Директория для сохранения файла не найдена");
         }
-        $fileNameWithDir = $dirSaveFile."/".$nameFile.'log';
+        $pathinfo = pathinfo($nameFile);
+        $baseNameFile=$pathinfo['filename'];
+        $fileNameWithDir = $dirSaveFile."/".$baseNameFile.'.log';
 	    foreach ($arrayError as $key=>$value){
 	        $stringForSave = "Строка № $key содержит ошибки =>> $value\n";
             file_put_contents($fileNameWithDir,$stringForSave,FILE_APPEND);
