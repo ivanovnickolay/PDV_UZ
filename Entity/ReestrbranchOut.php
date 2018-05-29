@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\forForm\validationConstraint\ContainsNumDoc;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -843,9 +844,11 @@ class ReestrbranchOut
                     return false;
                 }
             }
-            if(empty($this->getRkePidstava())){
-                return false;
-            }
+            // Пустое поле основание для создания РКЕ возможно - так как до
+            // 2018 года оно не было обязательным полем при создании РКЕ
+            //if(empty($this->getRkePidstava())){
+            //    return false;
+            //}
             if (new \DateTime("0000-00-00")==$this->getRkeDateCreateInvoice()){
                 return false;
             }
@@ -853,6 +856,40 @@ class ReestrbranchOut
         } else{
             return true;
         }
+
+    }
+
+    /**
+     * Проверяем правильность написание номера документов
+     * Проверка производится только для документов ПНЕ и РКЕ
+     *  - если документ не прошел проверку - return false;
+     *  - если документ прошел проверку или документ не подлежал проверке - return true;
+     * @return bool
+     */
+    public function isValidNumDoc(ExecutionContextInterface $context){
+        // массив типов документов которые не проверяются на верный номер документа
+        //echo "isValidNumDoc  ";
+        $arrayNotVerified = array(
+            'МДЕ',
+            'ЧК',
+            'ТК',
+            'ГР',
+            'ПО',
+            'ПЗ',
+            'НП',
+            'БО'
+        );
+        $numInvoice = $this->getNumInvoice();
+        if(!in_array($this->getTypeInvoiceFull(),$arrayNotVerified)){
+            if (preg_match("/[^0-9\/]/", $numInvoice, $matches))
+            {
+                $context->buildViolation(sprintf(
+                    '%s - не верный номер документа ',$numInvoice))
+                    ->atPath('numInvoice')
+                    ->addViolation();
+            }
+        }
+        return true;
 
     }
 
@@ -917,7 +954,8 @@ class ReestrbranchOut
                 $metadata->addPropertyConstraint('numInvoice',new Assert\NotBlank(array(
                     'message'=>'Номер документа {{ value }} не может быть пустым '
                 )));
-                    $metadata->addPropertyConstraint('numInvoice', new ContainsNumDoc());
+                $metadata->addConstraint((new Assert\Callback('isValidNumDoc')));
+                    //$metadata->addPropertyConstraint('numInvoice', new ContainsNumDoc());
                         //$metadata->addPropertyConstraint('numInvoice', new Assert\Type(array(
                         //    'type'=>'alpha',
                         //    'message'=>'Тип документа не может содержать ни каких символов кроме буквенных'
