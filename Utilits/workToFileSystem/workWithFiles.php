@@ -105,8 +105,10 @@ class workWithFiles
         $baseNameFile=$pathinfo['filename'];
         $fileNameWithDir = $dirSaveFile."/".$baseNameFile.'.log';
 	    foreach ($arrayError as $key=>$value){
-	        $stringForSave = "Строка № $key содержит ошибки =>> $value\n";
-            file_put_contents($fileNameWithDir,$stringForSave,FILE_APPEND);
+	        if(!empty($value)) {
+                $stringForSave = "Строка № $key содержит ошибки =>> $value\n";
+                file_put_contents($fileNameWithDir, $stringForSave, FILE_APPEND);
+            }
         }
 
 

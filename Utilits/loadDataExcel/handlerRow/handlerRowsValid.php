@@ -292,7 +292,7 @@ class handlerRowsValid extends handlerRowAbstract
     private function verifyStabilityIndicators($obj): void
     {
         if ($this->countRows>=3) {
-            $err = " ";
+            $err = "";
             if ($this->monthReestr != $obj->getMonth()) {
                 $err .= "Месяц реестра не соответствует месяцу указанному в первой строке файла! ";
             }
@@ -302,8 +302,10 @@ class handlerRowsValid extends handlerRowAbstract
                     if ($this->numBranchReestr != $obj->getNumBranch()) {
                         $err .= "Номер филиала реестра не соответствует номеру указанному в первой строке файла! ";
                     }
+            if (!empty($err)){
+                $this->allErrorsValidation[$this->countRows] = $err;
+            }
 
-            $this->allErrorsValidation[$this->countRows] = $err;
         }
     }
 
