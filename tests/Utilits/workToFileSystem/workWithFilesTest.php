@@ -110,7 +110,7 @@ class workWithFilesTest extends TestCase
                     }catch (\Exception $e){
 
                     }
-                $this->assertFileExists($dirFromError."/".$fileName."log");
+                $this->assertFileExists($dirFromError."/".$fileName.".log");
     }
 
     /**
@@ -135,7 +135,7 @@ class workWithFilesTest extends TestCase
                 foreach ($arrayError as $key=>$value){
                     $testStr = $testStr. "Строка № $key содержит ошибки =>> $value\n";
                 }
-           $content = file_get_contents($dirFromError."/".$fileName."log");
+           $content = file_get_contents($dirFromError."/".$fileName.".log");
         $this->assertEquals($testStr,$content);
         //echo $testStr;
         //echo $content;

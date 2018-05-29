@@ -28,7 +28,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * Class handlerRowsValidTest
  * @package App\Utilits\loadDataExcel\handlerRow
  */
-class handlerRowsValidTestDataFromFileTest_ReestrIn extends KernelTestCase
+class handlerRowsValidTestDataFromFile_ReestrIn_Test extends KernelTestCase
 {
     /**
      * @var getReaderExcel
@@ -244,9 +244,10 @@ class handlerRowsValidTestDataFromFileTest_ReestrIn extends KernelTestCase
         );
         //
     }
-    public function test_validRow_6(){
+    public function test_validRow_6()
+    {
         $this->reader->loadDataFromFileWithFilter(2);
-        $arr=$this->reader->getRowDataArray(6);
+        $arr = $this->reader->getRowDataArray(6);
         $this->handlerRow->handlerRow($arr);
         $arrayError = $this->handlerRow->getResultHandlingAllRows();
         $this->assertNotEmpty($arrayError, 'Массив вернулся пустым ');
@@ -254,40 +255,41 @@ class handlerRowsValidTestDataFromFileTest_ReestrIn extends KernelTestCase
         // ошибка должна быть
         $this->assertEquals(
             1,
-            substr_count($arrayError[2],"Филиал уже подавал РПН за этот период ранее")
+            substr_count($arrayError[2], "Филиал уже подавал РПН за этот период ранее")
         );
         // ошибка должна быть
         $this->assertEquals(
             0,
-            substr_count($arrayError[2],"Филиал не имеет право подавать РПН на уровень ЦФ")
+            substr_count($arrayError[2], "Филиал не имеет право подавать РПН на уровень ЦФ")
         );
         // ошибка должна быть
         $this->assertEquals(
             0,
-            substr_count($arrayError[2],"Дата создания документа null не может быть пустым")
+            substr_count($arrayError[2], "Дата создания документа null не может быть пустым")
         );
         $this->assertEquals(
             0,
-            substr_count($arrayError[2],"не верный номер документа ")
+            substr_count($arrayError[2], "не верный номер документа ")
         );
         $this->assertEquals(
             0,
-            substr_count($arrayError[2],"Номер документа null не может быть пустым ")
+            substr_count($arrayError[2], "Номер документа null не может быть пустым ")
         );
         $this->assertEquals(
             1,
-            substr_count($arrayError[2],"Поле zagSumm \"лрлрло\" содержит данные не того типа.")
+            substr_count($arrayError[2], "Поле zagSumm \"лрлрло\" содержит данные не того типа.")
         );
         $this->assertEquals(
             1,
-            substr_count($arrayError[2],"Поле baza7 \"рлрл\" содержит данные не того типа. ")
+            substr_count($arrayError[2], "Поле baza7 \"рлрл\" содержит данные не того типа. ")
         );
         $this->assertEquals(
             1,
-            substr_count($arrayError[2]," Поле pdv7 \"_8888\" содержит данные не того типа. ")
+            substr_count($arrayError[2], " Поле pdv7 \"_8888\" содержит данные не того типа. ")
         );
         //
     }
+
 
 
 }

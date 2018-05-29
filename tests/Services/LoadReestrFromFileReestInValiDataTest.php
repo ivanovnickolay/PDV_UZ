@@ -56,6 +56,11 @@ class LoadReestrFromFileReestInValiDataTest extends TestCase
                     10
                 ),
                 array(
+                    array('numMainBranch'=>'616'),
+                    null,
+                    10
+                ),
+                array(
                     array('numMainBranch'=>'579'),
                     null,
                     null
@@ -76,14 +81,22 @@ class LoadReestrFromFileReestInValiDataTest extends TestCase
             workWithFiles::moveFiles(
                 __DIR__.'\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.xls',
                 __DIR__.'\\dirForLoadFiles');
-            if (file_exists(__DIR__.'\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log')) {
-                unlink(__DIR__ . '\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log');
-            }
+                        if (file_exists(__DIR__.'\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log')) {
+                            unlink(__DIR__ . '\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log');
+                        }
+            workWithFiles::moveFiles(
+                __DIR__.'\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1.xls',
+                __DIR__.'\\dirForLoadFiles');
+                        if (file_exists(__DIR__.'\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1.log')) {
+                            unlink(__DIR__ . '\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1.log');
+                        }
             //echo "file move";
     }
 
 
     /**
+     * Чтение файла с ошибками
+     * testDataReestrIn_TAB1.xls
      * @throws \ReflectionException
      * @throws errorLoadDataException
      */
@@ -114,15 +127,56 @@ class LoadReestrFromFileReestInValiDataTest extends TestCase
         $arrayLog=$this->getFileLogToArray(__DIR__.'\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log');
         $this->assertLogContext($arrayLog);
     }
-    //todo написать проверку содержимого лог файла
-    private function getFileLogToArray(string $fileName):array {
-        if(!file_exists($fileName)){
-            throw new errorLoadDataException("Файл с логами не найден !");
-        }
-        return file($fileName);
+
+    /**
+     * чтение файла без ошибок
+     * testDataСorrectReestrIn_TAB1++.xls
+     * @throws \ReflectionException
+     * @throws errorLoadDataException
+     */
+
+    public function test_validDataToFileCorrect(){
+
+        // делаем частный метод публичным в рамках теста
+        $method = new \ReflectionMethod(LoadReestrFromFile::class,"validDataToFile");
+        $method->setAccessible(true);
+        // создаем  объект для тестирования
+        $obj = new LoadReestrFromFile($this->objectManager);
+        $obj->setDirForLoadFiles(__DIR__.'\\dirForLoadFiles');
+        $obj->setDirForMoveFiles(__DIR__.'\\dirForMoveFiles');
+        $obj->setDirForMoveFilesWithError(__DIR__.'\\dirForMoveFilesWithError');
+        // создаем необходимые для тестирования "публичного" метода параметры
+        $download = new downloadFromFile($this->objectManager);
+        $download->setFileName(__DIR__.'\\dirForLoadFiles\\testDataСorrectReestrIn_TAB1.xls');
+        // проверяем работу "публичного метода
+        $resTest = $method->invoke($obj,$download,__DIR__.'\\dirForLoadFiles\\testDataСorrectReestrIn_TAB1.xls');
+        // ошибок быть не должно - массив ДОЛЖЕН быть пустым
+        $this->assertEquals(true,$resTest );
+        // проверяем внутреннюю работу "публичного" метода
+        /**
+        $this->assertFileExists(
+        __DIR__.'\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1++.xls',
+        "Файл c данными не найден !");
+        $this->assertFileExists(
+        __DIR__.'\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1++.log',
+        "Файл c логами не найден !");
+         */
+
+        //$arrayLog=$this->getFileLogToArray(__DIR__.'\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log');
+        //$this->assertLogContext($arrayLog);
     }
 
     /**
+     * читает значение файла с логами в массив
+     * @param string $fileName
+     * @return array
+     */
+    private function getFileLogToArray(string $fileName):array {
+       return file($fileName);
+    }
+
+    /**
+     * проверка массива на правильность ошибок
      * @param $arrayLog
      */
     private function assertLogContext($arrayLog): void
@@ -132,25 +186,26 @@ class LoadReestrFromFileReestInValiDataTest extends TestCase
             trim($arrayLog[0]),
             "Элемент arrayLog с индексом 0 содержи ошибки ");
         $this->assertEquals(
-            'Строка № 3 содержит ошибки =>>  Номер филиала реестра не соответствует номеру указанному в первой строке файла! Дата получения документа null не может быть пустым  | Дата создания документа null не может быть пустым  |  |',
+            'Строка № 3 содержит ошибки =>> Номер филиала реестра не соответствует номеру указанному в первой строке файла! Дата получения документа null не может быть пустым  | Дата создания документа null не может быть пустым  |  |',
             trim($arrayLog[1]),
             "Элемент arrayLog с индексом 1 содержи ошибки ");
         $this->assertEquals(
-            'Строка № 4 содержит ошибки =>>  "пп" - не верный номер документа  | ИНН документа не может быть пустым  |  |',
+            'Строка № 4 содержит ошибки =>> пп - не верный номер документа  | ИНН документа не может быть пустым  |  |',
             trim($arrayLog[2]),
             "Элемент arrayLog с индексом 2 содержи ошибки ");
         $this->assertEquals(
-            'Строка № 5 содержит ошибки =>>  Номер документа null не может быть пустым  | ИНН документа не может быть пустым  |  |',
+            'Строка № 5 содержит ошибки =>> Номер документа null не может быть пустым  | ИНН документа не может быть пустым  |  |',
             trim($arrayLog[3]),
             "Элемент arrayLog с индексом 3 содержи ошибки ");
         $this->assertEquals(
-            'Строка № 6 содержит ошибки =>>  Поле zagSumm "лрлрло" содержит данные не того типа. | Поле baza7 "рлрл" содержит данные не того типа. | Поле pdv7 "_8888" содержит данные не того типа. |  |',
+            'Строка № 6 содержит ошибки =>> Поле zagSumm "лрлрло" содержит данные не того типа. | Поле baza7 "рлрл" содержит данные не того типа. | Поле pdv7 "_8888" содержит данные не того типа. |  |',
             trim($arrayLog[4]),
             "Элемент arrayLog с индексом 4 содержи ошибки ");
         $this->assertEquals(
-            'Строка № 7 содержит ошибки =>>  Указан не верные реквизиты документа который корректировал РКЕ |  |',
+            'Строка № 7 содержит ошибки =>> Указан не верные реквизиты документа который корректировал РКЕ |  |',
             trim($arrayLog[5]),
             "Элемент arrayLog с индексом 5 содержи ошибки ");
     }
+
 
 }

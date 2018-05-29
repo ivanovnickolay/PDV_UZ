@@ -8,17 +8,18 @@
 
 namespace App\Tests\Utilits\handlerRow;
 
-use App\Entity\ReestrbranchIn;
-use App\Entity\Repository\ReestrBranch_in;
+
+use App\Entity\ReestrbranchOut;
+use App\Entity\Repository\ReestrBranch_out;
 use App\Entity\SprBranch;
-use App\Utilits\loadDataExcel\configLoader\configLoadReestrIn;
+use App\Utilits\loadDataExcel\configLoader\configLoadReestrOut;
 use App\Utilits\loadDataExcel\handlerRow\handlerRowsValid;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 
 
 /**
-        * Тестирование функциональности класса handlerRowsValid при проверке РПН кредита.
+        * Тестирование функциональности класса handlerRowsValid при проверке РПН обязательств.
         * При помощи моков делаем подмену методов и проводим тестирование
         * путем считываения специально подготовленный массив с данными для формирования объекта сущности
         * Таким образом исключается дополнительное тестирование классов
@@ -26,8 +27,8 @@ use PHPUnit\Framework\TestCase;
         *  - configLoadReestrIn
         *
  */
-
-class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
+// todo покрыть тестами полнотью все поля сущности !!1
+class handlerRowValidDataFromArray_ReestrOut_Test extends TestCase
 {
     /**
      * @var handlerRowsValid
@@ -52,7 +53,7 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
                     null
                 ),
             );
-            $repoReestrIn = $this->createMock(ReestrBranch_in::class);
+            $repoReestrIn = $this->createMock(ReestrBranch_out::class);
             $repoReestrIn->expects($this->any())
                 ->method("findOneBy")
                 ->will($this->returnValueMap($mapIn));
@@ -75,14 +76,14 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
                 ->will($this->returnValueMap($mapSpr));
             $mapReestr = array(
                 array(SprBranch::class, $repoSpr),
-                array(ReestrbranchIn::class, $repoReestrIn)
+                array(ReestrbranchOut::class, $repoReestrIn)
             );
             $objectManager = $this->createMock(EntityManager::class);
             $objectManager->expects($this->any())
                 ->method('getRepository')
                 ->will($this->returnValueMap($mapReestr));
 
-            $configLoader = new configLoadReestrIn();
+            $configLoader = new configLoadReestrOut();
             $this->handlerRow = new handlerRowsValid($objectManager, $configLoader);
         }
     }
@@ -97,51 +98,44 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
         $arr[0][87] = 2016;
         //$this->reestrIn->setNumBranch($arr[0][66]);
         $arr[0][66] = '578';
-        //$this->reestrIn->setDateGetInvoice(//$this->getDataType($arr[0][105]));
-        //$arr[0][105]=new \DateTime("2017-01-01 00:00:00",new \DateTimeZone('Europe/Kiev'));
-        $arr[0][105] = "42564";
-        //$this->reestrIn->setDateCreateInvoice(//$this->getDataType($arr[0][126]));
-        $arr[0][126] = "42552";
-        //$this->reestrIn->setNumInvoice($arr[0][106]);
-        $arr[0][106] = '15';
-        //$this->reestrIn->setTypeInvoiceFull($arr[0][134]);
-        $arr[0][134] = "ПНЕ";
-        //$this->reestrIn->setNameClient($arr[0][108]);
-        $arr[0][108] = "Рога и копыта";
-        //$this->reestrIn->setInnClient($arr[0][109]);
-        $arr[0][109] = "100000000000";
-        //$this->reestrIn->setZagSumm($arr[0][111]);
-        $arr[0][111] = '12124.22';
-        //$this->reestrIn->setBaza20($arr[0][113]);
-        $arr[0][113] = "1212.11";
-        //$this->reestrIn->setPdv20($arr[0][116]);
-        $arr[0][116] = "1213.22";
-        //$this->reestrIn->setBaza7($arr[0][114]);
-        $arr[0][114] = 0;
-        //$this->reestrIn->setPdv7($arr[0][117]);
-        $arr[0][117] = 0;
-        //$this->reestrIn->setBaza0($arr[0][115]);
-        $arr[0][115] = 0;
-        //$this->reestrIn->setPdv0($arr[0][118]);
-        $arr[0][118] = 0;
-        //$this->reestrIn->setBazaZvil($arr[0][120]);
-        $arr[0][120] = 0;
-        //$this->reestrIn->setPdvZvil($arr[0][95]);
+        //$this->reestrOut->setDateCreateInvoice($this->getDataType($arr[0][99]));
+        $arr[0][99] = "42552";
+        //$this->reestrIn->setNumInvoice($arr[0][100]);
+        $arr[0][100] = '15';
+        //$this->reestrIn->setTypeInvoiceFull($arr[0][121]);
+        $arr[0][121] = "ПНЕ";
+        //$this->reestrOut->setTypeInvoice($arr[0][119]);
+        $arr[0][119] = "";
+        //$this->reestrIn->setNameClient($arr[0][103]);
+        $arr[0][103] = "Рога и копыта";
+        //$this->reestrIn->setInnClient($arr[0][104]);
+        $arr[0][104] = "100000000000";
+        //$this->reestrIn->setZagSumm($arr[0][106]);
+        $arr[0][106] = '12124.22';
+        //$this->reestrIn->setBaza20($arr[0][107]);
+        $arr[0][107] = "1212.11";
+        //$this->reestrIn->setPdv20($arr[0][109]);
+        $arr[0][109] = "1213.22";
+        //$this->reestrIn->setBaza7($arr[0][108]);
+        $arr[0][108] = 0;
+        //$this->reestrIn->setPdv7($arr[0][110]);
+        $arr[0][110] = 0;
+        //$this->reestrIn->setBaza0($arr[0][111]);
+        $arr[0][111] = 0;
+        //$this->reestrOut->setBazaZvil($arr[0][94]);
+        $arr[0][94] = 0;
+        //$this->reestrOut->setBazaNeObj($arr[0][97]);
+        $arr[0][97] = 0;
+        //$this->reestrOut->setBazaZaMezhiTovar($arr[0][95]);
         $arr[0][95] = 0;
-        //$this->reestrIn->setBazaNeGos($arr[0][98]);
-        $arr[0][98] = 0;
-        //$this->reestrIn->setPdvNeGos($arr[0][101]);
-        $arr[0][101] = 0;
-        //$this->reestrIn->setBazaZaMezhi($arr[0][103]);
-        $arr[0][103] = 0;
-        //$this->reestrIn->setPdvZaMezhi($arr[0][104]);
-        $arr[0][104] = 0;
-        //$this->reestrIn->setRkeDateCreateInvoice($this->getDataType($arr[0][122]));
-        $arr[0][122] = '';
-        //$this->reestrIn->setRkeNumInvoice($arr[0][123]);
-        $arr[0][123] = '';
-        //$this->reestrIn->setRkePidstava($arr[0][124]);
-        $arr[0][124] = '';
+        //$this->reestrOut->setBazaZaMezhiPoslug($arr[0][96]);
+        $arr[0][96] = 0;
+        //$this->reestrIn->setRkeDateCreateInvoice($this->getDataType($arr[0][112]));
+        $arr[0][112] = '';
+        //$this->reestrIn->setRkeNumInvoice($arr[0][114]);
+        $arr[0][114] = '';
+        //$this->reestrIn->setRkePidstava($arr[0][115]);
+        $arr[0][115] = '';
         //$this->reestrIn->setKeyField();
 
         return $arr;
@@ -164,10 +158,8 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
     public function test_date()
     {
         $arr = $this->getArrayData();
-        //$this->reestrIn->setDateGetInvoice(//$this->getDataType($arr[0][105]));
-        $arr[0][105] = "";
-        //$this->reestrIn->setDateCreateInvoice(//$this->getDataType($arr[0][126]));
-        $arr[0][126] = "";
+        //$this->reestrOut->setDateCreateInvoice($this->getDataType($arr[0][99]));
+        $arr[0][99] = "";
         $this->handlerRow->handlerRow($arr);
         $arrayError = $this->handlerRow->getResultHandlingAllRows();
         //var_dump($arrayError);
@@ -175,10 +167,6 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
         $this->assertEquals(
             1,
             substr_count($arrayError[2], "Дата создания документа null не может быть пустым")
-        );
-        $this->assertEquals(
-            1,
-            substr_count($arrayError[2], "Дата получения документа null не может быть пустым")
         );
     }
 
@@ -229,12 +217,14 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
 
     /**
      * @dataProvider dataFromValidDoc
+     * @param $testData
+     * @param $result
      */
     public function test_validNumDoc($testData, $result)
     {
         $arr = $this->getArrayData();
-        //$this->reestrIn->setNumInvoice($arr[0][106]);
-        $arr[0][106] = $testData;
+        //$this->reestrIn->setNumInvoice($arr[0][100]);
+        $arr[0][100] = $testData;
         $this->handlerRow->handlerRow($arr);
         $arrayError = $this->handlerRow->getResultHandlingAllRows();
         //var_dump($arrayError);
@@ -245,6 +235,9 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
         );
     }
 
+    /**
+     * @return array
+     */
     public function dataFromValidTypeInvoiceFull()
     {
         return [
@@ -263,7 +256,36 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
     {
         $arr = $this->getArrayData();
         //$this->reestrIn->setTypeInvoiceFull($arr[0][134]);
-        $arr[0][134] = $testData;
+        $arr[0][121] = $testData;
+        $this->handlerRow->handlerRow($arr);
+        $arrayError = $this->handlerRow->getResultHandlingAllRows();
+        //var_dump($arrayError);
+        $this->assertNotEmpty($arrayError);
+        $this->assertEquals(
+            1,
+            substr_count($arrayError[2], $result)
+        );
+    }
+
+    public function dataFromValidTypeInvoice()
+    {
+        return [
+            ['18', "Указан  не верный тип причины не выдачи документа покупателю"],
+            ['hkhkh', "Указан  не верный тип причины не выдачи документа покупателю"],
+            ['7979jlj', "Указан  не верный тип причины не выдачи документа покупателю"],
+            ['ПНП', "Указан  не верный тип причины не выдачи документа покупателю"],
+            ['ЧКЕ', "Указан  не верный тип причины не выдачи документа покупателю"],
+        ];
+    }
+
+    /**
+     * @dataProvider dataFromValidTypeInvoice
+     */
+    public function test_validTypeInvoice($testData, $result)
+    {
+        $arr = $this->getArrayData();
+        //$this->reestrIn->setTypeInvoiceFull($arr[0][134]);
+        $arr[0][119] = $testData;
         $this->handlerRow->handlerRow($arr);
         $arrayError = $this->handlerRow->getResultHandlingAllRows();
         //var_dump($arrayError);
@@ -287,12 +309,14 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
 
     /**
      * @dataProvider dataFromValidINN
+     * @param $testData
+     * @param $result
      */
     public function test_validTypeINN($testData, $result)
     {
         $arr = $this->getArrayData();
-        //$this->reestrIn->setInnClient($arr[0][109]);
-        $arr[0][109] = $testData;
+        //$this->reestrIn->setInnClient($arr[0][104]);
+        $arr[0][104] = $testData;
         $this->handlerRow->handlerRow($arr);
         $arrayError = $this->handlerRow->getResultHandlingAllRows();
         //var_dump($arrayError);
@@ -320,8 +344,8 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
     public function test_validTypeZagSumm($testData, $result)
     {
         $arr = $this->getArrayData();
-        //$this->reestrIn->setZagSumm($arr[0][111]);
-        $arr[0][111] = $testData;
+        //$this->reestrIn->setZagSumm($arr[0][106]);
+        $arr[0][106] = $testData;
         $this->handlerRow->handlerRow($arr);
         $arrayError = $this->handlerRow->getResultHandlingAllRows();
         //var_dump($arrayError);
@@ -348,8 +372,8 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
     public function test_validTypeBaza20($testData, $result)
     {
         $arr = $this->getArrayData();
-        //$this->reestrIn->setZagSumm($arr[0][111]);
-        $arr[0][111] = $testData;
+        //$this->reestrIn->setZagSumm($arr[0][107]);
+        $arr[0][107] = $testData;
         $this->handlerRow->handlerRow($arr);
         $arrayError = $this->handlerRow->getResultHandlingAllRows();
         //var_dump($arrayError);
@@ -365,7 +389,6 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
         return [
             ['4546546'," ","", "Указан не верные реквизиты документа который корректировал РКЕ"],
             ['4546546',"4h","lhlhlk", "Указан не верные реквизиты документа который корректировал РКЕ"],
-            ['4546546',"4//4654","", "Указан не верные реквизиты документа который корректировал РКЕ"],
             ['',"4//4654","", "Указан не верные реквизиты документа который корректировал РКЕ"],
             ['',"4//4654","nhkhkhk", "Указан не верные реквизиты документа который корректировал РКЕ"],
             ['',"4//4654","", "Указан не верные реквизиты документа который корректировал РКЕ"],
@@ -374,18 +397,22 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
 
     /**
      * @dataProvider dataFromValidRKE
+     * @param $testDataDateCreateInvoice
+     * @param $testDataNumInvoice
+     * @param $testDataPidstava
+     * @param $result
      */
     public function test_validRKE($testDataDateCreateInvoice,$testDataNumInvoice,$testDataPidstava, $result)
     {
         $arr = $this->getArrayData();
-        //$this->reestrIn->setTypeInvoiceFull($arr[0][134]);
-        $arr[0][134] = "РКЕ";
-        //$this->reestrIn->setRkeDateCreateInvoice($this->getDataType($arr[0][122]));
-        $arr[0][122] = $testDataDateCreateInvoice;
-        //$this->reestrIn->setRkeNumInvoice($arr[0][123]);
-        $arr[0][123] = $testDataNumInvoice;
-        //$this->reestrIn->setRkePidstava($arr[0][124]);
-        $arr[0][124] = $testDataPidstava;
+        //$this->reestrIn->setTypeInvoiceFull($arr[0][121]);
+        $arr[0][121] = "РКЕ";
+        //$this->reestrIn->setRkeDateCreateInvoice($this->getDataType($arr[0][112]));
+        $arr[0][112] = $testDataDateCreateInvoice;
+        //$this->reestrIn->setRkeNumInvoice($arr[0][114]);
+        $arr[0][114] = $testDataNumInvoice;
+        //$this->reestrIn->setRkePidstava($arr[0][115]);
+        $arr[0][115] = $testDataPidstava;
         $this->handlerRow->handlerRow($arr);
         $arrayError = $this->handlerRow->getResultHandlingAllRows();
         //var_dump($arrayError);
@@ -393,116 +420,6 @@ class handlerRowValidDataFromArrayTest_ReestrIn extends TestCase
         $this->assertEquals(
             1,
             substr_count($arrayError[2], $result)
-        );
-    }
-
-    /**
-     * Тестирование неизменности месяца, года и номера филила
-     */
-    public function test_verifyStabilityIndicators_validMonth()
-    {
-        $arr1 = $this->getArrayData();
-        $arr2 = $this->getArrayData();
-        $arr2[0][79]=9;
-        $this->handlerRow->handlerRow($arr1);
-        $this->handlerRow->handlerRow($arr2);
-        $arrayError = $this->handlerRow->getResultHandlingAllRows();
-        //var_dump($arrayError);
-        $this->assertNotEmpty($arrayError);
-        $this->assertEquals(
-            1,
-            substr_count($arrayError[3], "Месяц реестра не соответствует месяцу указанному в первой строке файла!")
-        );
-
-    }
-
-    /**
-     * Тестирование неизменности месяца, года и номера филила
-     */
-    public function test_verifyStabilityIndicators_validBranch()
-    {
-        $arr1 = $this->getArrayData();
-        $arr2 = $this->getArrayData();
-        $arr2[0][66]="700";
-        $this->handlerRow->handlerRow($arr1);
-        $this->handlerRow->handlerRow($arr2);
-        $arrayError = $this->handlerRow->getResultHandlingAllRows();
-        //var_dump($arrayError);
-        $this->assertNotEmpty($arrayError);
-        $this->assertEquals(
-            1,
-            substr_count($arrayError[3], "Номер филиала реестра не соответствует номеру указанному в первой строке файла!")
-        );
-
-    }
-    /**
-     * Тестирование неизменности месяца, года и номера филила
-     */
-    public function test_verifyStabilityIndicators_validYear()
-    {
-        $arr1 = $this->getArrayData();
-        $arr2 = $this->getArrayData();
-        $arr2[0][87]=2017;
-        $this->handlerRow->handlerRow($arr1);
-        $this->handlerRow->handlerRow($arr2);
-        $arrayError = $this->handlerRow->getResultHandlingAllRows();
-       // var_dump($arrayError);
-        $this->assertNotEmpty($arrayError);
-        $this->assertEquals(
-            1,
-            substr_count($arrayError[3], "Год реестра не соответствует году указанному в первой строке файла!")
-        );
-    }
-
-    /**
-     * Тестирование неизменности месяца, года и номера филила
-     */
-    public function test_verifyStabilityIndicators_validMonthYear()
-    {
-        $arr1 = $this->getArrayData();
-        $arr2 = $this->getArrayData();
-        $arr2[0][79]=9;
-        $arr2[0][87]=2017;
-        $this->handlerRow->handlerRow($arr1);
-        $this->handlerRow->handlerRow($arr2);
-        $arrayError = $this->handlerRow->getResultHandlingAllRows();
-        //var_dump($arrayError);
-        $this->assertNotEmpty($arrayError);
-        $this->assertEquals(
-            1,
-            substr_count($arrayError[3], "Месяц реестра не соответствует месяцу указанному в первой строке файла!")
-        );
-        $this->assertEquals(
-            1,
-            substr_count($arrayError[3], "Год реестра не соответствует году указанному в первой строке файла!")
-        );
-    }
-    /**
-     * Тестирование неизменности месяца, года и номера филила
-     */
-    public function test_verifyStabilityIndicators_validMonthYearBranch()
-    {
-        $arr1 = $this->getArrayData();
-        $arr2 = $this->getArrayData();
-        $arr2[0][79]=9;
-        $arr2[0][87]=2017;
-        $arr2[0][66]="700";
-        $this->handlerRow->handlerRow($arr1);
-        $this->handlerRow->handlerRow($arr2);
-        $arrayError = $this->handlerRow->getResultHandlingAllRows();
-        //var_dump($arrayError);
-        $this->assertNotEmpty($arrayError);
-        $this->assertEquals(
-            1,
-            substr_count($arrayError[3], "Месяц реестра не соответствует месяцу указанному в первой строке файла!")
-        );
-        $this->assertEquals(
-            1,
-            substr_count($arrayError[3], "Год реестра не соответствует году указанному в первой строке файла!")
-        );
-        $this->assertEquals(
-            1,
-            substr_count($arrayError[3], "Номер филиала реестра не соответствует номеру указанному в первой строке файла!")
         );
     }
 }
