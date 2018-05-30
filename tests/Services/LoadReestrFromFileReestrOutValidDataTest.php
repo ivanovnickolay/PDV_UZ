@@ -35,6 +35,11 @@ class LoadReestrFromFileReestrOutValidDataTest extends TestCase
                 null,
                 null
             ),
+            array(
+                array('month' => 12, 'year' => 2016, 'numBranch' => "655"),
+                null,
+                null
+            ),
         );
         $repoReestrIn = $this->createMock(ReestrBranch_out::class);
         $repoReestrIn->expects($this->any())
@@ -44,6 +49,11 @@ class LoadReestrFromFileReestrOutValidDataTest extends TestCase
         $mapSpr = array(
             array(
                 array('numMainBranch' => '578'),
+                null,
+                10
+            ),
+            array(
+                array('numMainBranch' => '655'),
                 null,
                 10
             ),
@@ -74,6 +84,8 @@ class LoadReestrFromFileReestrOutValidDataTest extends TestCase
 
     }
     /**
+     * Чтение файла с ошибками
+     * testDataReestrOut_TAB2.xlsx
      * @throws \ReflectionException
      * @throws errorLoadDataException
      */
@@ -106,6 +118,42 @@ class LoadReestrFromFileReestrOutValidDataTest extends TestCase
             $this->assertLogContext($arrayLog);
     }
 
+    public function test_validDataToFileCorrect(){
+
+        // делаем частный метод публичным в рамках теста
+        $method = new \ReflectionMethod(LoadReestrFromFile::class,"validDataToFile");
+        $method->setAccessible(true);
+        // создаем  объект для тестирования
+        $obj = new LoadReestrFromFile($this->objectManager);
+        $obj->setDirForLoadFiles(__DIR__.'\\dirForLoadFiles');
+        $obj->setDirForMoveFiles(__DIR__.'\\dirForMoveFiles');
+        $obj->setDirForMoveFilesWithError(__DIR__.'\\dirForMoveFilesWithError');
+        // создаем необходимые для тестирования "публичного" метода параметры
+        $download = new downloadFromFile($this->objectManager);
+        $download->setFileName(__DIR__.'\\dirForLoadFiles\\testDataСorrectReestrOut_TAB2.xls');
+        // проверяем работу "публичного метода
+        $resTest = $method->invoke($obj,$download,__DIR__.'\\dirForLoadFiles\\testDataСorrectReestrOut_TAB2.xls');
+        // ошибок быть не должно - массив ДОЛЖЕН быть пустым
+        $this->assertEquals(true,$resTest );
+        // проверяем внутреннюю работу "публичного" метода
+        /**
+        $this->assertFileExists(
+        __DIR__.'\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1++.xls',
+        "Файл c данными не найден !");
+        $this->assertFileExists(
+        __DIR__.'\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1++.log',
+        "Файл c логами не найден !");
+         */
+
+        //$arrayLog=$this->getFileLogToArray(__DIR__.'\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log');
+        //$this->assertLogContext($arrayLog);
+    }
+
+    /**
+     * читает значение файла с логами в массив
+     * @param string $fileName
+     * @return array
+     */
     private function getFileLogToArray(string $fileName):array {
 
         return file($fileName);

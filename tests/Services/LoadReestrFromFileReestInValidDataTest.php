@@ -20,10 +20,12 @@ use PHPUnit\Framework\TestCase;
 /**
  *
  * Тестирование валидации файла реестра полученных ПНЕ и всех операция связаных с файлом который не прошел валидацию
+ *
+ * todo аналогичный тест сделать и для Out
  * Class LoadReestrFromFile_testValiDataTest
  * @package App\Services
  */
-class LoadReestrFromFileReestInValiDataTest extends TestCase
+class LoadReestrFromFileReestInValidDataTest extends TestCase
 {
     private $objectManager;
 
@@ -130,7 +132,7 @@ class LoadReestrFromFileReestInValiDataTest extends TestCase
 
     /**
      * чтение файла без ошибок
-     * testDataСorrectReestrIn_TAB1++.xls
+     * testDataСorrectReestrIn_TAB1.xls
      * @throws \ReflectionException
      * @throws errorLoadDataException
      */

@@ -92,7 +92,7 @@ class handlerRowsValidTest_DataFromFile_CorrectDataCorrectDataReestrIn_Test exte
 
 
         $configLoader = new configLoadReestrIn();
-        $fileName= __DIR__.'\\testDataСorrectReestrIn_TAB1++.xls';
+        $fileName= __DIR__.'\\testDataСorrectReestrIn_TAB1.xls';
         //$this->reader= new getReaderExcel('C:\OSPanel\domains\PDV_UZ\tests\Utilits\loadDataExcel\createEntityForLoad\entityForLoad\testDataReestrIn_TAB1.xls');
             $this->reader= new getReaderExcel($fileName);
             $this->reader->createFilter($configLoader->getLastColumn());

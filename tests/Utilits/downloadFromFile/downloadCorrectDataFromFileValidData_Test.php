@@ -94,7 +94,7 @@ class downloadCorrectDataFromFileValidData_Test extends TestCase
         $obj = new downloadFromFile($this->objectManager);
 
         // @link http://php.net/manual/ru/language.constants.predefined.php
-        $fileName = __DIR__."\\testDataСorrectReestrIn_TAB1++.xls";
+        $fileName = __DIR__."\\testDataСorrectReestrIn_TAB1.xls";
         $obj->setFileName($fileName);
             $arrayError = $obj->downloadDataAndValid();
             // по строчно проверяем ошибки
