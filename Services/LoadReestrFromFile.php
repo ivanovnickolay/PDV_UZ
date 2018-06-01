@@ -164,7 +164,7 @@ class LoadReestrFromFile
      *      - true - файл прошел валидацию
      * @throws \Exception
      */
-    private function validDataToFile($downloadData, $fileName): bool
+    private function validDataToFile(downloadFromFile $downloadData, string $fileName): bool
     {
     // проводим валидациию данных
         $arrayErrorValidation = $downloadData->downloadDataAndValid();

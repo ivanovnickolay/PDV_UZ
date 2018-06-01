@@ -39,10 +39,11 @@ class handlerRowsSave extends handlerRowAbstract
      */
     public function handlerRow(array $data)
     {
-        $this->entity->createReestr($data);
+        $objEntity = $this->entity->createReestr($data);
         try {
-            $this->entityManager->persist($this->entity);
+            $this->entityManager->persist($objEntity);
         } catch (ORMException $e) {
+            echo $e->getMessage();
         }
         $this->entity->unsetReestr();
     }
