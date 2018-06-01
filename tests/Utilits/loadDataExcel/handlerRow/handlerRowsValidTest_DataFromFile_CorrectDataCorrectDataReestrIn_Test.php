@@ -77,7 +77,7 @@ class handlerRowsValidTest_DataFromFile_CorrectDataCorrectDataReestrIn_Test exte
                             null
                         )
             );
-            $repoSpr = $this->createMock(\App\Entity\Repository\SprBranch::class);
+            $repoSpr = $this->createMock(\App\Entity\Repository\SprBranchRepository::class);
             $repoSpr->expects($this->any())
                 ->method("findOneBy")
                 ->will($this->returnValueMap($mapSpr));

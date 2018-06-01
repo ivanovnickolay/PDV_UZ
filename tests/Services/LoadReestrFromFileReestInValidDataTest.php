@@ -68,7 +68,7 @@ class LoadReestrFromFileReestInValidDataTest extends TestCase
                     null
                 )
             );
-            $repoSpr = $this->createMock(\App\Entity\Repository\SprBranch::class);
+            $repoSpr = $this->createMock(\App\Entity\Repository\SprBranchRepository::class);
             $repoSpr->expects($this->any())
                 ->method("findOneBy")
                 ->will($this->returnValueMap($mapSpr));
@@ -80,19 +80,6 @@ class LoadReestrFromFileReestInValidDataTest extends TestCase
             $this->objectManager->expects($this->any())
                 ->method('getRepository')
                 ->will($this->returnValueMap($mapReestr));
-            workWithFiles::moveFiles(
-                __DIR__.'\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.xls',
-                __DIR__.'\\dirForLoadFiles');
-                        if (file_exists(__DIR__.'\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log')) {
-                            unlink(__DIR__ . '\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log');
-                        }
-            workWithFiles::moveFiles(
-                __DIR__.'\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1.xls',
-                __DIR__.'\\dirForLoadFiles');
-                        if (file_exists(__DIR__.'\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1.log')) {
-                            unlink(__DIR__ . '\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1.log');
-                        }
-            //echo "file move";
     }
 
 
@@ -104,6 +91,13 @@ class LoadReestrFromFileReestInValidDataTest extends TestCase
      */
 
     public function test_validDataToFile(){
+       // подготовим файлы для работы
+        workWithFiles::moveFiles(
+            __DIR__.'\\fixturesFiles\\testDataReestrIn_TAB1.xls',
+            __DIR__.'\\dirForLoadFiles');
+        if (file_exists(__DIR__.'\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log')) {
+            unlink(__DIR__ . '\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log');
+        }
         // делаем частный метод публичным в рамках теста
         $method = new \ReflectionMethod(LoadReestrFromFile::class,"validDataToFile");
             $method->setAccessible(true);
@@ -128,6 +122,14 @@ class LoadReestrFromFileReestInValidDataTest extends TestCase
 
         $arrayLog=$this->getFileLogToArray(__DIR__.'\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log');
         $this->assertLogContext($arrayLog);
+        // перенесем обратно  файлы в fixturesFiles
+        workWithFiles::moveFiles(
+            __DIR__.'\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.xls',
+            __DIR__.'\\fixturesFiles');
+        if (file_exists(__DIR__.'\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log')) {
+            unlink(__DIR__ . '\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log');
+        }
+
     }
 
     /**
@@ -138,6 +140,13 @@ class LoadReestrFromFileReestInValidDataTest extends TestCase
      */
 
     public function test_validDataToFileCorrect(){
+        // подготовим файлы для работы
+            workWithFiles::moveFiles(
+                __DIR__.'\\fixturesFiles\\testDataСorrectReestrIn_TAB1.xls',
+                __DIR__.'\\dirForLoadFiles');
+                    if (file_exists(__DIR__.'\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1.log')) {
+                        unlink(__DIR__ . '\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1.log');
+                    }
 
         // делаем частный метод публичным в рамках теста
         $method = new \ReflectionMethod(LoadReestrFromFile::class,"validDataToFile");
@@ -154,18 +163,14 @@ class LoadReestrFromFileReestInValidDataTest extends TestCase
         $resTest = $method->invoke($obj,$download,__DIR__.'\\dirForLoadFiles\\testDataСorrectReestrIn_TAB1.xls');
         // ошибок быть не должно - массив ДОЛЖЕН быть пустым
         $this->assertEquals(true,$resTest );
-        // проверяем внутреннюю работу "публичного" метода
-        /**
-        $this->assertFileExists(
-        __DIR__.'\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1++.xls',
-        "Файл c данными не найден !");
-        $this->assertFileExists(
-        __DIR__.'\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1++.log',
-        "Файл c логами не найден !");
-         */
 
-        //$arrayLog=$this->getFileLogToArray(__DIR__.'\\dirForMoveFilesWithError\\testDataReestrIn_TAB1.log');
-        //$this->assertLogContext($arrayLog);
+        // перенесем обратно  файлы в fixturesFiles
+        workWithFiles::moveFiles(
+            __DIR__.'\\dirForLoadFiles\\testDataСorrectReestrIn_TAB1.xls',
+            __DIR__.'\\fixturesFiles');
+        if (file_exists(__DIR__.'\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1.log')) {
+            unlink(__DIR__ . '\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1.log');
+        }
     }
 
     /**

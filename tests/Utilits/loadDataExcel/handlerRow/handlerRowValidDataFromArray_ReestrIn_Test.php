@@ -69,7 +69,7 @@ class handlerRowValidDataFromArray_ReestrIn_Test extends TestCase
                     null
                 )
             );
-            $repoSpr = $this->createMock(\App\Entity\Repository\SprBranch::class);
+            $repoSpr = $this->createMock(\App\Entity\Repository\SprBranchRepository::class);
             $repoSpr->expects($this->any())
                 ->method("findOneBy")
                 ->will($this->returnValueMap($mapSpr));
