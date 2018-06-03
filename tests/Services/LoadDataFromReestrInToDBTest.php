@@ -14,7 +14,12 @@ use App\Utilits\workToFileSystem\workWithFiles;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class LoadDataFromFileToDBTest extends KernelTestCase
+/**
+ * Тестирвоание загрузки данных из ReestrIn
+ * Class LoadDataFromReestrInToDBTest
+ * @package App\Services
+ */
+class LoadDataFromReestrInToDBTest extends KernelTestCase
 {
 
     /**
@@ -23,7 +28,7 @@ class LoadDataFromFileToDBTest extends KernelTestCase
     private $em;
 
     /**
-     * @throws \Exception
+     * @throws \Exception если база не тестовая AnalizPDV_test
      */
     public function setUp(){
 
