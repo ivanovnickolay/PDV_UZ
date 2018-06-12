@@ -12,7 +12,6 @@ use App\Utilits\loadDataExcel\downloadFromFile;
 use App\Utilits\loadDataExcel\Exception\errorLoadDataException;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-//todo написать тест на пробное чтение данных и контроль их после записи в базе
 
 /**
  * Тестирование создания объекта класса и генерирование ошибок при не достатке данных
