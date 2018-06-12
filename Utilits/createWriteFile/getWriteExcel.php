@@ -10,7 +10,9 @@ namespace App\Utilits\createWriteFile;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use App\Utilits\createReaderFile\chunkReadFilter;
-
+/*
+ * @deprecated
+ */
 class getWriteExcel
 {
 	/**

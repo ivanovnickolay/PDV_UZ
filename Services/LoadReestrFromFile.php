@@ -19,7 +19,7 @@ use Doctrine\ORM\EntityManager;
  *
  * Class LoadReestrFromFile
  * @package App\Services
-
+ *  todo написать тест на чтение свыше 6 файлов с данными за раз. Причем файлы должны быть как верные так и нет !!!
  *
  */
 class LoadReestrFromFile
@@ -43,7 +43,10 @@ class LoadReestrFromFile
      * @var string директория в которую переносятся файлы с ошибками валидации
      */
     private $dirForMoveFilesWithError;
-
+    /**
+     * @var integer количество файлов, которые загружаются за один вызов LoadReestrFromFile::execute
+     */
+    private $numberOfFilesAtTime;
     /**
      * LoadReestrFromFile constructor.- инициализирует все переменные и получает класс $entityManager
      * @param EntityManager $entityManager
@@ -55,6 +58,7 @@ class LoadReestrFromFile
             $this->dirForMoveFiles="";
                 $this->dirForLoadFiles="";
                     $this->dirForMoveFilesWithError="";
+                        $this->numberOfFilesAtTime = 6;
     }
 
     /*
@@ -92,7 +96,7 @@ class LoadReestrFromFile
     }
 
     /**
-     * проверим переданы ли все не обходимые пути к директориям
+     * проверим переданы ли все необходимые пути к директориям
      * @throws errorLoadDataException если какой то путь отсутствует
      */
     private function dirExist(){
@@ -109,8 +113,17 @@ class LoadReestrFromFile
      * Реализация загрузки по алоритму
      *  -   проверим переданы ли все пути к директориям
      *  -   получим массив с валидными файлами из папки
-     *  -   возьмем из этого массива первые 6 файлов
-     *  -
+     *  -   возьмем из этого массива первые numberOfFilesAtTime файлов
+     *  -   для каждого файла:
+     *      - создаем объект класса downloadFromFile
+     *      - проводим проверку содержимого файла
+     *      - если validDataToFile вернул false то файл содержит ошибки проверки и надо читать следующий файл с данными
+     *          -   очищаем все используемые в классе объекты перед загрузкой нового файла
+     *          -   вызываем continue для нового начала цикла
+     *      - если validDataToFile вернул true то файл не содержит ошибок
+     *          -   вызываем downloadDataAndSave для сохранения данных в базу
+     *          -   переносим файл в директорию для успешно загруженных файлов
+     *          -   очищаем все используемые в классе объекты перед загрузкой нового файла
      *
      */
     public function execute()
@@ -123,9 +136,11 @@ class LoadReestrFromFile
         } catch (\Exception $exception) {
 
         }
-
         //режем список файлов на куски по 6 штук
-        $arr_slice = array_slice($arrayFiles, 0, 6);
+        //todo внести возможность производить загрузку файлов с переменным количестом файлов за один раз. Сейчас 6 файлов
+        $arr_slice = array_slice($arrayFiles,
+            0,
+                $this->numberOfFilesAtTime);
         foreach ($arr_slice as $fileName) {
             try {
                 // создаем класс для загрузки данных
@@ -133,6 +148,10 @@ class LoadReestrFromFile
                 //передаем название файлов в класс
                 $downloadData->setFileName($fileName);
                 if (!$this->validDataToFile($downloadData, $fileName)){
+                    $downloadData->unSetAllObjects();
+                    unset($downloadData);
+                    //http://ru.php.net/manual/ru/features.gc.collecting-cycles.php
+                    gc_collect_cycles();
                     continue;
                 };
 
@@ -157,6 +176,13 @@ class LoadReestrFromFile
     }
 
     /**
+     * Проводим проверку данных в файле
+     *  - запускаем downloadDataAndValid для получения массива с ошибками валидации
+     *      -   если массив не пустой
+     *          - переносим файл с данным в директорию для ошибок
+     *          - создаем в директории для ошибок лог с содержимым массива ошибок валидации
+     *          - возвращаем false - файл не прошел валидацию
+     *      -   если массив пустой - возвращаем true - файл прошел валидацию
      * @param $downloadData
      * @param $fileName
      * @return bool

@@ -16,6 +16,7 @@ use Doctrine\ORM\EntityManager;
 
 /**
  * Класс служит для загрузки данных из файлов
+ * @deprecated
  * Class loadData
  * @package AnalizPdvBundle\Utilits\loadData
  */

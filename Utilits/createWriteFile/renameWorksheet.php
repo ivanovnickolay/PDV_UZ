@@ -14,6 +14,7 @@ use App\Utilits\createReaderFile\getReaderExcel;
 /**
  * изменяем название листов книге с "лист1" на "Sheet1"
  * Class renameWorksheet
+ * @deprecated
  * @package AnalizPdvBundle\Utilits\createWriteFile
  */
 class renameWorksheet

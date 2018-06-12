@@ -13,8 +13,6 @@ use App\Utilits\loadDataExcel\createEntityForLoad;
 use App\Utilits\loadDataExcel\createEntityForLoad\interfaceEntityForLoad\createEntityForLoad_interface;
 use App\Utilits\loadDataExcel\createReaderFile\getReaderExcel;
 use App\Utilits\loadDataExcel\configLoader\configLoader_interface;
-
-use App\Utilits\LoadInvoice\createEntity\createEntityInterface;
 use Doctrine\ORM\EntityManager;
 use App\Utilits\loadDataExcel\Exception\errorLoadDataException;
 
@@ -72,11 +70,12 @@ class loadData
 
 	}
 
-	/**
-	 * Получение и настройка Readerа
-	 * @param string $fileName
-	 * @param string $columnLast
-	 */
+    /**
+     * Получение и настройка Readerа
+     * @param string $fileName
+     * @param string $columnLast
+     * @throws errorLoadDataException
+     */
 	private function getReaderFile(string $fileName, string $columnLast): void
 	{
 		$this->readerFile = new getReaderExcel($fileName,$this->maxReadRow);
@@ -103,12 +102,15 @@ class loadData
 		$this->entity=$entity;
 	}
 
-	/**
-	 * Чтение данных из файла кусками по количеству записей указаных в maxReadRow
-	 *  после чтения maxReadRow происходит запись сущностей  в базу
-	 *  обнуление прочитанных данных
-	 *  чтание новой порции данных
-	 */
+    /**
+     * Чтение данных из файла кусками по количеству записей указаных в maxReadRow
+     *  после чтения maxReadRow происходит запись сущностей  в базу
+     *  обнуление прочитанных данных
+     *  чтание новой порции данных
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\Common\Persistence\Mapping\MappingException
+     */
 	public function loadData()
 	{
 		$maxRowToFile = $this->readerFile->getMaxRow ();

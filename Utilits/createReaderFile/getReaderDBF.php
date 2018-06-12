@@ -8,7 +8,9 @@
 
 namespace App\Utilits\createReaderFile;
 
-
+/*
+ * @deprecated
+ */
 class getReaderDBF
 {
 	private $dbfFile;

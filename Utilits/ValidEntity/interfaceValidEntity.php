@@ -21,7 +21,8 @@ abstract class interfaceValidEntity
 
 	/**
 	 * interfaceValidEntity constructor.
-	 * @param string $typeReestr значение типа реестра который провереяется
+     * @deprecated
+     * @param string $typeReestr значение типа реестра который провереяется
 	 */
 	public function __construct (string $typeReestr='')
 	{

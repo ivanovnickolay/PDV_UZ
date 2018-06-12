@@ -13,7 +13,9 @@ use App\Utilits\createEntitys\reestrIn\createReestrIn;
 use App\Utilits\createEntitys\reestrOut\createReestrOut;
 use App\Utilits\ValidEntity\validReestrIn;
 use Doctrine\ORM\EntityManager;
-
+/*
+ * @deprecated
+ */
 class factoryLoadData
 {
 	private $em;

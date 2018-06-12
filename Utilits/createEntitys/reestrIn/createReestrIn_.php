@@ -19,6 +19,7 @@ use App\Utilits\createEntitys\interfaceReestr\createReestr;
  * из входящего массива
  * Class createReestrIn
  * @package AnalizPdvBundle\Utilits\createEntitys\reestrIn
+ * @deprecated
  */
 class createReestrIn_ extends createReestr
 {

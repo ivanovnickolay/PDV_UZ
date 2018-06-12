@@ -14,6 +14,7 @@ use App\Entity\SprBranch;
 
 /**
  * Class validBranch
+ * @deprecated
  * @package AnalizPdvBundle\Utilits\ValidEntity
  */
 class validBranch

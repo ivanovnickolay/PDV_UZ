@@ -15,7 +15,9 @@ namespace App\Utilits\createReaderFile;
 
 
 use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
-
+/*
+ * @deprecated
+ */
 class chunkReadFilter implements IReadFilter
 {
     private $_startRow = 0;

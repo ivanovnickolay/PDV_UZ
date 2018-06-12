@@ -10,7 +10,9 @@ namespace App\Utilits\ValidEntity;
 
 use App\Entity\ReestrbranchIn;
 use App\Utilits\ValidEntity\interfaceValidEntity;
-
+/*
+ * @deprecated
+ */
 class validReestrIn extends interfaceValidEntity
 {
 

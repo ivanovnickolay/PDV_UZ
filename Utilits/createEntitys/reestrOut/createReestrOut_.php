@@ -18,6 +18,7 @@ use App\Utilits\createEntitys;
  * Класс предназначенный для создания сущности ReestrbranchOut() на основании данных полученных
  * из входящего массива
  * Class createReestrOut
+ * @deprecated
  * @package AnalizPdvBundle\Utilits\createEntitys\reestrOut
  */
 class createReestrOut_ extends createEntitys\interfaceReestr\createReestr

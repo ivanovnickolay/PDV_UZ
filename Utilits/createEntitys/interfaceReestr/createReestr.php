@@ -9,7 +9,11 @@
 namespace App\Utilits\createEntitys\interfaceReestr;
 //namespace AnalizPdvBundle\Entity;
 
-
+/**
+ * Class createReestr
+ * @deprecated
+ * @package App\Utilits\createEntitys\interfaceReestr
+ */
 abstract class createReestr
 {
 	public function __construct ()
