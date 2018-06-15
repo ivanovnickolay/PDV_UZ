@@ -15,11 +15,11 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
- * Тестирвоание загрузки данных из ReestrIn
- * Class LoadDataFromReestrInToDBTest
+ * Тестирование загрузки данных из ReestrOut
+ * Class LoadDataFromReestrOutToDBTest
  * @package App\Services
  */
-class LoadDataFromReestrInToDBTest extends KernelTestCase
+class LoadDataFromReestrOutToDBTest extends KernelTestCase
 {
 
     /**
@@ -51,7 +51,7 @@ class LoadDataFromReestrInToDBTest extends KernelTestCase
     }
 
     /**
-     * контроль чтения данных из файла testDataСorrectReestrIn_TAB1.xls
+     * контроль чтения данных из файла testDataСorrectReestrOut_TAB2.xls
      *  - переносим файл в папку для чтения
      *  - загружаем в БД данные из файла
      *  - контролируем количество загруженных записей и обшую сумму
@@ -60,12 +60,12 @@ class LoadDataFromReestrInToDBTest extends KernelTestCase
      * @throws \App\Utilits\loadDataExcel\Exception\errorLoadDataException
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function test_loadCorrectReestrIn(){
-        $fileName = "testDataСorrectReestrIn_TAB1.xls";
-            $logName = "testDataСorrectReestrIn_TAB1.log";
+    public function test_loadCorrectReestrOut(){
+        $fileName = "testDataСorrectReestrOut_TAB2.xls";
+            $logName = "testDataСorrectReestrOut_TAB2.log";
                 $this->prepareFileForLoad($fileName,$logName);
                     $this->loadReestrFromFile();
-                        $this->validCorrectLoadReestrIn();
+                        $this->validCorrectLoadReestrOut();
                     $this->moveFileToFixtures($fileName,$logName);
 
     }
@@ -82,17 +82,17 @@ class LoadDataFromReestrInToDBTest extends KernelTestCase
      * @throws \App\Utilits\loadDataExcel\Exception\errorLoadDataException
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function test_doubleLoadCorrectReestrIn(){
-        $fileName = "testDataСorrectReestrIn_TAB1.xls";
-            $logName = "testDataСorrectReestrIn_TAB1.log";
+    public function test_doubleLoadCorrectReestrOut(){
+        $fileName = "testDataСorrectReestrOut_TAB2.xls";
+            $logName = "testDataСorrectReestrOut_TAB2.log";
                 $this->prepareFileForLoad($fileName,$logName);
                     $this->loadReestrFromFile();
                 $this->moveFileToFixtures($fileName,$logName);
                     $this->prepareFileForLoad($fileName,$logName);
                         $this->loadReestrFromFile();
 
-                        $this->validDoubleLoadCorrectReestrIn($logName);
-                    $this->deleteAllFromReestrIn();
+                        $this->validDoubleLoadCorrectReestrOut($logName);
+                    $this->deleteAllFromReestrOut();
                 workWithFiles::moveFiles(
                     __DIR__ . '\\dirForMoveFilesWithError\\'.$fileName,
                     __DIR__ . '\\fixturesFiles');
@@ -139,27 +139,27 @@ class LoadDataFromReestrInToDBTest extends KernelTestCase
     }
 
     /**
-     * Проверка результатов корректной загрузки данных из файла testDataСorrectReestrIn_TAB1
+     * Проверка результатов корректной загрузки данных из файла testDataСorrectReestrOut_TAB2
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function validCorrectLoadReestrIn(): void
+    private function validCorrectLoadReestrOut(): void
     {
-        $this->assertFileNotExists(__DIR__ . '\\dirForMoveFilesWithError\testDataСorrectReestrIn_TAB1.xls');
-        $this->assertFileExists(__DIR__ . '\\dirForMoveFiles\testDataСorrectReestrIn_TAB1.xls');
+        $this->assertFileNotExists(__DIR__ . '\\dirForMoveFilesWithError\testDataСorrectReestrOut_TAB2.xls');
+        $this->assertFileExists(__DIR__ . '\\dirForMoveFiles\testDataСorrectReestrOut_TAB2.xls');
         // Проведем проверку что загрузилось
         // контроль количества записей
-        $SQLCountRec = "SELECT COUNT(id) FROM reestrbranch_in";
+        $SQLCountRec = "SELECT COUNT(id) FROM reestrbranch_out";
         $smtpCountRec = $this->em->getConnection()->prepare($SQLCountRec);
         $smtpCountRec->execute();
         $arrayResult = $smtpCountRec->fetchAll();
         $this->assertEquals(7, $arrayResult[0]['COUNT(id)']);
         // контроль общей загруженной суммы всех документов
-        $SQLSumZagSumm = "SELECT sum(zag_summ) FROM reestrbranch_in";
+        $SQLSumZagSumm = "SELECT sum(zag_summ) FROM reestrbranch_out";
         $smtpSumZagSumm = $this->em->getConnection()->prepare($SQLSumZagSumm);
         $smtpSumZagSumm->execute();
         $arrayResult = $smtpSumZagSumm->fetchAll();
-        $this->assertEquals("122519.56", $arrayResult[0]['sum(zag_summ)']);
-        $this->deleteAllFromReestrIn();
+        $this->assertEquals("30218.14", $arrayResult[0]['sum(zag_summ)']);
+        $this->deleteAllFromReestrOut();
 
     }
 
@@ -167,12 +167,12 @@ class LoadDataFromReestrInToDBTest extends KernelTestCase
      * Проверка результатов  загрузки данных из файла testDataСorrectReestrIn_TAB1 два раза подряд
      * @param $logName
      */
-    private function validDoubleLoadCorrectReestrIn($logName): void
+    private function validDoubleLoadCorrectReestrOut($logName): void
     {
         $arrayLog = $this->getFileLogToArray(__DIR__ . '\\dirForMoveFilesWithError\\' . $logName);
         $this->assertLogContext($arrayLog);
-        $this->assertFileExists(__DIR__ . '\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1.xls');
-        $this->assertFileExists(__DIR__ . '\\dirForMoveFilesWithError\\testDataСorrectReestrIn_TAB1.log');
+        $this->assertFileExists(__DIR__ . '\\dirForMoveFilesWithError\\testDataСorrectReestrOut_TAB2.xls');
+        $this->assertFileExists(__DIR__ . '\\dirForMoveFilesWithError\\testDataСorrectReestrOut_TAB2.log');
     }
 
     /**
@@ -192,13 +192,13 @@ class LoadDataFromReestrInToDBTest extends KernelTestCase
     }
 
     /**
-     * Принудительное удаление всех даннных их таблицы reestrbranch_in
+     * Принудительное удаление всех даннных их таблицы reestrbranch_out
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function deleteAllFromReestrIn(): void
+    private function deleteAllFromReestrOut(): void
     {
         // очистим таблицу с данными
-        $SQLDeleteRec = "DELETE  FROM reestrbranch_in";
+        $SQLDeleteRec = "DELETE  FROM reestrbranch_out";
         $smtpDeleteRec = $this->em->getConnection()->prepare($SQLDeleteRec);
         $smtpDeleteRec->execute();
     }
