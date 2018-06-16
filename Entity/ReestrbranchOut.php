@@ -402,13 +402,29 @@ class ReestrbranchOut
     /**
      * Set zagSumm
      *
+     * если передано пустое значение то присваием ноль
+     * если передано значение вида "-7.2759576141834E-12" тоже присваеваем ноль
+     * так как это 7 после 12 нулей после запятой
+     *
      * @param float $zagSumm
      *
      * @return ReestrbranchOut
      */
     public function setZagSumm($zagSumm)
     {
-        $this->zagSumm = $zagSumm;
+        if (empty($zagSumm)){
+            $this->zagSumm=0;
+        }
+        if (is_numeric($zagSumm)){
+            if ($zagSumm<0.01){
+                $this->zagSumm=0;
+            }  else{
+                $this->zagSumm = $zagSumm;
+            }
+        } else{
+            $this->zagSumm = $zagSumm;
+        }
+
 
         return $this;
     }
@@ -434,7 +450,14 @@ class ReestrbranchOut
     {
         if(empty($baza20)) {
             $this->baza20 = 0;
-        } else{
+        }
+        if (is_numeric($baza20)){
+            if ($baza20<0.01){
+                $this->baza20=0;
+            } else{
+                $this->baza20 = $baza20;
+            }
+        }else{
             $this->baza20 = $baza20;
         }
         return $this;
@@ -459,12 +482,18 @@ class ReestrbranchOut
      */
     public function setPdv20($pdv20)
     {
-        if (empty($pdv20)){
-            $this->pdv20 =0;
-        } else {
+        if(empty($pdv20)) {
+            $this->pdv20 = 0;
+        }
+        if (is_numeric($pdv20)){
+            if ($pdv20<0.01){
+                $this->pdv20=0;
+            }else{
+                $this->pdv20 = $pdv20;
+            }
+        }else{
             $this->pdv20 = $pdv20;
         }
-
         return $this;
     }
 
@@ -489,10 +518,16 @@ class ReestrbranchOut
     {
         if(empty($baza7)) {
             $this->baza7 = 0;
-        } else{
+        }
+        if (is_numeric($baza7)){
+            if ($baza7<0.01){
+                $this->baza7=0;
+            }else{
+                $this->baza7 = $baza7;
+            }
+        }else{
             $this->baza7 = $baza7;
         }
-
         return $this;
     }
 
@@ -515,12 +550,18 @@ class ReestrbranchOut
      */
     public function setPdv7($pdv7)
     {
-        if (empty($pdv7)){
-            $this->pdv7 =0;
-        } else {
+        if(empty($pdv7)) {
+            $this->pdv7 = 0;
+        }
+        if (is_numeric($pdv7)){
+            if ($pdv7<0.01){
+                $this->pdv7=0;
+            }else{
+                $this->pdv7 = $pdv7;
+            }
+        }else{
             $this->pdv7 = $pdv7;
         }
-
         return $this;
     }
 
@@ -545,10 +586,16 @@ class ReestrbranchOut
     {
         if(empty($baza0)) {
             $this->baza0 = 0;
-        } else{
+        }
+        if (is_numeric($baza0)){
+            if ($baza0<0.01){
+                $this->baza0=0;
+            }else{
+                $this->baza0 = $baza0;
+            }
+        }else{
             $this->baza0 = $baza0;
         }
-
         return $this;
     }
 
@@ -573,10 +620,16 @@ class ReestrbranchOut
     {
         if(empty($bazaZvil)) {
             $this->bazaZvil = 0;
-        } else{
+        }
+        if (is_numeric($bazaZvil)){
+            if ($bazaZvil<0.01){
+                $this->bazaZvil=0;
+            }else{
+                $this->bazaZvil = $bazaZvil;
+            }
+        }else{
             $this->bazaZvil = $bazaZvil;
         }
-
         return $this;
     }
 
@@ -601,11 +654,17 @@ class ReestrbranchOut
     {
         if(empty($bazaNeObj)) {
             $this->bazaNeObj = 0;
-        } else{
+        }
+        if (is_numeric($bazaNeObj)){
+            if ($bazaNeObj<0.01){
+                $this->bazaNeObj=0;
+            }else{
+                $this->bazaNeObj = $bazaNeObj;
+            }
+        }else{
             $this->bazaNeObj = $bazaNeObj;
         }
-
-         return $this;
+        return $this;
     }
 
     /**
@@ -629,10 +688,16 @@ class ReestrbranchOut
     {
         if(empty($bazaZaMezhiTovar)) {
             $this->bazaZaMezhiTovar = 0;
-        } else{
+        }
+        if (is_numeric($bazaZaMezhiTovar)){
+            if ($bazaZaMezhiTovar<0.01){
+                $this->bazaZaMezhiTovar=0;
+            }else{
+                $this->bazaZaMezhiTovar = $bazaZaMezhiTovar;
+            }
+        }else{
             $this->bazaZaMezhiTovar = $bazaZaMezhiTovar;
         }
-
         return $this;
     }
 
@@ -657,10 +722,17 @@ class ReestrbranchOut
     {
         if(empty($bazaZaMezhiPoslug)) {
             $this->bazaZaMezhiPoslug = 0;
-        } else{
+        }
+        if (is_numeric($bazaZaMezhiPoslug)){
+            if ($bazaZaMezhiPoslug<0.01){
+                $this->bazaZaMezhiPoslug=0;
+            }else{
+                $this->bazaZaMezhiPoslug = $bazaZaMezhiPoslug;
+            }
+        }else{
             $this->bazaZaMezhiPoslug = $bazaZaMezhiPoslug;
         }
-      return $this;
+        return $this;
     }
 
     /**
@@ -991,7 +1063,6 @@ class ReestrbranchOut
                     'type'    => 'digit',
                     'message' => 'ИНН {{ value }} должен содержать только цифры .',
                 )));
-
                 $metadata->addPropertyConstraint('zagSumm', new Assert\Regex(array(
                     'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
                     'message' => 'Поле zagSumm {{ value }} содержит данные не того типа.',
@@ -1032,6 +1103,49 @@ class ReestrbranchOut
                     'pattern' => '/^-?[0-9]+(?:\.[0-9]{1,2})?$/',
                     'message' => 'Поле bazaZaMezhiPoslug {{ value }} содержит данные не того типа.',
                 )));
+
+                /**
+                $metadata->addPropertyConstraint('zagSumm', new Assert\Type(array(
+                    'type'    => 'float',
+                    'message' => 'Поле zagSumm {{ value }} содержит данные не того типа.',
+                )));
+                    $metadata->addPropertyConstraint('baza20',new Assert\Type(array(
+                        'type'    => 'float',
+                        'message' => 'Поле baza20 {{ value }} содержит данные не того типа.',
+                    )));
+                        $metadata->addPropertyConstraint('pdv20', new Assert\Type(array(
+                            'type'    => 'float',
+                            'message' => 'Поле pdv20 {{ value }} содержит данные не того типа.',
+                        )));
+                            $metadata->addPropertyConstraint('baza7', new Assert\Type(array(
+                                'type'    => 'float',
+                                'message' => 'Поле baza7 {{ value }} содержит данные не того типа.',
+                            )));
+                        $metadata->addPropertyConstraint('pdv7',new Assert\Type(array(
+                            'type'    => 'float',
+                            'message' => 'Поле pdv7 {{ value }} содержит данные не того типа.',
+                        )));
+                            $metadata->addPropertyConstraint('baza0', new Assert\Type(array(
+                                'type'    => 'float',
+                                'message' => 'Поле baza0 {{ value }} содержит данные не того типа.',
+                            )));
+                        $metadata->addPropertyConstraint('bazaZvil', new Assert\Type(array(
+                            'type'    => 'float',
+                            'message' => 'Поле bazaZvil {{ value }} содержит данные не того типа.',
+                        )));
+                            $metadata->addPropertyConstraint('bazaNeObj', new Assert\Type(array(
+                                'type'    => 'float',
+                                'message' => 'Поле bazaNeObj {{ value }} содержит данные не того типа.',
+                            )));
+                        $metadata->addPropertyConstraint('bazaZaMezhiTovar',new Assert\Type(array(
+                            'type'    => 'float',
+                            'message' => 'Поле bazaZaMezhiTovar {{ value }} содержит данные не того типа.',
+                        )));
+                            $metadata->addPropertyConstraint('bazaZaMezhiPoslug',new Assert\Type(array(
+                                'type'    => 'float',
+                                'message' => 'Поле bazaZaMezhiPoslug {{ value }} содержит данные не того типа.',
+                            )));
+                */
                 // Проверка показателей РКЕ
                 $metadata->addGetterConstraint('ValidRKE', new Assert\IsTrue(array(
                     'message' => 'Указан не верные реквизиты документа который корректировал РКЕ',
