@@ -332,6 +332,20 @@ class handlerRowValidDataFromArray_ReestrIn_Test extends TestCase
         );
     }
 
+    /**
+     * Тест случая передачи значения -7.2759576141834E-12
+     */
+    public function test_validTypeZagSumm_float()
+    {
+        $arr = $this->getArrayData();
+        //$this->reestrIn->setZagSumm($arr[0][111]);
+        $arr[0][111] = "-7.2759576141834E-12";
+        $this->handlerRow->handlerRow($arr);
+        $arrayError = $this->handlerRow->getResultHandlingAllRows();
+        //var_dump($arrayError);
+        $this->assertEmpty($arrayError);
+
+    }
     public function dataFromValidBaza20()
     {
         return [
@@ -358,6 +372,19 @@ class handlerRowValidDataFromArray_ReestrIn_Test extends TestCase
             1,
             substr_count($arrayError[2], $result)
         );
+    }
+    /**
+     * Тест случая передачи значения -7.2759576141834E-12
+     */
+    public function test_validTypeBaza20_float()
+    {
+        $arr = $this->getArrayData();
+        //$this->reestrIn->setZagSumm($arr[0][111]);
+        $arr[0][111] = "-7.2759576141834E-12";
+        $this->handlerRow->handlerRow($arr);
+        $arrayError = $this->handlerRow->getResultHandlingAllRows();
+        //var_dump($arrayError);
+        $this->assertEmpty($arrayError);
     }
 
     public function dataFromValidRKE()
