@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 use App\Entity\forForm\validationConstraint\ContainsNumDoc;
+use App\Utilits\workToTypeVariable\workToTypeVariable;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -391,20 +392,7 @@ class ReestrbranchIn
      */
     public function setZagSumm($zagSumm)
     {
-        if (empty($zagSumm)){
-        $this->zagSumm=0;
-    }
-        if (is_numeric($zagSumm)){
-            if ($zagSumm<0.01){
-                $this->zagSumm=0;
-            }  else{
-                $this->zagSumm = $zagSumm;
-            }
-        } else{
-            $this->zagSumm = $zagSumm;
-        }
-
-
+        $this->zagSumm = workToTypeVariable::setFloatVariable($zagSumm);
         return $this;
     }
 
@@ -427,18 +415,7 @@ class ReestrbranchIn
      */
     public function setBaza20($baza20)
     {
-        if(empty($baza20)) {
-            $this->baza20 = 0;
-        }
-        if (is_numeric($baza20)){
-            if ($baza20<0.01){
-                $this->baza20=0;
-            } else{
-                $this->baza20 = $baza20;
-            }
-        }else{
-            $this->baza20 = $baza20;
-        }
+        $this->baza20 = workToTypeVariable::setFloatVariable($baza20);
         return $this;
     }
 
@@ -461,18 +438,7 @@ class ReestrbranchIn
      */
     public function setPdv20($pdv20)
     {
-        if(empty($pdv20)) {
-            $this->pdv20 = 0;
-        }
-        if (is_numeric($pdv20)){
-            if ($pdv20<0.01){
-                $this->pdv20=0;
-            }else{
-                $this->pdv20 = $pdv20;
-            }
-        }else{
-            $this->pdv20 = $pdv20;
-        }
+        $this->pdv20 = workToTypeVariable::setFloatVariable($pdv20);
         return $this;
     }
 
@@ -495,18 +461,7 @@ class ReestrbranchIn
      */
     public function setBaza7($baza7)
     {
-        if(empty($baza7)) {
-            $this->baza7 = 0;
-        }
-        if (is_numeric($baza7)){
-            if ($baza7<0.01){
-                $this->baza7=0;
-            }else{
-                $this->baza7 = $baza7;
-            }
-        }else{
-            $this->baza7 = $baza7;
-        }
+        $this->baza7= workToTypeVariable::setFloatVariable($baza7);
         return $this;
     }
 
@@ -529,18 +484,7 @@ class ReestrbranchIn
      */
     public function setPdv7($pdv7)
     {
-        if(empty($pdv7)) {
-        $this->pdv7 = 0;
-    }
-        if (is_numeric($pdv7)){
-            if ($pdv7<0.01){
-                $this->pdv7=0;
-            }else{
-                $this->pdv7 = $pdv7;
-            }
-        }else{
-            $this->pdv7 = $pdv7;
-        }
+        $this->pdv7= workToTypeVariable::setFloatVariable($pdv7);
         return $this;
     }
 
@@ -563,18 +507,7 @@ class ReestrbranchIn
      */
     public function setBaza0($baza0)
     {
-        if(empty($baza0)) {
-            $this->baza0 = 0;
-        }
-        if (is_numeric($baza0)){
-            if ($baza0<0.01){
-                $this->baza0=0;
-            }else{
-                $this->baza0 = $baza0;
-            }
-        }else{
-            $this->baza0 = $baza0;
-        }
+        $this->baza0= workToTypeVariable::setFloatVariable($baza0);
         return $this;
     }
 
@@ -597,18 +530,7 @@ class ReestrbranchIn
      */
     public function setPdv0($pdv0)
     {
-        if(empty($pdv0)) {
-            $this->pdv0 = 0;
-        }
-        if (is_numeric($pdv0)){
-            if ($pdv0<0.01){
-                $this->pdv0=0;
-            }else{
-                $this->pdv0 = $pdv0;
-            }
-        }else{
-            $this->pdv0 = $pdv0;
-        }
+        $this->pdv0= workToTypeVariable::setFloatVariable($pdv0);
         return $this;
     }
 
@@ -631,18 +553,7 @@ class ReestrbranchIn
      */
     public function setBazaZvil($bazaZvil)
     {
-        if(empty($bazaZvil)) {
-            $this->bazaZvil = 0;
-        }
-        if (is_numeric($bazaZvil)){
-            if ($bazaZvil<0.01){
-                $this->bazaZvil=0;
-            }else{
-                $this->bazaZvil = $bazaZvil;
-            }
-        }else{
-            $this->bazaZvil = $bazaZvil;
-        }
+        $this->bazaZvil= workToTypeVariable::setFloatVariable($bazaZvil);
         return $this;
     }
 
@@ -665,18 +576,7 @@ class ReestrbranchIn
      */
     public function setPdvZvil($pdvZvil)
     {
-        if(empty($pdvZvil)) {
-            $this->pdvZvil = 0;
-        }
-        if (is_numeric($pdvZvil)){
-            if ($pdvZvil<0.01){
-                $this->pdvZvil=0;
-            }else{
-                $this->pdvZvil = $pdvZvil;
-            }
-        }else{
-            $this->pdvZvil = $pdvZvil;
-        }
+        $this->pdvZvil= workToTypeVariable::setFloatVariable($pdvZvil);
         return $this;
     }
 
@@ -699,18 +599,7 @@ class ReestrbranchIn
      */
     public function setBazaNeGos($bazaNeGos)
     {
-        if(empty($bazaNeGos)) {
-            $this->bazaNeGos = 0;
-        }
-        if (is_numeric($bazaNeGos)){
-            if ($bazaNeGos<0.01){
-                $this->bazaNeGos=0;
-            }else{
-                $this->bazaNeGos = $bazaNeGos;
-            }
-        }else{
-            $this->bazaNeGos = $bazaNeGos;
-        }
+        $this->bazaNeGos= workToTypeVariable::setFloatVariable($bazaNeGos);
         return $this;
     }
 
@@ -733,18 +622,7 @@ class ReestrbranchIn
      */
     public function setPdvNeGos($pdvNeGos)
     {
-        if(empty($pdvNeGos)) {
-            $this->pdvNeGos = 0;
-        }
-        if (is_numeric($pdvNeGos)){
-            if ($pdvNeGos<0.01){
-                $this->pdvNeGos=0;
-            }else{
-                $this->pdvNeGos = $pdvNeGos;
-            }
-        }else{
-            $this->pdvNeGos = $pdvNeGos;
-        }
+        $this->pdvNeGos= workToTypeVariable::setFloatVariable($pdvNeGos);
         return $this;
     }
 
@@ -767,18 +645,7 @@ class ReestrbranchIn
      */
     public function setBazaZaMezhi($bazaZaMezhi)
     {
-        if(empty($bazaZaMezhi)) {
-            $this->bazaZaMezhi = 0;
-        }
-        if (is_numeric($bazaZaMezhi)){
-            if ($bazaZaMezhi<0.01){
-                $this->bazaZaMezhi=0;
-            }else{
-                $this->bazaZaMezhi = $bazaZaMezhi;
-            }
-        }else{
-            $this->bazaZaMezhi = $bazaZaMezhi;
-        }
+        $this->bazaZaMezhi= workToTypeVariable::setFloatVariable($bazaZaMezhi);
         return $this;
     }
 
@@ -801,18 +668,7 @@ class ReestrbranchIn
      */
     public function setPdvZaMezhi($pdvZaMezhi)
     {
-        if(empty($pdvZaMezhi)) {
-            $this->pdvZaMezhi = 0;
-        }
-        if (is_numeric($pdvZaMezhi)){
-            if ($pdvZaMezhi<0.01){
-                $this->pdvZaMezhi=0;
-            }else{
-                $this->pdvZaMezhi = $pdvZaMezhi;
-            }
-        }else{
-            $this->bazaZaMezhi = $pdvZaMezhi;
-        }
+        $this->pdvZaMezhi= workToTypeVariable::setFloatVariable($pdvZaMezhi);
         return $this;
     }
 
