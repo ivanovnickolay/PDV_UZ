@@ -163,9 +163,9 @@ class LoadReestrFromFile
 
 
             } catch (errorLoadDataException $exception) {
-
+                echo $exception->getMessage();
             } catch (\Exception $exception) {
-
+                echo $exception->getMessage();
             }
             // очищаем все используеміе в классе объекты перед загрузкой нового файла
             $downloadData->unSetAllObjects();
