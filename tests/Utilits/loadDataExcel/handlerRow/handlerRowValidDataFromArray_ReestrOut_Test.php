@@ -335,7 +335,6 @@ class handlerRowValidDataFromArray_ReestrOut_Test extends TestCase
             ['1234567890123в', "содержит данные не того типа."],
             ['ПНП', " содержит данные не того типа."],
             ['ЧКЕ012345678', "содержит данные не того типа."],
-
         ];
     }
 
@@ -357,14 +356,30 @@ class handlerRowValidDataFromArray_ReestrOut_Test extends TestCase
         );
     }
 
+    public function dataFromValidZagSumm_float()
+    {
+        return [
+            ['-7.2759576141834E-12'],
+            ['2.8421709430404E-14'],
+            ['1.8189894035459E-12'],
+            ['0.010000000002037'],
+            ['-2.3283064365387E-10'],
+            ['9.0949470177293E-13'],
+            ['0.0099999999997635'],
+            ['0.010000000002037'],
+
+        ];
+    }
+
     /**
      * Тест случая передачи значения -7.2759576141834E-12
+     * @dataProvider dataFromValidZagSumm_float
      */
-    public function test_validTypeZagSumm_float()
+    public function test_validTypeZagSumm_float($testdata)
     {
         $arr = $this->getArrayData();
         //$this->reestrIn->setZagSumm($arr[0][106]);
-        $arr[0][106] = "-7.2759576141834E-12";
+        $arr[0][106] = $testdata;
         $this->handlerRow->handlerRow($arr);
         $arrayError = $this->handlerRow->getResultHandlingAllRows();
         //var_dump($arrayError);
