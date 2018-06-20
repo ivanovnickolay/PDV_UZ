@@ -60,6 +60,8 @@ class handlerRowsSave extends handlerRowAbstract
      */
     public function saveHandlingRows()
     {
+        // решенние проблемы PDO::beginTransaction(): MySQL server has gone away
+        $this->reconnect();
         try {
             $this->entityManager->flush();
         } catch (OptimisticLockException $e) {
@@ -75,5 +77,55 @@ class handlerRowsSave extends handlerRowAbstract
     public function getResultHandlingAllRows()
     {
       return null;
+    }
+
+    // http://seyferseed.ru/ru/php/reshenie-problemy-doctrine-2-i-mysql-server-has-gone-away.html#sthash.vh49fkii.dpbs
+
+    private function disconnect()
+    {
+        $this->entityManager->getConnection()->close();
+    }
+
+    private function connect()
+    {
+        $this->entityManager->getConnection()->connect();
+    }
+
+    /**
+     * MySQL Server has gone away
+     * @throws ORMException
+     */
+    private function reconnect()
+    {
+        $connection = $this->entityManager->getConnection();
+        if (!$connection->ping()) {
+
+            $this->disconnect();
+            $this->connect();
+
+            try {
+                $this->checkEMConnection($connection);
+            } catch (ORMException $e) {
+            }
+        }
+    }
+
+    /**
+     * method checks connection and reconnect if needed
+     * MySQL Server has gone away
+     *
+     * @param $connection
+     * @throws \Doctrine\ORM\ORMException
+     */
+    private function checkEMConnection($connection)
+    {
+
+        if (!$this->entityManager->isOpen()) {
+            $config = $this->entityManager->getConfiguration();
+
+            $this->em = $this->entityManager->create(
+                $connection, $config
+            );
+        }
     }
 }
