@@ -7,6 +7,7 @@
  */
 
 namespace App\Utilits\loadDataExcel\handlerRow;
+use App\Utilits\loadDataExcel\cacheDataRow\cacheDataRow;
 use App\Utilits\loadDataExcel\configLoader\configLoader_interface;
 use App\Utilits\loadDataExcel\loadData\loadRows;
 use App\Utilits\LoadInvoice\createEntity\createEntityInterface;
@@ -44,6 +45,13 @@ abstract class handlerRowAbstract
      * @var configLoader_interface
      */
     protected $configLoader;
+
+
+    /**
+     * объект для реализации кеширования информации
+     * @var cacheDataRow
+     */
+    protected $objCache;
     /**
      * handlerRowAbstract constructor.
      * @param EntityManager $entityManager
@@ -55,6 +63,7 @@ abstract class handlerRowAbstract
         $this->entityManager=$entityManager;
         /** @var createEntityInterface $this */
         $this->entity=$this->configLoader->getEntityForLoad();
+        $this->objCache=null;
     }
 
     /**
@@ -83,6 +92,14 @@ abstract class handlerRowAbstract
      */
     public abstract function getResultHandlingAllRows();
 
+    /**
+     * Реализация передачи в обработчик объекта для кеширования строк
+     * todo после реализации класса кеширования уточнить тип объекта который передается в метод !!
+     * @param cacheDataRow $objCache
+     */
+    public function setCache(cacheDataRow $objCache){
+       $this->objCache = $objCache;
+    }
 
 
 }

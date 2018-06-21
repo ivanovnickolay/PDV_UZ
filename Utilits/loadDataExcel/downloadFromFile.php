@@ -9,6 +9,7 @@
 namespace App\Utilits\loadDataExcel;
 
 
+use App\Utilits\loadDataExcel\cacheDataRow\cacheDataRow;
 use App\Utilits\loadDataExcel\configLoader\configLoader_interface;
 use App\Utilits\loadDataExcel\configLoader\configLoaderFactory;
 use App\Utilits\loadDataExcel\Exception\errorLoadDataException;
@@ -41,6 +42,11 @@ class downloadFromFile
     private $load;
 
     /**
+     * @var cacheDataRow
+     */
+    private $cacheArray;
+
+    /**
      *
      * Инициализация класса валидации и загрузки данных из файлов
      *
@@ -51,6 +57,7 @@ class downloadFromFile
         $this->entytiManager=$entityManager;
             $this->load=null;
                 $this->config=null;
+                    $this->cacheArray=null;
     }
 
     /**
@@ -72,6 +79,15 @@ class downloadFromFile
                }catch (errorLoadDataException $exception){
                    throw new errorLoadDataException($exception->getMessage(). " File name ". $this->fileName);
                }
+    }
+
+    /**
+     * установка класса для кеширования строк прочитанных их файла
+     * @param cacheDataRow $cacheArray
+     */
+    public function setCacheArray(cacheDataRow $cacheArray=null): void
+    {
+        $this->cacheArray = $cacheArray;
     }
 
 
@@ -97,6 +113,9 @@ class downloadFromFile
             $this->entytiManager,
             $this->config
         );
+       if (!is_null($this->cacheArray)){
+           $handler->setCache($this->cacheArray);
+       }
         $this->load->setHandlerRows($handler);
         $this->load->loadDataFromFile();
         return $handler->getResultHandlingAllRows();
@@ -119,8 +138,18 @@ class downloadFromFile
             $this->entytiManager,
             $this->config
         );
-        $this->load->setHandlerRows($handler);
-            $this->load->loadDataFromFile();
+        // если объекта для кеширования не существует
+        if (is_null($this->cacheArray)){
+            // загружаем данные из файла и сохраяем
+            $this->load->setHandlerRows($handler);
+                $this->load->loadDataFromFile();
+        } else {
+            // если объект для кеширования существует
+            $handler->setCache($this->cacheArray);
+            // используем его для сохранения кешированных данных
+            $handler->saveHandlingRowsWithCache();
+        }
+
     }
 
     /**
@@ -148,4 +177,6 @@ class downloadFromFile
             unset($this->config);
         unset($this->fileName);
     }
+
+
 }

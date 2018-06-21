@@ -9,6 +9,7 @@
 namespace App\Services;
 
 
+use App\Utilits\loadDataExcel\cacheDataRow\cacheDataRow;
 use App\Utilits\loadDataExcel\downloadFromFile;
 use App\Utilits\loadDataExcel\Exception\errorLoadDataException;
 use App\Utilits\workToFileSystem\workWithFiles;
@@ -47,6 +48,11 @@ class LoadReestrFromFile
      * @var integer количество файлов, которые загружаются за один вызов LoadReestrFromFile::execute
      */
     private $numberOfFilesAtTime;
+
+    /**
+     * @var cacheDataRow объект для кеширования строк из файла
+     */
+    private $cache;
     /**
      * LoadReestrFromFile constructor.- инициализирует все переменные и получает класс $entityManager
      * @param EntityManager $entityManager
@@ -59,6 +65,7 @@ class LoadReestrFromFile
                 $this->dirForLoadFiles="";
                     $this->dirForMoveFilesWithError="";
                         $this->numberOfFilesAtTime = 6;
+                            $this->cache=null;
     }
 
     /*
@@ -93,6 +100,14 @@ class LoadReestrFromFile
             throw new errorLoadDataException("Директории, в которую надо переместить файлы с ошибками валидации, не существует");
         }
         $this->dirForMoveFilesWithError=$dirForMoveFilesWithError;
+    }
+
+    /** Установка кеширующего класса
+     *
+     * @param cacheDataRow|null $cacheDataRow
+     */
+    public function setCache(cacheDataRow $cacheDataRow = null){
+        $this->cache=$cacheDataRow;
     }
 
     /**
@@ -147,25 +162,33 @@ class LoadReestrFromFile
                 $downloadData = new downloadFromFile($this->entityManager);
                 //передаем название файлов в класс
                 $downloadData->setFileName($fileName);
+                if (!is_null($this->cache)){
+                    $downloadData->setCacheArray($this->cache);
+                }
                 if (!$this->validDataToFile($downloadData, $fileName)){
                     $downloadData->unSetAllObjects();
-                    unset($downloadData);
+                    // очистим массив кеша - в дальнейшем он нам не понадобится, так как записи данных не будет
+                    if (!is_null($this->cache)){
+                        $this->cache->unsetCache();
+                    }
                     //http://ru.php.net/manual/ru/features.gc.collecting-cycles.php
                     gc_collect_cycles();
                     continue;
                 };
-
                 // если массив пустой
                         // загружаем данные в базу
                         $downloadData->downloadDataAndSave();
                             // переносим файл в директорию для успешно загруженных файлов
                             workWithFiles::moveFiles($fileName, $this->dirForMoveFiles);
-
+                        // очистим массив кеша - в дальнейшем он нам не понадобится
+                            if (!is_null($this->cache)){
+                                $this->cache->unsetCache();
+                            }
 
             } catch (errorLoadDataException $exception) {
-                echo $exception->getMessage();
+                echo "errorLoadDataException ".$exception->getMessage();
             } catch (\Exception $exception) {
-                echo $exception->getMessage();
+                echo "Exception ". $exception->getMessage();
             }
             // очищаем все используеміе в классе объекты перед загрузкой нового файла
             $downloadData->unSetAllObjects();
@@ -201,6 +224,7 @@ class LoadReestrFromFile
             workWithFiles::moveFiles($fileName, $this->dirForMoveFilesWithError);
             //  формируем файл с ошибками валидации
             workWithFiles::createFileErrorValidation($this->dirForMoveFilesWithError, $fileName, $arrayErrorValidation);
+
             return false;
         }
         return true;

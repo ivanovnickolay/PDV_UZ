@@ -71,6 +71,40 @@ class handlerRowsSave extends handlerRowAbstract
     }
 
     /**
+     * сохранение данных из кеша
+     *  -   если класс кеша не передан или кеширующий массив пустой - \Exception
+     *  -   для каждого элемента массива кеша десереализируем объект который записываем в Doctrine
+     *  -   если номер элемента кратен 1000 то сохраняем в базе
+     *  -   если количество записей было меньше 1000 то запись в базу по выходу из foreach
+     * @throws \Doctrine\Common\Persistence\Mapping\MappingException
+     * @throws \Exception если класс кеша не передан или кеширующий массив пустой
+     */
+    public function saveHandlingRowsWithCache(){
+        if (is_null($this->objCache)){
+            throw new \Exception("Вызов saveHandlingRowsWithCache при отсутствиии объекта cacheDataRow");
+        }
+        $arrayFromCache = $this->objCache->getArrayCache();
+        if(empty($arrayFromCache)){
+            throw new \Exception("Кеш объектов пустой");
+        }
+        $counter = 0;
+        foreach ($arrayFromCache as $value){
+            $objEntity = unserialize($value);
+                try {
+                    $this->entityManager->persist($objEntity);
+                } catch (ORMException $e) {
+                    echo $e->getMessage();
+                }
+                   unset($objEntity);
+                $counter++;
+                    if(0==($counter/1000)-round($counter/1000)){
+                        $this->saveHandlingRows();
+                    }
+        }
+        $this->saveHandlingRows();
+
+    }
+    /**
      * Практическая реализация возврата результата обработки всех строк файла
      * @return mixed
      */

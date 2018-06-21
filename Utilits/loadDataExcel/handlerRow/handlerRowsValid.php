@@ -88,6 +88,7 @@ class handlerRowsValid extends handlerRowAbstract
     /**
      * реализация по строчной обработки
      * создаем сущность на основании данных
+     *  -   добавляем объект в кеш
      *  -   проверяем на общие значения первой строки $this->verifyFirstRow($obj);
      *  -   проверяем данные на стабильность периода РПН и отправителя $this->verifyStabilityIndicators($obj);
      *  -   проверяем остальные правила валидации  $this->verifyRow($obj);
@@ -97,6 +98,7 @@ class handlerRowsValid extends handlerRowAbstract
     public function handlerRow(array $data)
     {
         $obj=$this->entity->createReestr($data);
+            $this->setRowToCache($obj);
             $this->countRows++;
                 $this->verifyFirstRow($obj);
                     $this->verifyStabilityIndicators($obj);
@@ -308,5 +310,14 @@ class handlerRowsValid extends handlerRowAbstract
         }
     }
 
-
+    /**
+     * добавление объекта в кеш
+     * @param $object
+     * @throws \Exception
+     */
+    private function setRowToCache($object){
+        if (!is_null($this->objCache)){
+            $this->objCache->addData($object);
+        }
+    }
 }
