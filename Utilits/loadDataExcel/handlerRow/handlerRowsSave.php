@@ -61,6 +61,8 @@ class handlerRowsSave extends handlerRowAbstract
     public function saveHandlingRows()
     {
         // решенние проблемы PDO::beginTransaction(): MySQL server has gone away
+        // https://stackoverflow.com/questions/33250453/how-to-solve-general-error-2006-mysql-server-has-gone-away
+        // interactive_timeout & wait_timeout == 28800
         $this->reconnect();
         try {
             $this->entityManager->flush();
@@ -90,6 +92,7 @@ class handlerRowsSave extends handlerRowAbstract
         $counter = 0;
         foreach ($arrayFromCache as $value){
             $objEntity = unserialize($value);
+
                 try {
                     $this->entityManager->persist($objEntity);
                 } catch (ORMException $e) {

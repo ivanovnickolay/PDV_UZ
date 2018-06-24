@@ -167,6 +167,7 @@ class LoadReestrFromFile
                 }
                 if (!$this->validDataToFile($downloadData, $fileName)){
                     $downloadData->unSetAllObjects();
+                        unset($downloadData);
                     // очистим массив кеша - в дальнейшем он нам не понадобится, так как записи данных не будет
                     if (!is_null($this->cache)){
                         $this->cache->unsetCache();
