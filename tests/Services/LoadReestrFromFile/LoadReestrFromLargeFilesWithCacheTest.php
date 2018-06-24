@@ -8,6 +8,7 @@
 
 namespace App\Services;
 
+use App\Utilits\loadDataExcel\cacheDataRow\cacheDataRow;
 use App\Utilits\workToFileSystem\workWithFiles;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
@@ -34,7 +35,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  *  -   сума ПДВ 9964593,54
  *  -   Ошибки при валидации РКЕ
  */
-class LoadReestrFromLargeFilesTest extends KernelTestCase
+class LoadReestrFromLargeFilesWithCacheTest extends KernelTestCase
 {
     /**
      * @var EntityManager
@@ -87,6 +88,14 @@ class LoadReestrFromLargeFilesTest extends KernelTestCase
             "testDataLargeFileReestrOut_TAB2.xlsx");
         $this->moveCorrectFileToFixtures(
             "testDataLargeFileReestrIn_TAB1.xlsx");
+
+        workWithFiles::moveFiles(
+            __DIR__ . '\\dirForMoveFilesWithError\\testDataLargeFileErrorReestrIn_TAB1.xlsx',
+            __DIR__ . '\\fixturesFiles');
+        workWithFiles::moveFiles(
+            __DIR__ . '\\dirForMoveFilesWithError\\testDataLargeFileErrorReestrIn_TAB1.log',
+            __DIR__ . '\\fixturesFiles');
+
     }
 
     /**
@@ -99,6 +108,7 @@ class LoadReestrFromLargeFilesTest extends KernelTestCase
         $obj->setDirForLoadFiles(__DIR__ . '\\dirForLoadFiles');
         $obj->setDirForMoveFiles(__DIR__ . '\\dirForMoveFiles');
         $obj->setDirForMoveFilesWithError(__DIR__ . '\\dirForMoveFilesWithError');
+        $obj->setCache(new cacheDataRow());
         $obj->execute();
     }
 
